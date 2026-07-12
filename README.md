@@ -52,9 +52,9 @@ chmod +x start.sh
 
 ---
 
-## Theme: GaugeOS Industrial Neomorphic
+## Theme & Design System
 
-TransitOps uses a custom **"GaugeOS"** design system inspired by mechanical dashboards and automotive instrument clusters. Every component uses neomorphic shadows, brushed-steel textures, gauge rings, and screw decorations.
+TransitOps uses a custom modern design system optimized for data-dense dashboards. Every component is designed for maximum readability, featuring smooth dark/light mode transitions, responsive grid layouts, and high-contrast UI elements.
 
 <table>
 <tr>
@@ -419,7 +419,7 @@ TransitOps maintains a secure document management system for all fleet paperwork
 
 | Layer | Technologies |
 |-------|-------------|
-| **Frontend** | React 18, TypeScript, Vite 6, Vanilla CSS (GaugeOS Design System) |
+| **Frontend** | React 18, TypeScript, Vite 6, Vanilla CSS (Custom Design System) |
 | **State** | Zustand (auth, theme, sidebar, notifications) |
 | **Data Fetching** | TanStack React Query with Axios |
 | **Charts** | Recharts (SVG-based, composable) |
@@ -611,7 +611,7 @@ TransitOps/
         events/                # System Events & Alerts
         settings/              # Profile, Theme, Security
       store/                   # Zustand Stores
-      styles/                  # GaugeOS Design System
+      styles/                  # Custom Design System
   server/                     # Express + Prisma Backend
     src/
       config/                  # Database, Auth Config
