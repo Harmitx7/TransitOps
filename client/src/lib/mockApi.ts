@@ -28,8 +28,32 @@ const mockStats = {
 };
 
 // AUTH
-mock.onPost('/auth/login').reply(200, { token: 'mock-jwt-token', user: mockUser });
-mock.onGet('/auth/me').reply(200, mockUser);
+mock.onPost('/auth/login').reply((config) => {
+  const { email, password } = JSON.parse(config.data);
+  
+  if (email === 'admin@transitops.io' && password === 'Admin@123') {
+    return [200, { token: 'mock-jwt-admin', user: { id: 'u1', email, firstName: 'Jenil', lastName: 'Soni', role: 'ADMIN' } }];
+  }
+  if (email === 'fleet@transitops.io' && password === 'Fleet@123') {
+    return [200, { token: 'mock-jwt-fleet', user: { id: 'u2', email, firstName: 'Priya', lastName: 'Sharma', role: 'FLEET_MANAGER' } }];
+  }
+  if (email === 'dispatch@transitops.io' && password === 'Dispatch@123') {
+    return [200, { token: 'mock-jwt-dispatch', user: { id: 'u3', email, firstName: 'Rohit', lastName: 'Kumar', role: 'DISPATCHER' } }];
+  }
+
+  return [401, { error: 'Invalid credentials. Use a valid demo account.' }];
+});
+
+mock.onGet('/auth/me').reply((config) => {
+  const token = config.headers?.Authorization;
+  if (token === 'Bearer mock-jwt-fleet') {
+    return [200, { id: 'u2', email: 'fleet@transitops.io', firstName: 'Priya', lastName: 'Sharma', role: 'FLEET_MANAGER' }];
+  }
+  if (token === 'Bearer mock-jwt-dispatch') {
+    return [200, { id: 'u3', email: 'dispatch@transitops.io', firstName: 'Rohit', lastName: 'Kumar', role: 'DISPATCHER' }];
+  }
+  return [200, { id: 'u1', email: 'admin@transitops.io', firstName: 'Jenil', lastName: 'Soni', role: 'ADMIN' }];
+});
 
 // DASHBOARD
 mock.onGet('/dashboard/stats').reply(200, mockStats);
