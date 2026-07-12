@@ -232,16 +232,17 @@
 .cam-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 4px;
-  background: var(--neu-dark);
-  padding: 4px;
+  gap: var(--sp-4);
   flex: 1;
 }
 .cam-feed {
   position: relative;
-  background: var(--bg-base);
+  background: var(--bg-surface);
   min-height: 140px;
+  border-radius: var(--r-card);
+  border: 1px solid var(--neu-light);
   overflow: hidden;
+  box-shadow: var(--neu-raised);
 }
 
 /* Background image with fake subtle panning */

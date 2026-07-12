@@ -13,18 +13,18 @@
 .cam-grid { 
   display: grid; 
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); 
-  gap: 4px; 
-  background: var(--neu-dark);
-  padding: 4px;
-  border-radius: 4px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  gap: var(--sp-4); 
 }
 
 /* Camera feed card */
 .cam-feed {
   display: flex; flex-direction: column;
-  background: var(--bg-base);
+  background: var(--bg-surface);
   position: relative;
+  border-radius: var(--r-card);
+  border: 1px solid var(--neu-light);
+  overflow: hidden;
+  box-shadow: var(--neu-raised);
 }
 .cam-feed.cam-alert {
   box-shadow: inset 0 0 0 2px var(--accent-danger);
