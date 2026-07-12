@@ -107,7 +107,7 @@ export default function EventsPage() {
 
       {/* List */}
       {isLoading ? (
-        <div className="notif-list" style={{ marginTop: 'var(--sp-4)' }}>
+        <div className="event-list" style={{ marginTop: 'var(--sp-4)' }}>
           {Array.from({ length: 6 }).map((_, i) => <div key={i} className="skeleton" style={{ height: 110, borderRadius: 'var(--r-card)' }} />)}
         </div>
       ) : events.length === 0 ? (
@@ -116,19 +116,19 @@ export default function EventsPage() {
           <p className="mech-label mt-2">NO ACTIVE EVENTS</p>
         </div>
       ) : (
-        <div className="notif-list" style={{ marginTop: 'var(--sp-4)' }}>
+        <div className="event-list" style={{ marginTop: 'var(--sp-4)' }}>
           {events.map(n => {
             const Icon = TYPE_ICON[n.type] ?? Info;
             const color = TYPE_COLOR[n.type] ?? 'var(--text-secondary)';
             return (
-              <div key={n.id} className={`notif-item panel-plate glow-hover ${!n.isRead ? 'unread' : ''}`}
-                style={!n.isRead ? { borderLeft: `3px solid ${color}` } : {}}>
-                <div className="notif-icon-wrap" style={{ background: `${color}18`, boxShadow: 'var(--neu-inset)' }}>
-                  <Icon size={18} color={color} />
+              <div key={n.id} className={`event-item ${!n.isRead ? 'unread' : ''}`}
+                style={!n.isRead ? { borderLeft: `4px solid ${color}` } : { borderLeft: '4px solid transparent' }}>
+                <div className="event-icon-wrap" style={{ background: `${color}18`, color }}>
+                  <Icon size={24} />
                 </div>
-                <div className="notif-body">
-                  <div className="notif-title text-h3 text-upper">{n.title}</div>
-                  <div className="notif-message text-secondary">{n.message}</div>
+                <div className="event-body">
+                  <div className="event-title">{n.title}</div>
+                  <div className="event-message">{n.message}</div>
                   
                   {n.hasEvidence && (
                     <div className="flex gap-2" style={{ marginTop: '10px' }}>
@@ -141,18 +141,18 @@ export default function EventsPage() {
                     </div>
                   )}
 
-                  <div className="notif-meta" style={{ marginTop: '12px' }}>
-                    <span className="notif-time text-mono text-xs">{timeAgo(n.createdAt)}</span>
-                    <span className="notif-type-label mech-label">{n.type.replace(/_/g, ' ')}</span>
+                  <div className="event-meta" style={{ marginTop: '12px' }}>
+                    <span className="event-time text-mono">{timeAgo(n.createdAt)}</span>
+                    <span className="event-type-label">{n.type.replace(/_/g, ' ')}</span>
                   </div>
                 </div>
                 {!n.isRead && (
-                  <button className="btn-round notif-read-btn" title="Acknowledge event"
+                  <button className="btn-round event-read-btn" title="Acknowledge event"
                     onClick={() => markRead.mutate(n.id)}>
-                    <CheckCheck size={14} />
+                    <CheckCheck size={16} />
                   </button>
                 )}
-                {n.isRead && <div className="notif-read-dot" />}
+                {n.isRead && <div className="event-read-dot" />}
               </div>
             );
           })}
