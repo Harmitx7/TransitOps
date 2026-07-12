@@ -656,6 +656,112 @@ TransitOps/
 
 ---
 
+---
+
+## System Architecture
+
+TransitOps is built on a scalable, decoupled architecture designed for high availability and real-time operations.
+
+```mermaid
+graph TD
+    Client[Web Client / Mobile UI]
+    subgraph Frontend [React 18 + Vite]
+        Z[Zustand State]
+        RQ[React Query]
+        CV[MediaPipe Vision]
+    end
+    
+    subgraph Backend [Node.js + Express API]
+        Auth[Auth & RBAC]
+        Routes[API Routes]
+        AI[AI Dispatch Logic]
+    end
+    
+    subgraph Database [PostgreSQL]
+        Prisma[Prisma ORM]
+        DB[(Core Database)]
+    end
+    
+    Client -->|HTTPS| Frontend
+    Z --> RQ
+    RQ -->|REST / JSON| Routes
+    CV -->|Client-side| Z
+    
+    Routes --> Auth
+    Routes --> AI
+    Auth --> Prisma
+    AI --> Prisma
+    Prisma --> DB
+```
+
+---
+
+## Database Schema
+
+The system leverages a robust relational database consisting of 12 core models tracking the entire fleet lifecycle.
+
+```mermaid
+erDiagram
+    User ||--o{ Trip : "dispatches"
+    User ||--o{ FuelLog : "logs"
+    User ||--o{ Expense : "logs"
+    User ||--o{ Inspection : "inspects"
+    
+    Vehicle ||--o{ Trip : "assigned to"
+    Vehicle ||--o{ Maintenance : "undergoes"
+    Vehicle ||--o{ FuelLog : "consumes"
+    Vehicle ||--o{ Inspection : "has"
+    Vehicle ||--o{ VehicleTimeline : "generates"
+    
+    Driver ||--o{ Trip : "drives"
+    
+    Trip ||--o{ FuelLog : "incurs"
+    Trip ||--o{ Expense : "incurs"
+    
+    User {
+        string id PK
+        string email
+        string role
+    }
+    Vehicle {
+        string id PK
+        string registrationNumber
+        string status
+        float healthScore
+    }
+    Driver {
+        string id PK
+        string licenseNumber
+        string status
+        float safetyScore
+    }
+    Trip {
+        string id PK
+        string tripNumber
+        string status
+        float revenue
+    }
+    Maintenance {
+        string id PK
+        string status
+        float cost
+    }
+```
+
+---
+
+## Core Contributors
+
+TransitOps was developed collaboratively during an intense 8-Hour Hackathon.
+
+- **Harmit Kalal** ([Harmitx7](https://github.com/Harmitx7)) – Full-Stack Architecture, API Design, & Authentication
+- **Jenil Soni** ([JenilRevaliya](https://github.com/JenilRevaliya)) – Frontend Engineering, System UI/UX, & Computer Vision AI
+- **Aarth Patel** ([Aarth](https://github.com/Aarth)) – Database Modeling & Data Pipelines
+
+> **Note:** To officially show up in the GitHub Repository's sidebar as a "Contributor" on the original `Harmitx7` repository, Harmit needs to navigate to `Settings > Collaborators` on GitHub and send an invite to `JenilRevaliya` and `Aarth`. Once accepted, GitHub will formally recognize you!
+
+---
+
 <p align="center">
   <strong>Built for the future of fleet operations.</strong>
 </p>
