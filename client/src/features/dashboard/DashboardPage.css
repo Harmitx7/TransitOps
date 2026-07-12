@@ -75,34 +75,14 @@
 }
 
 .kpi-icon-wrap {
-  position: relative;
-  width: 44px; height: 44px;
-  border-radius: 50%; /* Clean circular design */
+  width: 48px; height: 48px;
+  border-radius: 50%;
   display: grid; place-items: center;
   flex-shrink: 0;
-  
-  /* Super clean, minimal background */
-  background: color-mix(in srgb, var(--icon-color) 8%, transparent);
-  border: 1px solid color-mix(in srgb, var(--icon-color) 15%, transparent);
   color: var(--icon-color);
+  background: color-mix(in srgb, var(--icon-color) 15%, transparent);
 }
-
-/* Minimal geometric outer ring SVG art */
-.kpi-icon-wrap::before {
-  content: '';
-  position: absolute;
-  inset: -6px; /* Expanding slightly outside the circle for an airy look */
-  background-image: url("data:image/svg+xml,%3Csvg width='56' height='56' viewBox='0 0 56 56' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='28' cy='28' r='27' fill='none' stroke='currentColor' stroke-opacity='0.25' stroke-width='0.5' stroke-dasharray='2 4'/%3E%3Ccircle cx='28' cy='28' r='23' fill='none' stroke='currentColor' stroke-opacity='0.1' stroke-width='1'/%3E%3Cpath d='M28 0v3M28 53v3M0 28h3M53 28h3' stroke='currentColor' stroke-opacity='0.3' stroke-width='1'/%3E%3C/svg%3E");
-  background-size: cover;
-  pointer-events: none;
-  z-index: 0;
-  color: inherit;
-}
-
 .kpi-icon-wrap > svg {
-  position: relative;
-  z-index: 1;
-  /* Soft colored glow */
   filter: drop-shadow(0 2px 6px color-mix(in srgb, var(--icon-color) 40%, transparent));
 }
 

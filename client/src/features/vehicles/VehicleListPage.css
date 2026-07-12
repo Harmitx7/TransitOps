@@ -98,6 +98,14 @@
   background: var(--bg-sunken);
   overflow: hidden;
 }
+.vc-image-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 -10px 30px rgba(0, 0, 0, 0.5), inset 0 2px 10px rgba(0,0,0,0.3);
+  pointer-events: none;
+  z-index: 1;
+}
 .vc-image {
   width: 100%;
   height: 100%;
@@ -113,6 +121,7 @@
   right: 12px;
   background: var(--bg-surface);
   backdrop-filter: blur(4px);
+  z-index: 2;
 }
 .vc-content {
   padding: var(--sp-4);

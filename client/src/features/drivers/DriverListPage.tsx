@@ -35,7 +35,7 @@ function SafetyGauge({ score }: { score: number }) {
   const dash = (score / 100) * circ;
   return (
     <div className="safety-gauge-wrap" title={`Safety Score: ${score}`}>
-      <svg width={54} height={54} style={{ transform: 'rotate(-90deg)' }} aria-hidden="true">
+      <svg viewBox="0 0 54 54" style={{ transform: 'rotate(-90deg)', width: '100%', height: '100%', filter: `drop-shadow(0 0 2px ${color})` }} aria-hidden="true">
         <circle cx={27} cy={27} r={r} fill="none" stroke="var(--bg-sunken)" strokeWidth={6} />
         <circle cx={27} cy={27} r={r} fill="none" stroke={color} strokeWidth={6}
           strokeDasharray={`${dash} ${circ - dash}`} strokeLinecap="round"
