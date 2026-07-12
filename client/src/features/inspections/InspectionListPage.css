@@ -1,0 +1,18 @@
+/* ── Inspections ─────────────────────────────────────────────── */
+.insp-page { padding: var(--sp-5); display: flex; flex-direction: column; gap: var(--sp-4); }
+.insp-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: var(--sp-4); }
+.insp-card { display: flex; flex-direction: column; gap: var(--sp-2); cursor: pointer; }
+.insp-top { display: flex; align-items: center; justify-content: space-between; }
+.insp-reg  { font-size: var(--text-h3); font-weight: 700; }
+.insp-inspector { font-size: var(--text-sm); color: var(--text-secondary); }
+.insp-date { font-size: var(--text-xs); color: var(--text-muted); }
+.insp-status-badge { display: inline-flex; align-items: center; gap: 4px; }
+.insp-progress-row { display: flex; justify-content: space-between; font-size: var(--text-xs); color: var(--text-secondary); }
+/* Shared */
+.page-header { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--sp-4); flex-wrap: wrap; }
+.vl-status-chips { display: flex; gap: var(--sp-2); flex-wrap: wrap; }
+.status-chip { cursor: pointer; display: flex; align-items: center; gap: 4px; }
+.status-chip strong { margin-left: 3px; }
+.empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--sp-3); min-height: 240px; color: var(--text-muted); text-align: center; }
+@media (max-width: 900px) { .insp-grid { grid-template-columns: 1fr; } }
+@media (max-width: 640px) { .insp-page { padding: var(--sp-4); } }
