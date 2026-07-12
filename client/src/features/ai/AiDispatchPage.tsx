@@ -1,6 +1,9 @@
-import { useState } from 'react';
-import { Brain, Zap, Route, Fuel, Navigation, TrendingUp, CheckCircle2, Truck, Leaf, Coins } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Brain, Zap, Route as RouteIcon, Fuel, Navigation, TrendingUp, CheckCircle2, Truck, Leaf, Coins, Search, MapPin } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
+import { MapContainer, TileLayer, GeoJSON, useMap, Marker } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import api from '../../lib/api';
 import './AiDispatchPage.css';
 
@@ -91,7 +94,7 @@ function RouteCard({ label, icon: Icon, color, distance, duration, fuel, toll, s
       </div>
       <div className="route-stats">
         <div className="route-stat"><Navigation size={12} style={{ color }} /><span>{distance} km</span></div>
-        <div className="route-stat"><Route size={12} style={{ color: 'var(--text-muted)' }} /><span>{duration} min</span></div>
+        <div className="route-stat"><RouteIcon size={12} style={{ color: 'var(--text-muted)' }} /><span>{duration} min</span></div>
         <div className="route-stat"><Fuel size={12} style={{ color: 'var(--accent-warning)' }} /><span>{fuel.toFixed(1)} L</span></div>
         <div className="route-stat"><span style={{ color: 'var(--text-muted)' }}>Toll</span><span>₹{toll}</span></div>
       </div>
@@ -99,21 +102,49 @@ function RouteCard({ label, icon: Icon, color, distance, duration, fuel, toll, s
   );
 }
 
+/* ── Map Bounds Component ── */
+function MapBounds({ geojson, origin, dest }: { geojson: any, origin?: [number, number], dest?: [number, number] }) {
+  const map = useMap();
+  useEffect(() => {
+    if (geojson) {
+      const layer = L.geoJSON(geojson);
+      map.fitBounds(layer.getBounds(), { padding: [50, 50] });
+    } else if (origin && dest) {
+      map.fitBounds([origin, dest], { padding: [50, 50] });
+    } else if (origin) {
+      map.setView(origin, 12);
+    }
+  }, [geojson, map, origin, dest]);
+  return null;
+}
+
+/* ── Marker Icons ── */
+const createMarkerIcon = (color: string) => L.divIcon({
+  html: `<div style="background-color: ${color}; width: 14px; height: 14px; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 4px rgba(0,0,0,0.5);"></div>`,
+  className: '',
+  iconSize: [14, 14],
+  iconAnchor: [7, 7]
+});
+
 /* ── Main ── */
 export default function AiDispatchPage() {
-  const [selectedTrip, setSelectedTrip] = useState('');
   const [selectedVehicle, setSelectedVehicle] = useState('');
   const [selectedRoute, setSelectedRoute] = useState(0);
-  const [fuelInput, setFuelInput] = useState({ type: 'Truck', distance: 200, load: 50, year: 2020 });
-  const [fuelResult, setFuelResult] = useState<number | null>(null);
+  
+  // Routing State
+  const [originStr, setOriginStr] = useState('Ahmedabad');
+  const [destStr, setDestStr] = useState('Surat');
+  const [originCoords, setOriginCoords] = useState<[number, number] | null>([23.0225, 72.5714]);
+  const [destCoords, setDestCoords] = useState<[number, number] | null>([21.1702, 72.8311]);
+  const [routeGeojson, setRouteGeojson] = useState<any>(null);
+  const [routeDetails, setRouteDetails] = useState<{distance: number, duration: number} | null>(null);
+  const [routeLoading, setRouteLoading] = useState(false);
 
   const { data: vData } = useQuery<{ data: Vehicle[] }>({ queryKey: ['vehicles-ai'], queryFn: async () => { const { data } = await api.get('/vehicles?status=AVAILABLE&limit=20'); return data; } });
   const { data: dData } = useQuery<{ data: Driver[] }>({ queryKey: ['drivers-ai'], queryFn: async () => { const { data } = await api.get('/drivers?status=AVAILABLE&limit=20'); return data; } });
-  const { data: tData } = useQuery<{ data: Trip[] }>({ queryKey: ['trips-pending'], queryFn: async () => { const { data } = await api.get('/trips?status=SCHEDULED&limit=20'); return data; } });
 
   const vehicles = vData?.data ?? [];
   const drivers  = dData?.data ?? [];
-  const trips    = tData?.data ?? [];
 
   // Top 3 recommendations
   const recommendations = vehicles
@@ -121,12 +152,54 @@ export default function AiDispatchPage() {
     .sort((a, b) => b.score - a.score)
     .slice(0, 3);
 
-  // Mock routes without emojis, with their corresponding Lucide icons mapped below
+  // Dynamic route options based on OSRM details (or fallback to mock)
+  const baseDist = routeDetails?.distance ?? 264;
+  const baseDur  = routeDetails?.duration ?? 220;
+
   const mockRoutes = [
-    { label: 'Fastest',       icon: Zap, color: 'var(--accent-info)',    distance: 214, duration: 195, fuel: 42.8, toll: 180 },
-    { label: 'Eco-Friendly',  icon: Leaf, color: 'var(--accent-success)', distance: 228, duration: 225, fuel: 37.2, toll: 120 },
-    { label: 'Lowest Toll',   icon: Coins, color: 'var(--accent-warning)',  distance: 241, duration: 240, fuel: 44.1, toll: 60 },
+    { label: 'Fastest',       icon: Zap, color: 'var(--accent-info)',    distance: Math.round(baseDist), duration: Math.round(baseDur), fuel: baseDist * 0.2, toll: 180 },
+    { label: 'Eco-Friendly',  icon: Leaf, color: 'var(--accent-success)', distance: Math.round(baseDist * 1.05), duration: Math.round(baseDur * 1.15), fuel: baseDist * 0.17, toll: 120 },
+    { label: 'Lowest Toll',   icon: Coins, color: 'var(--accent-warning)',  distance: Math.round(baseDist * 1.1), duration: Math.round(baseDur * 1.25), fuel: baseDist * 0.22, toll: 60 },
   ];
+
+  async function fetchRoute() {
+    if (!originStr || !destStr) return;
+    setRouteLoading(true);
+    try {
+      // 1. Geocode Origin
+      const oRes = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(originStr)}`);
+      const oData = await oRes.json();
+      // 2. Geocode Dest
+      const dRes = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(destStr)}`);
+      const dData = await dRes.json();
+      
+      if (oData.length > 0 && dData.length > 0) {
+        const o = oData[0];
+        const d = dData[0];
+        setOriginCoords([parseFloat(o.lat), parseFloat(o.lon)]);
+        setDestCoords([parseFloat(d.lat), parseFloat(d.lon)]);
+        
+        // 3. OSRM Route
+        const routeRes = await fetch(`https://router.project-osrm.org/route/v1/driving/${o.lon},${o.lat};${d.lon},${d.lat}?overview=full&geometries=geojson`);
+        const routeData = await routeRes.json();
+        
+        if (routeData.routes && routeData.routes.length > 0) {
+          const route = routeData.routes[0];
+          setRouteGeojson(route.geometry);
+          setRouteDetails({ distance: route.distance / 1000, duration: route.duration / 60 });
+        }
+      } else {
+        alert('Could not find one of the locations.');
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setRouteLoading(false);
+    }
+  }
+
+  // Fetch initial route
+  useEffect(() => { fetchRoute(); }, []);
 
   return (
     <div className="ai-page page-enter">
@@ -139,112 +212,81 @@ export default function AiDispatchPage() {
       </div>
 
       <div className="ai-grid">
-        {/* Left: Dispatch Recommendations */}
-        <div className="ai-panel">
-          <div className="ai-panel-header">
-            <h2 className="ai-panel-title">Vehicle Assignment</h2>
-          </div>
-
-          <div className="form-group">
-            <label className="form-label">Select Pending Trip</label>
-            <select className="input-field" value={selectedTrip} onChange={e => setSelectedTrip(e.target.value)}>
-              <option value="">Choose a scheduled trip...</option>
-              {trips.map(t => <option key={t.id} value={t.id}>{t.tripNumber} — {t.source} → {t.destination}</option>)}
-              {trips.length === 0 && <option disabled>No scheduled trips available</option>}
-            </select>
-          </div>
-
-          <div className="rec-list">
-            {recommendations.map((r, i) => (
-              <RecommendationCard key={r.v.id} rank={i + 1} v={r.v} driver={r.driver}
-                score={r.score} selected={selectedVehicle === r.v.id}
-                onSelect={() => setSelectedVehicle(v => v === r.v.id ? '' : r.v.id)} />
-            ))}
-            {recommendations.length === 0 && (
-              <div className="empty-state-sm">
-                <Truck size={32} color="var(--text-muted)" />
-                <p>No available vehicles found</p>
-              </div>
-            )}
-          </div>
-
-          {selectedVehicle && selectedTrip && (
-            <button className="btn btn-pill" style={{ width: '100%', marginTop: 'var(--sp-3)' }}>
-              <CheckCircle2 size={15} /> Confirm Assignment
+        
+        {/* Left: Booking Panel (Uber-like) */}
+        <div className="ai-left">
+          
+          <div className="ai-panel">
+            <div className="ai-panel-header">
+              <h2 className="ai-panel-title">Plan Route</h2>
+            </div>
+            <div className="form-group">
+              <label className="form-label text-muted"><MapPin size={12} className="inline" /> Origin</label>
+              <input className="input-field" value={originStr} onChange={e => setOriginStr(e.target.value)} onKeyDown={e => e.key === 'Enter' && fetchRoute()} />
+            </div>
+            <div className="form-group" style={{ marginTop: '4px' }}>
+              <label className="form-label text-muted"><MapPin size={12} className="inline text-primary" /> Destination</label>
+              <input className="input-field" value={destStr} onChange={e => setDestStr(e.target.value)} onKeyDown={e => e.key === 'Enter' && fetchRoute()} />
+            </div>
+            <button className="btn btn-primary" style={{ width: '100%', marginTop: 'var(--sp-2)' }} onClick={fetchRoute} disabled={routeLoading}>
+              {routeLoading ? 'Calculating...' : <><Search size={16} /> Find Routes</>}
             </button>
-          )}
-        </div>
+          </div>
 
-        {/* Right: Route Optimization + Fuel Predictor */}
-        <div className="ai-right">
           <div className="ai-panel">
             <div className="ai-panel-header">
               <h2 className="ai-panel-title">Route Selection</h2>
-            </div>
-            <div className="form-row" style={{ marginBottom: 'var(--sp-3)' }}>
-              <div className="form-group">
-                <label className="form-label">Origin</label>
-                <input className="input-field" placeholder="Ahmedabad" />
-              </div>
-              <div className="form-group">
-                <label className="form-label">Destination</label>
-                <input className="input-field" placeholder="Mumbai" />
-              </div>
             </div>
             <div className="route-list">
               {mockRoutes.map((r, i) => (
                 <RouteCard key={i} {...r} selected={selectedRoute === i} onSelect={() => setSelectedRoute(i)} />
               ))}
             </div>
-            <div className="selected-route-summary" style={{ background: `${mockRoutes[selectedRoute].color}15`, borderLeft: `3px solid ${mockRoutes[selectedRoute].color}` }}>
-              <TrendingUp size={14} color={mockRoutes[selectedRoute].color} />
-              <span>Selected: <strong>{mockRoutes[selectedRoute].label}</strong> · {mockRoutes[selectedRoute].distance} km · Est. ₹{(mockRoutes[selectedRoute].fuel * 92 + mockRoutes[selectedRoute].toll).toFixed(0)} total cost</span>
-            </div>
           </div>
 
-          {/* Fuel Predictor */}
           <div className="ai-panel">
             <div className="ai-panel-header">
-              <h2 className="ai-panel-title">Fuel Estimate</h2>
+              <h2 className="ai-panel-title">Vehicle Assignment</h2>
             </div>
-            <div className="form-row">
-              <div className="form-group">
-                <label className="form-label">Vehicle Type</label>
-                <select className="input-field" value={fuelInput.type} onChange={e => setFuelInput(f => ({ ...f, type: e.target.value }))}>
-                  {['Truck','Bus','Van','Car'].map(t => <option key={t}>{t}</option>)}
-                </select>
-              </div>
-              <div className="form-group">
-                <label className="form-label">Distance (km)</label>
-                <input className="input-field" type="number" value={fuelInput.distance}
-                  onChange={e => setFuelInput(f => ({ ...f, distance: Number(e.target.value) }))} />
-              </div>
+            <div className="rec-list">
+              {recommendations.map((r, i) => (
+                <RecommendationCard key={r.v.id} rank={i + 1} v={r.v} driver={r.driver}
+                  score={r.score} selected={selectedVehicle === r.v.id}
+                  onSelect={() => setSelectedVehicle(v => v === r.v.id ? '' : r.v.id)} />
+              ))}
+              {recommendations.length === 0 && (
+                <div className="empty-state-sm">
+                  <Truck size={32} color="var(--text-muted)" />
+                  <p>No available vehicles found</p>
+                </div>
+              )}
             </div>
-            <div className="form-row">
-              <div className="form-group">
-                <label className="form-label">Load % of Capacity</label>
-                <input className="input-field" type="number" value={fuelInput.load} min={0} max={100}
-                  onChange={e => setFuelInput(f => ({ ...f, load: Number(e.target.value) }))} />
-              </div>
-              <div className="form-group">
-                <label className="form-label">Vehicle Year</label>
-                <input className="input-field" type="number" value={fuelInput.year} min={2000} max={2025}
-                  onChange={e => setFuelInput(f => ({ ...f, year: Number(e.target.value) }))} />
-              </div>
-            </div>
-            <button className="btn btn-pill" style={{ width: '100%' }}
-              onClick={() => setFuelResult(predictFuel(fuelInput.type, fuelInput.distance, fuelInput.load, fuelInput.year))}>
-              <Brain size={14} /> Predict Consumption
-            </button>
-            {fuelResult !== null && (
-              <div className="fuel-predict-result slide-up">
-                <div className="fpr-label">Predicted Fuel</div>
-                <div className="fpr-value text-mono">{fuelResult.toFixed(1)} L</div>
-                <div className="fpr-cost">≈ ₹{(fuelResult * 92).toFixed(0)} at ₹92/L</div>
-              </div>
-            )}
           </div>
+          
+          {selectedVehicle && (
+            <div style={{ position: 'sticky', bottom: 0, paddingBottom: 'var(--sp-4)', background: 'var(--bg-base)' }}>
+              <button className="btn btn-pill" style={{ width: '100%', padding: '16px', fontSize: '1.1rem', background: 'var(--text-primary)', color: 'var(--bg-base)' }}>
+                <CheckCircle2 size={18} /> Confirm Dispatch
+              </button>
+            </div>
+          )}
+
         </div>
+
+        {/* Right: Interactive Map */}
+        <div className="ai-map-panel">
+          <MapContainer center={[22.3, 71.8]} zoom={6} style={{ width: '100%', height: '100%' }} zoomControl={true}>
+            <TileLayer
+              attribution='&copy; Google Maps'
+              url="https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}"
+            />
+            {routeGeojson && <GeoJSON data={routeGeojson} style={{ color: mockRoutes[selectedRoute].color, weight: 5, opacity: 0.8 }} key={`${selectedRoute}-${routeGeojson.coordinates.length}`} />}
+            {originCoords && <Marker position={originCoords} icon={createMarkerIcon('#737373')} />}
+            {destCoords && <Marker position={destCoords} icon={createMarkerIcon('var(--accent-primary)')} />}
+            <MapBounds geojson={routeGeojson} origin={originCoords ?? undefined} dest={destCoords ?? undefined} />
+          </MapContainer>
+        </div>
+
       </div>
     </div>
   );
