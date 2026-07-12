@@ -1,5 +1,5 @@
-import { lazy, Suspense } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { lazy, Suspense, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import AppLayout from './components/layout/AppLayout';
@@ -43,10 +43,25 @@ function PageLoader() {
   );
 }
 
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    // Attempt to scroll the window
+    window.scrollTo(0, 0);
+    // Also attempt to scroll the main content wrapper if there is one that handles scrolling
+    const scrollableDiv = document.querySelector('.app-content');
+    if (scrollableDiv) {
+      scrollableDiv.scrollTo(0, 0);
+    }
+  }, [pathname]);
+  return null;
+}
+
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
+        <ScrollToTop />
         <Suspense fallback={<PageLoader />}>
           <Routes>
             {/* Public */}
