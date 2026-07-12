@@ -13,9 +13,9 @@
 .cam-grid { 
   display: grid; 
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); 
-  gap: 2px; 
+  gap: 4px; 
   background: var(--neu-dark);
-  padding: 2px;
+  padding: 4px;
   border-radius: 4px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.5);
 }

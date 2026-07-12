@@ -1,5 +1,6 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
-import { Eye, Camera, Zap, AlertTriangle, Play, Square, Plus, Minus, X } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Eye, Camera, Plus, Minus } from 'lucide-react';
+import { useLprStore } from '../../store/useLprStore';
 import './CvDashboardPage.css';
 
 /* ── EAR calculation (Eye Aspect Ratio) ──────────────────────
@@ -148,90 +149,7 @@ function CameraFeed({ driverName, tripNumber, imgIndex, onRemove }: {
   );
 }
 
-/* ── LPR Modal (Webcam) ── */
-function LprModal({ onClose }: { onClose: () => void }) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [scanning, setScanning] = useState(false);
-  const [result, setResult] = useState<{ plate: string; confidence: number; matched: boolean } | null>(null);
 
-  useEffect(() => {
-    let stream: MediaStream | null = null;
-    navigator.mediaDevices.getUserMedia({ video: true })
-      .then(s => {
-        stream = s;
-        if (videoRef.current) videoRef.current.srcObject = stream;
-      })
-      .catch(err => console.error("Webcam error:", err));
-    return () => {
-      if (stream) stream.getTracks().forEach(t => t.stop());
-    };
-  }, []);
-
-  const demoScan = () => {
-    setScanning(true);
-    setResult(null);
-    setTimeout(() => {
-      setResult({ plate: 'GJ01AB1234', confidence: 94, matched: true });
-      setScanning(false);
-    }, 2000);
-  };
-
-  return (
-    <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-      <div className="lpr-section neu-card no-hover" style={{ width: '100%', maxWidth: '500px', position: 'relative' }}>
-        <button onClick={onClose} style={{ position: 'absolute', top: '16px', right: '16px', background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}>
-          <X size={20} />
-        </button>
-        <div className="lpr-header">
-          <Camera size={18} color="var(--accent-primary)" />
-          <h3 className="lpr-title">License Plate Scanner</h3>
-        </div>
-
-        <div className="lpr-frame-area" style={{ marginTop: '16px' }}>
-          <div className="lpr-frame" style={{ position: 'relative' }}>
-            <div className="lpr-corner tl" /><div className="lpr-corner tr" />
-            <div className="lpr-corner bl" /><div className="lpr-corner br" />
-            {scanning && <div className="lpr-scan-line" />}
-            
-            <video ref={videoRef} autoPlay playsInline muted style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0 }} />
-            
-            <div className="lpr-placeholder" style={{ zIndex: 1, textShadow: '0 0 4px #000', pointerEvents: 'none', position: 'absolute', bottom: '16px' }}>
-              <span style={{ color: '#fff', fontWeight: 700 }}>Align plate within frame</span>
-            </div>
-          </div>
-        </div>
-
-      <div className="lpr-controls">
-        <button className="btn btn-pill" onClick={demoScan} disabled={scanning}>
-          {scanning ? <><Zap size={14} /> Scanning...</> : <><Play size={14} /> Demo Scan</>}
-        </button>
-      </div>
-
-      {result && (
-        <div className="lpr-result slide-up">
-          <div className="lpr-result-plate text-mono">{result.plate}</div>
-          <div className="lpr-confidence">
-            <span>Confidence</span>
-            <div className="progress-track" style={{ flex: 1 }}>
-              <div className="progress-fill" style={{ width: `${result.confidence}%`, background: 'var(--accent-success)' }} />
-            </div>
-            <span className="text-mono">{result.confidence}%</span>
-          </div>
-          {result.matched && (
-            <div className="lpr-matched badge available">
-              ✓ Matched: GJ-01-AB-1234 · Tata Ace · Available
-            </div>
-          )}
-            <div className="lpr-actions" style={{ marginTop: '16px' }}>
-              <button className="btn btn-ghost btn-pill sm" onClick={onClose}>Log Entry</button>
-              <button className="btn btn-pill sm" onClick={onClose}>Log Exit</button>
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
 
 /* ── Mock drivers for feeds ── */
 const MOCK_FEEDS = [
@@ -244,7 +162,7 @@ const MOCK_FEEDS = [
 /* ── Main Page ── */
 export default function CvDashboardPage() {
   const [feeds, setFeeds] = useState(MOCK_FEEDS);
-  const [lprModalOpen, setLprModalOpen] = useState(false);
+  const { openLpr } = useLprStore();
 
   const addFeed = () => {
     if (feeds.length >= 6) return;
@@ -253,7 +171,6 @@ export default function CvDashboardPage() {
 
   return (
     <div className="cv-page page-enter">
-      {lprModalOpen && <LprModal onClose={() => setLprModalOpen(false)} />}
       <div className="page-header">
         <div>
           <h1 className="text-h1">
@@ -264,7 +181,7 @@ export default function CvDashboardPage() {
           </p>
         </div>
         <div style={{ display: 'flex', gap: '8px' }}>
-          <button className="btn btn-pill" style={{ background: '#F97316', color: '#fff', border: 'none' }} onClick={() => setLprModalOpen(true)}>
+          <button className="btn btn-pill" style={{ background: '#F97316', color: '#fff', border: 'none' }} onClick={() => openLpr()}>
             <Camera size={14} /> SCAN PLATE
           </button>
           <button className="btn btn-pill" onClick={addFeed} disabled={feeds.length >= 6}>

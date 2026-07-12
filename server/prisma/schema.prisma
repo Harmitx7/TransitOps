@@ -112,6 +112,7 @@ model Vehicle {
   status             VehicleStatus @default(AVAILABLE)
   healthScore        Float         @default(100)
   qrCode             String?
+  imageUrl           String?
   insuranceExpiry    DateTime?
   registrationExpiry DateTime?
   fitnessExpiry      DateTime?
@@ -141,6 +142,7 @@ model Driver {
   status          DriverStatus @default(AVAILABLE)
   safetyScore     Float        @default(100)
   faceEmbedding   String?
+  avatarUrl       String?
   createdAt       DateTime     @default(now())
   updatedAt       DateTime     @updatedAt
 

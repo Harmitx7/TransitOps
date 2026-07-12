@@ -280,4 +280,5 @@
   .topbar-logo-mobile { display: flex; }
   .topbar-search-trigger { display: none; }
   .topbar-user-name { display: none; }
+  .topbar-quick-actions { display: none !important; }
 }

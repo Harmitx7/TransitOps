@@ -31,4 +31,104 @@
 .bottom-nav-item.active { color: var(--accent-primary); }
 .bottom-nav-item.active svg { filter: drop-shadow(0 0 4px hsla(16,85%,55%,0.5)); }
 
+/* FAB Center Button */
+.bottom-nav-fab-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  top: -16px;
+  flex: 1;
+  max-width: 72px;
+}
+.bottom-nav-fab {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  color: white;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 16px rgba(249, 115, 22, 0.4);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 52;
+}
+.bottom-nav-fab.open {
+  transform: rotate(45deg);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--neu-light);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+}
+
+/* FAB Expanding Menu */
+.bottom-nav-fab-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  z-index: 51;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding-bottom: 90px;
+}
+.bottom-nav-fab-menu {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  align-items: flex-start;
+  justify-content: center;
+  margin-bottom: 24px;
+  animation: fabSlideUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+@keyframes fabSlideUp {
+  0% { transform: translateY(40px) scale(0.8); opacity: 0; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.fab-action-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.fab-action.circular {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: transform 0.2s;
+}
+.fab-action.circular:active {
+  transform: scale(0.92);
+}
+.fab-action.orange {
+  background: var(--accent-primary);
+  color: white;
+}
+.fab-action.light {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--neu-light);
+}
+
+.fab-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+  white-space: nowrap;
+}
+
 @media (max-width: 767px) { .bottom-nav { display: flex; } }

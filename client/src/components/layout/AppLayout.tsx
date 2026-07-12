@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import Sidebar from './Sidebar';
 import Topbar from './Topbar';
 import BottomNav from './BottomNav';
+import { LprModal } from '../shared/LprModal';
 import { useThemeStore } from '../../store/useThemeStore';
 import './AppLayout.css';
 
@@ -24,6 +25,7 @@ export default function AppLayout() {
         </main>
       </div>
       <BottomNav />
+      <LprModal />
     </div>
   );
 }

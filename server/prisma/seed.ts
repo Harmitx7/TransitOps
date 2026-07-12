@@ -71,7 +71,20 @@ async function seed() {
     { registrationNumber: 'GJ06AB8901', make: 'Eicher', model: 'Pro 3018', year: 2021, type: 'Truck', fuelType: 'DIESEL' as const, maxLoadCapacity: 18000, currentOdometer: 86400, acquisitionCost: 2100000, healthScore: 72 },
   ];
 
+  const VEHICLE_IMGS = [
+    'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=800&q=80',
+    'https://images.unsplash.com/photo-1519003722824-194d4455a60c?w=800&q=80',
+    'https://images.unsplash.com/photo-1586191552066-d52f6f3630f5?w=800&q=80',
+    'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80',
+    'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?w=800&q=80',
+    'https://images.unsplash.com/photo-1562920618-af1f5f02f0be?w=800&q=80',
+    'https://images.unsplash.com/photo-1517524008697-84bbe3c3fd98?w=800&q=80',
+    'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&q=80',
+    'https://images.unsplash.com/photo-1502877338535-34fb83ee72ce?w=800&q=80'
+  ];
+
   const vehicles = [];
+  let vIndex = 0;
   for (const v of vehicleData) {
     const vehicle = await prisma.vehicle.upsert({
       where: { registrationNumber: v.registrationNumber },
@@ -79,12 +92,14 @@ async function seed() {
       create: {
         ...v,
         status: (v as any).status || 'AVAILABLE',
+        imageUrl: VEHICLE_IMGS[vIndex % VEHICLE_IMGS.length],
         insuranceExpiry: new Date('2025-12-31'),
         registrationExpiry: new Date('2026-03-31'),
         fitnessExpiry: new Date('2025-09-30'),
       },
     });
     vehicles.push(vehicle);
+    vIndex++;
   }
   console.log(`  Created ${vehicles.length} vehicles`);
 
@@ -102,14 +117,32 @@ async function seed() {
     { firstName: 'Harish', lastName: 'Pillai', phone: '9876543219', licenseNumber: 'MH0120220001234', licenseCategory: 'HTV', licenseExpiry: new Date('2029-02-28'), safetyScore: 98 },
   ];
 
+  const DRIVER_IMGS = [
+    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80',
+    'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&q=80',
+    'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&q=80',
+    'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80',
+    'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80',
+    'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80',
+    'https://images.unsplash.com/photo-1552058544-f2b08422138a?w=400&q=80',
+    'https://images.unsplash.com/photo-1564564321837-a57b7070ac4f?w=400&q=80',
+    'https://images.unsplash.com/photo-1521119989659-a83eee488004?w=400&q=80',
+    'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?w=400&q=80'
+  ];
+
   const drivers = [];
+  let dIndex = 0;
   for (const d of driverData) {
     const driver = await prisma.driver.upsert({
       where: { licenseNumber: d.licenseNumber },
       update: {},
-      create: d,
+      create: {
+        ...d,
+        avatarUrl: DRIVER_IMGS[dIndex % DRIVER_IMGS.length],
+      },
     });
     drivers.push(driver);
+    dIndex++;
   }
   console.log(`  Created ${drivers.length} drivers`);
 

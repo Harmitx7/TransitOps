@@ -230,9 +230,9 @@
 .cam-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1px;
+  gap: 4px;
   background: var(--neu-dark);
-  padding: 1px;
+  padding: 4px;
   flex: 1;
 }
 .cam-feed {

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Bell, Sun, Moon, Search, X, Truck, Users, Route, Camera, Plus, Fuel } from 'lucide-react';
 import { useThemeStore } from '../../store/useThemeStore';
 import { useAuthStore } from '../../store/useAuthStore';
+import { useLprStore } from '../../store/useLprStore';
 import api from '../../lib/api';
 import './Topbar.css';
 
@@ -15,6 +16,7 @@ interface SearchResult {
 export default function Topbar() {
   const { theme, toggleTheme } = useThemeStore();
   const { user } = useAuthStore();
+  const { openLpr } = useLprStore();
   const navigate = useNavigate();
 
   const [searchOpen, setSearchOpen] = useState(false);
@@ -88,7 +90,7 @@ export default function Topbar() {
         {/* Actions */}
         <div className="topbar-actions">
           <div className="topbar-quick-actions" style={{ display: 'flex', gap: '8px', marginRight: '16px' }}>
-            <button className="topbar-btn-3d orange" onClick={() => navigate('/cv')}>
+            <button className="topbar-btn-3d orange" onClick={() => openLpr()}>
               <Camera size={14} /> License Plate
             </button>
             <button className="topbar-btn-3d light" onClick={() => navigate('/trips')}>
