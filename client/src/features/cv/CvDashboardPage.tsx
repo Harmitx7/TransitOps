@@ -47,6 +47,20 @@ function useMockEAR(isCam1: boolean): { ear: number; status: 'NORMAL' | 'DROWSY'
   return { ear, status, alertCount };
 }
 
+function PtzReadout() {
+  const [ptz, setPtz] = useState({ p: 85, t: 12 });
+  useEffect(() => {
+    const id = setInterval(() => {
+      setPtz({
+        p: Math.floor(80 + Math.random() * 10),
+        t: Math.floor(10 + Math.random() * 5),
+      });
+    }, 5000);
+    return () => clearInterval(id);
+  }, []);
+  return <span className="text-mono cv-hud-time">PTZ: {ptz.p}° P / {ptz.t}° T</span>;
+}
+
 /* ── Camera Feed (Demo Mode) ── */
 function CameraFeed({ driverName, tripNumber, imgIndex, onRemove }: {
   driverName: string; tripNumber: string; imgIndex: number; onRemove: () => void;
@@ -81,7 +95,7 @@ function CameraFeed({ driverName, tripNumber, imgIndex, onRemove }: {
         <div className="cv-hud">
           <div className="cv-hud-top">
             <span className="cv-live-dot" style={{ background: statusColor, boxShadow: `0 0 6px ${statusColor}` }} />
-            <span className="text-mono cv-hud-time">PTZ: {Math.floor(80 + Math.random() * 10)}° P / {Math.floor(10 + Math.random() * 5)}° T</span>
+            <PtzReadout />
           </div>
           
           <div className="cv-ptz-crosshair">
@@ -196,7 +210,7 @@ export default function CvDashboardPage() {
           <h2 className="cv-section-title"><Eye size={14} /> Driver Monitoring System</h2>
           <div className="cam-grid">
             {feeds.map((f, i) => (
-              <CameraFeed key={i} {...f} onRemove={() => setFeeds(feeds.filter((_, j) => j !== i))} />
+              <CameraFeed key={f.driverName} {...f} onRemove={() => setFeeds(feeds.filter((_, j) => j !== i))} />
             ))}
             {feeds.length === 0 && (
               <div className="empty-state neu-card no-hover">
