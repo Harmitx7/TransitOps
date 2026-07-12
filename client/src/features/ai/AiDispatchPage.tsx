@@ -237,8 +237,17 @@ export default function AiDispatchPage() {
                 <input className="input-field" style={{ paddingLeft: 40, border: 'none', background: 'var(--bg-surface)', borderRadius: '4px 4px var(--r-inner) var(--r-inner)', boxShadow: 'none' }} placeholder="Dropoff location" value={destStr} onChange={e => setDestStr(e.target.value)} onKeyDown={e => e.key === 'Enter' && fetchRoute()} />
               </div>
             </div>
-            <button className="btn btn-primary" style={{ width: '100%', marginTop: 'var(--sp-2)' }} onClick={fetchRoute} disabled={routeLoading}>
-              {routeLoading ? 'Calculating...' : <><Search size={16} /> Find Routes</>}
+            {/* Quick Actions */}
+            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginTop: '4px' }}>
+              {['Warehouse A', 'Port Terminal', 'City Center', 'Airport'].map(place => (
+                <button key={place} className="btn-ghost" style={{ fontSize: '11px', padding: '6px 12px', borderRadius: 'var(--r-pill)', flex: '1 1 auto', border: '1px solid var(--neu-light)' }}
+                  onClick={() => setDestStr(place)}>
+                  {place}
+                </button>
+              ))}
+            </div>
+            <button className="btn btn-pill" style={{ width: '100%', marginTop: 'auto', padding: '16px', fontSize: '1.1rem', background: 'var(--text-primary)', color: 'var(--bg-base)' }} onClick={fetchRoute} disabled={routeLoading}>
+              {routeLoading ? 'Calculating...' : <><Search size={18} /> Find Routes</>}
             </button>
           </div>
 
