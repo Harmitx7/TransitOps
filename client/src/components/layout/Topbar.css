@@ -92,6 +92,50 @@
   margin-left: auto;
 }
 
+/* 3D Action Buttons */
+.topbar-btn-3d {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: var(--r-pill);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: none;
+  cursor: pointer;
+  transition: all 0.05s linear;
+  position: relative;
+  top: 0;
+}
+.topbar-btn-3d svg {
+  opacity: 0.8;
+}
+
+.topbar-btn-3d.orange {
+  background: #F97316;
+  color: #fff;
+  /* 3D Bottom edge, no glow */
+  box-shadow: 0 4px 0 #C2410C, 0 6px 6px rgba(0,0,0,0.3);
+}
+.topbar-btn-3d.orange:active {
+  top: 4px;
+  box-shadow: 0 0 0 #C2410C, 0 1px 2px rgba(0,0,0,0.3);
+}
+
+.topbar-btn-3d.light {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--neu-light);
+  /* 3D Bottom edge */
+  box-shadow: 0 4px 0 var(--neu-dark), 0 6px 6px rgba(0,0,0,0.2);
+}
+.topbar-btn-3d.light:active {
+  top: 4px;
+  box-shadow: 0 0 0 var(--neu-dark), 0 1px 2px rgba(0,0,0,0.2);
+}
+
 /* Metallic Dashboard Buttons */
 .topbar .btn-round {
   background: linear-gradient(145deg, hsl(220, 16%, 22%), hsl(220, 20%, 14%));

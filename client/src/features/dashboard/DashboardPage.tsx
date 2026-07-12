@@ -120,17 +120,64 @@ function DashboardMapPreview() {
 
 /* ── Camera Feeds ── */
 function CameraFeedGrid() {
+  const [time, setTime] = useState('');
+  
+  useEffect(() => {
+    const int = setInterval(() => {
+      const d = new Date();
+      setTime(d.toISOString().split('T')[1].slice(0, -1)); // HH:MM:SS.mmm
+    }, 125);
+    return () => clearInterval(int);
+  }, []);
+
   return (
     <div className="cam-grid">
-      {[1, 2, 3, 4].map(i => (
-        <div key={i} className="cam-feed" style={{ backgroundImage: `url('/assets/cam${i}.png')`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
-          <div className="cam-overlay" style={{ background: 'rgba(0,0,0,0.5)', padding: '2px 6px', borderRadius: '4px' }}>
-            <span className="live-dot" /> <span className="mech-label text-xs">CAM 0{i} - LIVE</span>
+      {[1, 2, 3, 4].map(i => {
+        const isCam1 = i === 1;
+        return (
+          <div key={i} className={`cam-feed ${isCam1 ? 'cam-alert-active' : ''}`}>
+            {/* Parallax moving background to fake a live feed */}
+            <div className={`cam-bg cam-bg-anim-${i}`} style={{ backgroundImage: `url('/assets/cam${i}.png')` }} />
+            
+            {/* Static noise overlay */}
+            <div className="cam-noise" />
+
+            {/* HUD Overlay */}
+            <div className="cam-hud">
+              <div className="cam-hud-top">
+                <div className="cam-hud-label panel-plate">
+                  <span className={`live-dot ${isCam1 ? 'warning' : ''}`} /> CAM 0{i}
+                </div>
+                <div className="cam-hud-time text-mono">{time}</div>
+              </div>
+              
+              <div className="cam-hud-bottom text-mono text-xs">
+                <div>PTZ: {Math.floor(80 + Math.random() * 10)}° P / {Math.floor(10 + Math.random() * 5)}° T</div>
+                <div>ZOOM: {isCam1 ? '2.4x' : '1.0x'} WIDE</div>
+                {isCam1 && <div className="cam-warning-text blink-fast">WARNING: DROWSINESS DETECTED</div>}
+              </div>
+
+              {/* PTZ Crosshair */}
+              <div className="cam-ptz-crosshair">
+                <div className="ptz-h" />
+                <div className="ptz-v" />
+                <div className="ptz-center" />
+                {isCam1 && <div className="ptz-face-box blink-slow" />}
+              </div>
+
+              {/* Corner brackets */}
+              <div className="cam-brackets">
+                <div className="cb tl" />
+                <div className="cb tr" />
+                <div className="cb bl" />
+                <div className="cb br" />
+              </div>
+            </div>
+
+            <div className="cam-scanline" />
           </div>
-          {/* Faux scan line animation applied in CSS */}
-          <div className="cam-scanline" />
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }

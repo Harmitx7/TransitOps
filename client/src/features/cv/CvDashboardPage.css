@@ -1,7 +1,7 @@
 /* ── CV Dashboard ───────────────────────────────────────────── */
 .cv-page { padding: var(--sp-5); display: flex; flex-direction: column; gap: var(--sp-4); }
 
-.cv-layout { display: grid; grid-template-columns: 1fr 340px; gap: var(--sp-4); align-items: start; }
+.cv-layout { display: flex; flex-direction: column; gap: var(--sp-5); }
 .cv-section-title {
   font-size: var(--text-xs); font-weight: 700; text-transform: uppercase;
   letter-spacing: 0.06em; color: var(--text-muted);
@@ -9,13 +9,28 @@
   margin-bottom: var(--sp-3);
 }
 
-/* Camera grid */
-.cam-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--sp-3); }
+/* Video Wall Grid */
+.cam-grid { 
+  display: grid; 
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); 
+  gap: 2px; 
+  background: var(--neu-dark);
+  padding: 2px;
+  border-radius: 4px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
 
 /* Camera feed card */
 .cam-feed {
-  display: flex; flex-direction: column; gap: var(--sp-2);
-  border: 2px solid transparent; transition: border-color var(--dur-normal), box-shadow var(--dur-normal);
+  display: flex; flex-direction: column;
+  background: var(--bg-base);
+  position: relative;
+}
+.cam-feed.cam-alert {
+  box-shadow: inset 0 0 0 2px var(--accent-danger);
+}
+.cam-feed.cam-drowsy {
+  box-shadow: inset 0 0 0 2px var(--accent-warning);
 }
 .cam-feed.cam-alert {
   border-color: var(--accent-danger);
@@ -25,11 +40,16 @@
 .cam-feed.cam-drowsy { border-color: var(--accent-warning); }
 
 @keyframes border-pulse {
-  0%, 100% { box-shadow: 0 0 10px rgba(211,59,43,0.3), var(--neu-raised); }
-  50%       { box-shadow: 0 0 25px rgba(211,59,43,0.6), var(--neu-raised); }
+  0%, 100% { box-shadow: inset 0 0 0 2px var(--accent-danger), inset 0 0 20px rgba(211,59,43,0.3); }
+  50%      { box-shadow: inset 0 0 0 2px var(--accent-danger), inset 0 0 40px rgba(211,59,43,0.6); }
 }
 
-.cam-header { display: flex; align-items: center; justify-content: space-between; }
+.cam-header { 
+  display: flex; align-items: center; justify-content: space-between; 
+  padding: 8px 12px;
+  background: linear-gradient(180deg, var(--bg-surface), var(--bg-base));
+  border-bottom: 1px solid var(--neu-dark);
+}
 .cam-driver-info { display: flex; align-items: center; gap: 8px; }
 .cam-status-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; transition: all var(--dur-fast); }
 .cam-driver-name { font-size: var(--text-sm); font-weight: 700; color: var(--text-primary); }
@@ -38,8 +58,8 @@
 
 /* Video area */
 .cam-video-area {
-  position: relative; background: var(--bg-sunken); border-radius: var(--r-inner);
-  aspect-ratio: 4/3; overflow: hidden; box-shadow: var(--neu-inset);
+  position: relative; background: #000;
+  aspect-ratio: 16/9; overflow: hidden;
 }
 
 .cam-face-sim {
@@ -58,11 +78,59 @@
   transition: height 0.1s ease;
 }
 .cam-grid-overlay {
-  position: absolute; inset: 0;
-  background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-                    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-  background-size: 20px 20px;
+  display: none;
 }
+
+/* CCTV PTZ HUD Styles */
+.cv-noise {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
+  z-index: 1;
+}
+.cv-hud {
+  position: absolute; inset: 0; z-index: 2; pointer-events: none; padding: 8px;
+}
+.cv-hud-top {
+  display: flex; justify-content: space-between; align-items: flex-start;
+}
+.cv-live-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  animation: cvPulseLive 1.5s infinite;
+}
+@keyframes cvPulseLive { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+.cv-hud-time { font-size: 10px; color: #fff; text-shadow: 0 0 4px #000; }
+
+.cv-ptz-crosshair {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 100%; height: 100%; pointer-events: none;
+}
+.cv-ptz-h {
+  position: absolute; top: 50%; left: 15%; right: 15%; height: 1px;
+  background: rgba(255,255,255,0.1); border-left: 10px solid rgba(255,255,255,0.4); border-right: 10px solid rgba(255,255,255,0.4);
+}
+.cv-ptz-v {
+  position: absolute; left: 50%; top: 15%; bottom: 15%; width: 1px;
+  background: rgba(255,255,255,0.1); border-top: 10px solid rgba(255,255,255,0.4); border-bottom: 10px solid rgba(255,255,255,0.4);
+}
+.cv-ptz-center {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 8px; height: 8px; border: 1px solid rgba(255,255,255,0.6); border-radius: 50%;
+}
+
+.cv-brackets { position: absolute; inset: 10px; pointer-events: none; }
+.cb { position: absolute; width: 12px; height: 12px; border-color: rgba(255,255,255,0.4); border-style: solid; border-width: 0; }
+.cb.tl { top: 0; left: 0; border-top-width: 2px; border-left-width: 2px; }
+.cb.tr { top: 0; right: 0; border-top-width: 2px; border-right-width: 2px; }
+.cb.bl { bottom: 0; left: 0; border-bottom-width: 2px; border-left-width: 2px; }
+.cb.br { bottom: 0; right: 0; border-bottom-width: 2px; border-right-width: 2px; }
+
+.cv-scanline {
+  position: absolute; top: 0; left: 0; right: 0; height: 15%;
+  background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.05), transparent);
+  animation: scan 4s linear infinite; z-index: 3; pointer-events: none;
+}
+.cv-blink-fast { animation: cvBlink 0.5s infinite; }
+@keyframes cvBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
 
 /* EAR overlay */
 .cam-ear-overlay {
@@ -82,7 +150,7 @@
 }
 
 /* Bottom metrics */
-.cam-metrics { display: flex; align-items: center; gap: var(--sp-3); justify-content: space-between; }
+.cam-metrics { display: flex; align-items: center; gap: var(--sp-3); justify-content: space-between; padding: 12px; background: var(--bg-base); }
 .cam-metric { display: flex; flex-direction: column; gap: 2px; }
 .cam-metric-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: 700; }
 .cam-metric-val { font-size: var(--text-sm); font-weight: 700; }
@@ -126,7 +194,6 @@
 .lpr-matched { justify-content: center; }
 .lpr-actions { display: flex; gap: var(--sp-2); justify-content: center; }
 
-@media (max-width: 1100px) { .cv-layout { grid-template-columns: 1fr; } }
 @media (max-width: 700px)  { .cam-grid { grid-template-columns: 1fr; } }
 @media (max-width: 640px)  { .cv-page { padding: var(--sp-4); } }
 

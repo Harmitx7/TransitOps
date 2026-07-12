@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { Eye, Camera, Zap, AlertTriangle, Play, Square, Plus, Minus } from 'lucide-react';
+import { Eye, Camera, Zap, AlertTriangle, Play, Square, Plus, Minus, X } from 'lucide-react';
 import './CvDashboardPage.css';
 
 /* ── EAR calculation (Eye Aspect Ratio) ──────────────────────
@@ -12,30 +12,36 @@ function euclidean(a: { x: number; y: number }, b: { x: number; y: number }) {
 }
 
 /* ── Mock EAR Simulator (demo mode, no real MediaPipe) ── */
-function useMockEAR(): { ear: number; status: 'NORMAL' | 'DROWSY' | 'ALERT'; alertCount: number } {
-  const [ear, setEar] = useState(0.28);
+function useMockEAR(isCam1: boolean): { ear: number; status: 'NORMAL' | 'DROWSY' | 'ALERT'; alertCount: number } {
+  const [ear, setEar] = useState(isCam1 ? 0.28 : 0.35);
   const [alertCount, setAlertCount] = useState(0);
   const [status, setStatus] = useState<'NORMAL' | 'DROWSY' | 'ALERT'>('NORMAL');
 
   useEffect(() => {
     const id = setInterval(() => {
       const t = Date.now() / 1000;
-      // Oscillating EAR with occasional dips
-      const base = 0.28 + Math.sin(t * 0.8) * 0.04;
-      const dip  = Math.sin(t * 0.25) < -0.8 ? 0.12 : 0;
-      const newEar = Math.max(0.1, Math.min(0.4, base - dip + (Math.random() - 0.5) * 0.02));
-      setEar(parseFloat(newEar.toFixed(3)));
-      if (newEar < 0.18) {
-        setStatus('ALERT');
-        setAlertCount(c => c + 1);
-      } else if (newEar < 0.21) {
-        setStatus('DROWSY');
+      if (isCam1) {
+        // Oscillating EAR with occasional dips
+        const base = 0.28 + Math.sin(t * 0.8) * 0.04;
+        const dip  = Math.sin(t * 0.25) < -0.8 ? 0.12 : 0;
+        const newEar = Math.max(0.1, Math.min(0.4, base - dip + (Math.random() - 0.5) * 0.02));
+        setEar(parseFloat(newEar.toFixed(3)));
+        if (newEar < 0.18) {
+          setStatus('ALERT');
+          setAlertCount(c => c + 1);
+        } else if (newEar < 0.21) {
+          setStatus('DROWSY');
+        } else {
+          setStatus('NORMAL');
+        }
       } else {
+        const base = 0.35 + Math.sin(t * 0.5) * 0.02;
+        setEar(parseFloat(base.toFixed(3)));
         setStatus('NORMAL');
       }
     }, 100);
     return () => clearInterval(id);
-  }, []);
+  }, [isCam1]);
 
   return { ear, status, alertCount };
 }
@@ -44,7 +50,8 @@ function useMockEAR(): { ear: number; status: 'NORMAL' | 'DROWSY' | 'ALERT'; ale
 function CameraFeed({ driverName, tripNumber, imgIndex, onRemove }: {
   driverName: string; tripNumber: string; imgIndex: number; onRemove: () => void;
 }) {
-  const { ear, status, alertCount } = useMockEAR();
+  const isCam1 = imgIndex === 0;
+  const { ear, status, alertCount } = useMockEAR(isCam1);
   const r = 22; const circ = 2 * Math.PI * r;
   const safeScore = Math.max(0, 100 - alertCount * 5);
   const scoreColor = safeScore >= 80 ? 'var(--accent-success)' : safeScore >= 60 ? 'var(--accent-warning)' : 'var(--accent-danger)';
@@ -66,28 +73,54 @@ function CameraFeed({ driverName, tripNumber, imgIndex, onRemove }: {
 
       {/* Simulated video frame */}
       <div className="cam-video-area" style={{ position: 'relative' }}>
-        <img src={`/assets/cam${(imgIndex % 4) + 1}.png`} alt="Live Feed" style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0, opacity: 0.8 }} />
-        <div className="cam-face-sim">
-          <div className="cam-face-oval" />
-          {/* Eye indicators */}
-          <div className="cam-eyes">
-            <div className="cam-eye" style={{ height: Math.max(3, ear * 60), background: statusColor }} />
-            <div className="cam-eye" style={{ height: Math.max(3, ear * 60), background: statusColor }} />
+        <img src={`/assets/cam${(imgIndex % 4) + 1}.png`} alt="Live Feed" style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0, opacity: 0.8, filter: 'contrast(1.1) brightness(0.9) saturate(0.85)' }} />
+        
+        <div className="cv-noise" />
+
+        <div className="cv-hud">
+          <div className="cv-hud-top">
+            <span className="cv-live-dot" style={{ background: statusColor, boxShadow: `0 0 6px ${statusColor}` }} />
+            <span className="text-mono cv-hud-time">PTZ: {Math.floor(80 + Math.random() * 10)}° P / {Math.floor(10 + Math.random() * 5)}° T</span>
           </div>
-          {/* Grid overlay */}
-          <div className="cam-grid-overlay" />
+          
+          <div className="cv-ptz-crosshair">
+            <div className="cv-ptz-h" />
+            <div className="cv-ptz-v" />
+            <div className="cv-ptz-center" />
+          </div>
+
+          <div className="cam-face-sim">
+            <div className="cam-face-oval" style={{ borderColor: statusColor, boxShadow: `inset 0 0 10px ${statusColor}` }} />
+            {/* Eye indicators */}
+            <div className="cam-eyes">
+              <div className="cam-eye" style={{ height: Math.max(3, ear * 60), background: statusColor }} />
+              <div className="cam-eye" style={{ height: Math.max(3, ear * 60), background: statusColor }} />
+            </div>
+          </div>
+
+          {/* EAR readout */}
+          <div className="cam-ear-overlay">
+            <span className="cam-ear-label">EAR</span>
+            <span className="cam-ear-val text-mono" style={{ color: statusColor }}>{ear.toFixed(3)}</span>
+          </div>
+
+          {/* Corner brackets */}
+          <div className="cv-brackets">
+            <div className="cb tl" />
+            <div className="cb tr" />
+            <div className="cb bl" />
+            <div className="cb br" />
+          </div>
         </div>
-        {/* EAR readout */}
-        <div className="cam-ear-overlay">
-          <span className="cam-ear-label">EAR</span>
-          <span className="cam-ear-val text-mono" style={{ color: statusColor }}>{ear.toFixed(3)}</span>
-        </div>
+
         {/* Status banner */}
         {status !== 'NORMAL' && (
-          <div className="cam-status-banner" style={{ background: statusColor }}>
+          <div className="cam-status-banner cv-blink-fast" style={{ background: statusColor, color: '#fff', textShadow: 'none' }}>
             <AlertTriangle size={14} /> {status === 'ALERT' ? '⚠ DROWSINESS DETECTED' : '⚡ DROWSY'}
           </div>
         )}
+
+        <div className="cv-scanline" />
       </div>
 
       {/* Bottom metrics */}
@@ -115,10 +148,24 @@ function CameraFeed({ driverName, tripNumber, imgIndex, onRemove }: {
   );
 }
 
-/* ── LPR Section ── */
-function LprSection() {
+/* ── LPR Modal (Webcam) ── */
+function LprModal({ onClose }: { onClose: () => void }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [scanning, setScanning] = useState(false);
   const [result, setResult] = useState<{ plate: string; confidence: number; matched: boolean } | null>(null);
+
+  useEffect(() => {
+    let stream: MediaStream | null = null;
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(s => {
+        stream = s;
+        if (videoRef.current) videoRef.current.srcObject = stream;
+      })
+      .catch(err => console.error("Webcam error:", err));
+    return () => {
+      if (stream) stream.getTracks().forEach(t => t.stop());
+    };
+  }, []);
 
   const demoScan = () => {
     setScanning(true);
@@ -130,23 +177,29 @@ function LprSection() {
   };
 
   return (
-    <div className="lpr-section neu-card no-hover">
-      <div className="lpr-header">
-        <Camera size={18} color="var(--accent-primary)" />
-        <h3 className="lpr-title">License Plate Recognition</h3>
-      </div>
+    <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+      <div className="lpr-section neu-card no-hover" style={{ width: '100%', maxWidth: '500px', position: 'relative' }}>
+        <button onClick={onClose} style={{ position: 'absolute', top: '16px', right: '16px', background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}>
+          <X size={20} />
+        </button>
+        <div className="lpr-header">
+          <Camera size={18} color="var(--accent-primary)" />
+          <h3 className="lpr-title">License Plate Scanner</h3>
+        </div>
 
-      <div className="lpr-frame-area">
-        <div className="lpr-frame">
-          <div className="lpr-corner tl" /><div className="lpr-corner tr" />
-          <div className="lpr-corner bl" /><div className="lpr-corner br" />
-          {scanning && <div className="lpr-scan-line" />}
-          <div className="lpr-placeholder">
-            <Camera size={32} color="var(--text-muted)" />
-            <span>Align plate within frame</span>
+        <div className="lpr-frame-area" style={{ marginTop: '16px' }}>
+          <div className="lpr-frame" style={{ position: 'relative' }}>
+            <div className="lpr-corner tl" /><div className="lpr-corner tr" />
+            <div className="lpr-corner bl" /><div className="lpr-corner br" />
+            {scanning && <div className="lpr-scan-line" />}
+            
+            <video ref={videoRef} autoPlay playsInline muted style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0 }} />
+            
+            <div className="lpr-placeholder" style={{ zIndex: 1, textShadow: '0 0 4px #000', pointerEvents: 'none', position: 'absolute', bottom: '16px' }}>
+              <span style={{ color: '#fff', fontWeight: 700 }}>Align plate within frame</span>
+            </div>
           </div>
         </div>
-      </div>
 
       <div className="lpr-controls">
         <button className="btn btn-pill" onClick={demoScan} disabled={scanning}>
@@ -169,12 +222,13 @@ function LprSection() {
               ✓ Matched: GJ-01-AB-1234 · Tata Ace · Available
             </div>
           )}
-          <div className="lpr-actions">
-            <button className="btn btn-ghost btn-pill sm">Log Entry</button>
-            <button className="btn btn-pill sm">Log Exit</button>
+            <div className="lpr-actions" style={{ marginTop: '16px' }}>
+              <button className="btn btn-ghost btn-pill sm" onClick={onClose}>Log Entry</button>
+              <button className="btn btn-pill sm" onClick={onClose}>Log Exit</button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }
@@ -190,6 +244,7 @@ const MOCK_FEEDS = [
 /* ── Main Page ── */
 export default function CvDashboardPage() {
   const [feeds, setFeeds] = useState(MOCK_FEEDS);
+  const [lprModalOpen, setLprModalOpen] = useState(false);
 
   const addFeed = () => {
     if (feeds.length >= 6) return;
@@ -198,6 +253,7 @@ export default function CvDashboardPage() {
 
   return (
     <div className="cv-page page-enter">
+      {lprModalOpen && <LprModal onClose={() => setLprModalOpen(false)} />}
       <div className="page-header">
         <div>
           <h1 className="text-h1">
@@ -207,15 +263,20 @@ export default function CvDashboardPage() {
             Real-time drowsiness detection · {feeds.length} active feed{feeds.length !== 1 ? 's' : ''}
           </p>
         </div>
-        <button className="btn btn-pill" onClick={addFeed} disabled={feeds.length >= 6}>
-          <Plus size={14} /> ADD FEED
-        </button>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <button className="btn btn-pill" style={{ background: '#F97316', color: '#fff', border: 'none' }} onClick={() => setLprModalOpen(true)}>
+            <Camera size={14} /> SCAN PLATE
+          </button>
+          <button className="btn btn-pill" onClick={addFeed} disabled={feeds.length >= 6}>
+            <Plus size={14} /> ADD FEED
+          </button>
+        </div>
       </div>
 
       <div className="cv-layout">
         {/* Camera Grid */}
         <div className="cv-feeds">
-          <h2 className="cv-section-title"><Camera size={14} /> Drowsiness Monitor</h2>
+          <h2 className="cv-section-title"><Eye size={14} /> Driver Monitoring System</h2>
           <div className="cam-grid">
             {feeds.map((f, i) => (
               <CameraFeed key={i} {...f} onRemove={() => setFeeds(feeds.filter((_, j) => j !== i))} />
@@ -228,12 +289,6 @@ export default function CvDashboardPage() {
               </div>
             )}
           </div>
-        </div>
-
-        {/* LPR Panel */}
-        <div className="cv-lpr">
-          <h2 className="cv-section-title"><Camera size={14} /> LPR Scanner</h2>
-          <LprSection />
         </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Bell, Sun, Moon, Search, X, Truck, Users, Route } from 'lucide-react';
+import { Bell, Sun, Moon, Search, X, Truck, Users, Route, Camera, Plus, Fuel } from 'lucide-react';
 import { useThemeStore } from '../../store/useThemeStore';
 import { useAuthStore } from '../../store/useAuthStore';
 import api from '../../lib/api';
@@ -87,6 +87,18 @@ export default function Topbar() {
 
         {/* Actions */}
         <div className="topbar-actions">
+          <div className="topbar-quick-actions" style={{ display: 'flex', gap: '8px', marginRight: '16px' }}>
+            <button className="topbar-btn-3d orange" onClick={() => navigate('/cv')}>
+              <Camera size={14} /> License Plate
+            </button>
+            <button className="topbar-btn-3d light" onClick={() => navigate('/trips')}>
+              <Plus size={14} /> New Trip
+            </button>
+            <button className="topbar-btn-3d light" onClick={() => navigate('/fuel')}>
+              <Fuel size={14} /> Log Fuel
+            </button>
+          </div>
+
           <button className="btn-round" onClick={toggleTheme} aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}>
             {theme === 'light' ? <Moon size={16} aria-hidden="true" /> : <Sun size={16} aria-hidden="true" />}
           </button>
