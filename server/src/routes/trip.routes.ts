@@ -139,12 +139,23 @@ router.patch('/:id/status', verifyToken, async (req: Request, res: Response): Pr
   }
 });
 
+const tripUpdateSchema = tripSchema.partial();
+
 // PATCH /api/trips/:id
 router.patch('/:id', verifyToken, async (req: Request, res: Response): Promise<void> => {
   try {
-    const trip = await prisma.trip.update({ where: { id: req.params.id }, data: req.body });
+    const data = tripUpdateSchema.parse(req.body);
+    const updateData = {
+      ...data,
+      scheduledStart: data.scheduledStart ? new Date(data.scheduledStart) : undefined,
+    };
+    const trip = await prisma.trip.update({ where: { id: req.params.id }, data: updateData });
     res.json(trip);
   } catch (error) {
+    if (error instanceof z.ZodError) {
+      res.status(400).json({ error: 'Validation failed', details: error.errors });
+      return;
+    }
     console.error('[TRIPS] Update error:', error);
     res.status(500).json({ error: 'Failed to update trip' });
   }

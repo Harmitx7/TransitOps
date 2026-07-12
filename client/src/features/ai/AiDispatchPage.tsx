@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Brain, Zap, Route as RouteIcon, Fuel, Navigation, TrendingUp, CheckCircle2, Truck, Leaf, Coins, Search, MapPin } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { MapContainer, TileLayer, GeoJSON, useMap, Marker } from 'react-leaflet';
@@ -16,7 +16,11 @@ interface Trip    { id: string; tripNumber: string; source: string; destination:
 const BASE_FUEL_RATE: Record<string, number> = { Truck: 0.25, Bus: 0.20, Van: 0.12, Car: 0.08 };
 
 function scoreVehicle(v: Vehicle, driver: Driver | undefined): number {
-  const proximity   = Math.random() * 100 | 0;   // mock GPS proximity
+  let hash = 0;
+  for (let i = 0; i < v.id.length; i++) {
+    hash = v.id.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const proximity = 10 + (Math.abs(hash) % 86);   // stable mock GPS proximity (10-95)
   const health      = v.healthScore;
   const fuelEff     = 100 - ((BASE_FUEL_RATE[v.type] ?? 0.15) * 400);
   const driverSafe  = driver?.safetyScore ?? 50;
@@ -147,10 +151,16 @@ export default function AiDispatchPage() {
   const drivers  = dData?.data ?? [];
 
   // Top 3 recommendations
-  const recommendations = vehicles
-    .map(v => ({ v, driver: drivers[Math.floor(Math.random() * Math.max(drivers.length, 1))], score: scoreVehicle(v, drivers[0]) }))
-    .sort((a, b) => b.score - a.score)
-    .slice(0, 3);
+  const recommendations = useMemo(() => {
+    if (vehicles.length === 0) return [];
+    return vehicles
+      .map((v, i) => {
+        const driver = drivers[i % Math.max(drivers.length, 1)];
+        return { v, driver, score: scoreVehicle(v, driver) };
+      })
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 3);
+  }, [vehicles, drivers]);
 
   // Dynamic route options based on OSRM details (or fallback to mock)
   const baseDist = routeDetails?.distance ?? 264;
@@ -166,11 +176,12 @@ export default function AiDispatchPage() {
     if (!originStr || !destStr) return;
     setRouteLoading(true);
     try {
+      const headers = { 'User-Agent': 'TransitOps-Control-Center/1.0 (contact: admin@transitops.local)' };
       // 1. Geocode Origin
-      const oRes = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(originStr)}`);
+      const oRes = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(originStr)}`, { headers });
       const oData = await oRes.json();
       // 2. Geocode Dest
-      const dRes = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(destStr)}`);
+      const dRes = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(destStr)}`, { headers });
       const dData = await dRes.json();
       
       if (oData.length > 0 && dData.length > 0) {

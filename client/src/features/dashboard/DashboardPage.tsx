@@ -26,15 +26,21 @@ function useCountUp(target: number, duration = 1200) {
   const [count, setCount] = useState(0);
   useEffect(() => {
     if (!target) return;
+    let animId: number;
     const start = performance.now();
     const step = (now: number) => {
       const elapsed = now - start;
       const progress = Math.min(elapsed / duration, 1);
       const ease = 1 - Math.pow(1 - progress, 3);
       setCount(Math.round(ease * target));
-      if (progress < 1) requestAnimationFrame(step);
+      if (progress < 1) {
+        animId = requestAnimationFrame(step);
+      }
     };
-    requestAnimationFrame(step);
+    animId = requestAnimationFrame(step);
+    return () => {
+      if (animId) cancelAnimationFrame(animId);
+    };
   }, [target, duration]);
   return count;
 }
@@ -124,6 +130,20 @@ function DashboardMapPreview() {
   );
 }
 
+function PtzReadout() {
+  const [ptz, setPtz] = useState({ p: 85, t: 12 });
+  useEffect(() => {
+    const id = setInterval(() => {
+      setPtz({
+        p: Math.floor(80 + Math.random() * 10),
+        t: Math.floor(10 + Math.random() * 5),
+      });
+    }, 5000);
+    return () => clearInterval(id);
+  }, []);
+  return <div>PTZ: {ptz.p}° P / {ptz.t}° T</div>;
+}
+
 /* ── Camera Feeds ── */
 function CameraFeedGrid() {
   const [time, setTime] = useState('');
@@ -158,7 +178,7 @@ function CameraFeedGrid() {
               </div>
               
               <div className="cam-hud-bottom text-mono text-xs">
-                <div>PTZ: {Math.floor(80 + Math.random() * 10)}° P / {Math.floor(10 + Math.random() * 5)}° T</div>
+                <PtzReadout />
                 <div>ZOOM: {isCam1 ? '2.4x' : '1.0x'} WIDE</div>
                 {isCam1 && <div className="cam-warning-text blink-fast">WARNING: DROWSINESS DETECTED</div>}
               </div>
@@ -281,7 +301,7 @@ export default function DashboardPage() {
         
         {/* Row 1: Top KPIs */}
         <KpiCard label="FLEET CAPACITY" value={s.totalVehicles} subtitle={`${s.availableVehicles} AVAIL`}
-          pct={Math.round((s.availableVehicles / s.totalVehicles) * 100)} icon={Truck} color="var(--accent-primary)" trend="up" onClick={() => navigate('/vehicles')} />
+          pct={s.totalVehicles > 0 ? Math.round((s.availableVehicles / s.totalVehicles) * 100) : 0} icon={Truck} color="var(--accent-primary)" trend="up" onClick={() => navigate('/vehicles')} />
         <KpiCard label="ACTIVE TRIPS" value={s.activeTrips} subtitle={`${s.pendingTrips} PEND`}
           pct={Math.round((s.activeTrips / Math.max(s.totalVehicles, 1)) * 100)} icon={Route} color="var(--accent-info)" onClick={() => navigate('/trips')} />
         <KpiCard label="DRIVER AVAILABILITY" value={s.onDutyDrivers} subtitle={`${s.availableDrivers} AVAIL`}

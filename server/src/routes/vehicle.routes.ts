@@ -102,15 +102,28 @@ router.post('/', verifyToken, async (req: Request, res: Response): Promise<void>
   }
 });
 
+const vehicleUpdateSchema = vehicleSchema.partial();
+
 // PATCH /api/vehicles/:id
 router.patch('/:id', verifyToken, async (req: Request, res: Response): Promise<void> => {
   try {
+    const data = vehicleUpdateSchema.parse(req.body);
+    const updateData = {
+      ...data,
+      insuranceExpiry: data.insuranceExpiry ? new Date(data.insuranceExpiry) : undefined,
+      registrationExpiry: data.registrationExpiry ? new Date(data.registrationExpiry) : undefined,
+      fitnessExpiry: data.fitnessExpiry ? new Date(data.fitnessExpiry) : undefined,
+    };
     const vehicle = await prisma.vehicle.update({
       where: { id: req.params.id },
-      data: req.body,
+      data: updateData,
     });
     res.json(vehicle);
   } catch (error) {
+    if (error instanceof z.ZodError) {
+      res.status(400).json({ error: 'Validation failed', details: error.errors });
+      return;
+    }
     console.error('[VEHICLES] Update error:', error);
     res.status(500).json({ error: 'Failed to update vehicle' });
   }
