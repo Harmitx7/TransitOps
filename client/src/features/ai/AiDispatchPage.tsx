@@ -244,11 +244,11 @@ export default function AiDispatchPage() {
             </div>
           </div>
 
-          <div className="ai-panel">
+          <div className="ai-panel" style={{ display: 'flex', flexDirection: 'column' }}>
             <div className="ai-panel-header">
               <h2 className="ai-panel-title">Vehicle Assignment</h2>
             </div>
-            <div className="rec-list">
+            <div className="rec-list" style={{ flex: 1 }}>
               {recommendations.map((r, i) => (
                 <RecommendationCard key={r.v.id} rank={i + 1} v={r.v} driver={r.driver}
                   score={r.score} selected={selectedVehicle === r.v.id}
@@ -261,15 +261,14 @@ export default function AiDispatchPage() {
                 </div>
               )}
             </div>
+            {selectedVehicle && (
+              <div style={{ marginTop: 'auto', paddingTop: 'var(--sp-4)' }}>
+                <button className="btn btn-pill" style={{ width: '100%', padding: '16px', fontSize: '1.1rem', background: 'var(--text-primary)', color: 'var(--bg-base)' }}>
+                  <CheckCircle2 size={18} /> Confirm Dispatch
+                </button>
+              </div>
+            )}
           </div>
-          
-          {selectedVehicle && (
-            <div style={{ position: 'sticky', bottom: 0, paddingBottom: 'var(--sp-4)', background: 'var(--bg-base)' }}>
-              <button className="btn btn-pill" style={{ width: '100%', padding: '16px', fontSize: '1.1rem', background: 'var(--text-primary)', color: 'var(--bg-base)' }}>
-                <CheckCircle2 size={18} /> Confirm Dispatch
-              </button>
-            </div>
-          )}
 
         </div>
 

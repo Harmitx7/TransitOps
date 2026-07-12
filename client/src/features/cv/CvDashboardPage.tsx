@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Eye, Camera, Plus, Minus } from 'lucide-react';
+import { Eye, Camera, Plus, Minus, AlertTriangle } from 'lucide-react';
 import { useLprStore } from '../../store/useLprStore';
 import './CvDashboardPage.css';
 
