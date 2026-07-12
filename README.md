@@ -518,12 +518,10 @@ TransitOps offers a dedicated, fully responsive mobile view designed for **bette
 <table>
 <tr>
 <td width="50%" align="center">
-  <!-- TODO: Attach Mobile Screenshot 1 Here -->
-  <img src="assets/mobile-placeholder-1.png" alt="Mobile View 1" width="250" />
+  <img src="assets/mobile%201.png" alt="Mobile View 1" width="250" />
 </td>
 <td width="50%" align="center">
-  <!-- TODO: Attach Mobile Screenshot 2 Here -->
-  <img src="assets/mobile-placeholder-2.png" alt="Mobile View 2" width="250" />
+  <img src="assets/mobile%202.png" alt="Mobile View 2" width="250" />
 </td>
 </tr>
 </table>
