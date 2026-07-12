@@ -76,7 +76,7 @@ fi
 log_info "Checking PostgreSQL connection..."
 
 source "$SERVER_DIR/.env" 2>/dev/null || true
-DB_URL="${DATABASE_URL:-postgresql://postgres:postgres@localhost:5432/transitops_dev}"
+DB_URL="${DATABASE_URL:-postgresql://jenilrevaliya@localhost:5432/transitops_dev}"
 
 # Extract DB name from URL
 DB_NAME=$(echo "$DB_URL" | sed 's/.*\///')
