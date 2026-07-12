@@ -238,7 +238,7 @@
 .cam-feed {
   position: relative;
   background: var(--bg-surface);
-  min-height: 140px;
+  aspect-ratio: 16 / 9;
   border-radius: var(--r-card);
   border: 1px solid var(--neu-light);
   overflow: hidden;

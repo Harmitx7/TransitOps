@@ -21,8 +21,8 @@ async function seed() {
   const users = await Promise.all([
     prisma.user.upsert({
       where: { email: 'admin@transitops.io' },
-      update: {},
-      create: { email: 'admin@transitops.io', password: await hashedPassword('Admin@123'), firstName: 'Arjun', lastName: 'Patel', role: 'ADMIN' },
+      update: { firstName: 'Jenil', lastName: 'Soni' },
+      create: { email: 'admin@transitops.io', password: await hashedPassword('Admin@123'), firstName: 'Jenil', lastName: 'Soni', role: 'ADMIN' },
     }),
     prisma.user.upsert({
       where: { email: 'fleet@transitops.io' },

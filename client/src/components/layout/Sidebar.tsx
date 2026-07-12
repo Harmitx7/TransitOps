@@ -112,9 +112,9 @@ export default function Sidebar() {
       {/* User footer */}
       <div className="sidebar-footer">
         <div className="sidebar-user">
-          <div className="sidebar-avatar" aria-hidden="true">{initials}</div>
+          <div className="sidebar-avatar" aria-hidden="true">{user?.role === 'ADMIN' ? 'JS' : initials}</div>
           <div className="sidebar-user-info">
-            <span className="sidebar-user-name">{user?.firstName} {user?.lastName}</span>
+            <span className="sidebar-user-name">{user?.role === 'ADMIN' ? 'Jenil Soni' : `${user?.firstName} ${user?.lastName}`}</span>
             <span className="sidebar-user-role">{user?.role.replace('_', ' ')}</span>
           </div>
         </div>

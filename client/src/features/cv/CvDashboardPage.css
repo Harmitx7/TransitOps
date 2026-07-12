@@ -16,10 +16,10 @@
   gap: var(--sp-4); 
 }
 
-/* Camera feed card */
 .cam-feed {
   display: flex; flex-direction: column;
   background: var(--bg-surface);
+  aspect-ratio: 16 / 9;
   position: relative;
   border-radius: var(--r-card);
   border: 1px solid var(--neu-light);

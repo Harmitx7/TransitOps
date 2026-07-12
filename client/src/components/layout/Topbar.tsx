@@ -165,9 +165,9 @@ export default function Topbar() {
 
           <div className="topbar-user-chip">
             <div className="topbar-avatar" aria-hidden="true">
-              {user ? `${user.firstName[0]}${user.lastName[0]}` : 'U'}
+              {user ? (user.role === 'ADMIN' ? 'JS' : `${user.firstName[0]}${user.lastName[0]}`) : 'U'}
             </div>
-            <span className="topbar-user-name">{user?.firstName}</span>
+            <span className="topbar-user-name">{user?.role === 'ADMIN' ? 'Jenil Soni' : user?.firstName}</span>
           </div>
         </div>
       </header>
