@@ -52,6 +52,20 @@ chmod +x start.sh
 
 ---
 
+## 🚀 One-Click Vercel Deployment (Demo Mode)
+
+TransitOps can be deployed entirely frontend-only (no database or backend required) using the built-in **Mock API Engine**. This is perfect for portfolio showcases and hackathon presentations.
+
+1. Connect your repository to Vercel.
+2. In the Vercel project settings, set the **Root Directory** to `client`.
+3. Add the following Environment Variable:
+   - `VITE_DEMO_MODE=true`
+4. Click **Deploy**.
+
+*The app will automatically use the `axios-mock-adapter` to intercept all network requests and supply rich, interactive mock data.*
+
+---
+
 ## Theme & Design System
 
 TransitOps uses a custom modern design system optimized for data-dense dashboards. Every component is designed for maximum readability, featuring smooth dark/light mode transitions, responsive grid layouts, and high-contrast UI elements.

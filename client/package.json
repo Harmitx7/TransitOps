@@ -13,6 +13,7 @@
     "@hookform/resolvers": "^5.4.0",
     "@tanstack/react-query": "^5.101.2",
     "axios": "^1.18.1",
+    "axios-mock-adapter": "^2.1.0",
     "clsx": "^2.1.1",
     "framer-motion": "^12.42.2",
     "html2canvas": "^1.4.1",
