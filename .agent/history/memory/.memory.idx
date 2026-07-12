@@ -1,0 +1,1693 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "id": 1,
+      "memory_type": "semantic",
+      "content": "❌ Overriding project idioms without explicit justification -> ✅ Idioms represent team decisions; flag deviations with reasoning",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783147927Z",
+      "last_accessed": "1783147927Z",
+      "access_count": 0,
+      "token_estimate": 32,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 2,
+      "memory_type": "semantic",
+      "content": "❌ Applying idioms from one project to a different project -> ✅ Idioms are project-specific; verify they apply to the current codebase",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783147927Z",
+      "last_accessed": "1783147927Z",
+      "access_count": 0,
+      "token_estimate": 34,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 3,
+      "memory_type": "semantic",
+      "content": "❌ **Forbidden:** Declaring a task complete because the output \"looks correct.\"",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783147927Z",
+      "last_accessed": "1783147927Z",
+      "access_count": 0,
+      "token_estimate": 20,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 4,
+      "memory_type": "semantic",
+      "content": "✅ **Required:** You are explicitly forbidden from finalizing any task without providing **concrete evidence** (terminal output, passing tests, compile success, or equivalent proof) that your output works as intended.",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783147927Z",
+      "last_accessed": "1783147927Z",
+      "access_count": 0,
+      "token_estimate": 54,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 5,
+      "memory_type": "semantic",
+      "content": "[ ] Have I reviewed the user's specific constraints and requests?",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783147927Z",
+      "last_accessed": "1783147927Z",
+      "access_count": 0,
+      "token_estimate": 17,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 6,
+      "memory_type": "semantic",
+      "content": "[ ] Have I checked the environment for relevant existing implementations?",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783147927Z",
+      "last_accessed": "1783147927Z",
+      "access_count": 0,
+      "token_estimate": 19,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 7,
+      "memory_type": "semantic",
+      "content": "❌ **Forbidden:** Declaring a task complete because the output \"looks correct.\"",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783147927Z",
+      "last_accessed": "1783147927Z",
+      "access_count": 0,
+      "token_estimate": 20,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 8,
+      "memory_type": "semantic",
+      "content": "✅ **Required:** You are explicitly forbidden from finalizing any task without providing **concrete evidence** (terminal output, passing tests, compile success, or equivalent proof) that your output works as intended.",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783147927Z",
+      "last_accessed": "1783147927Z",
+      "access_count": 0,
+      "token_estimate": 54,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 9,
+      "memory_type": "procedural",
+      "content": "Run `echo 'No build step required for this project'` to build the project",
+      "tags": [
+        "build-script",
+        "build",
+        "auto-learned"
+      ],
+      "created_at": "1783147927Z",
+      "last_accessed": "1783147927Z",
+      "access_count": 0,
+      "token_estimate": 19,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 10,
+      "memory_type": "procedural",
+      "content": "Run `npm run validate-payload && jest --coverage` to test the project",
+      "tags": [
+        "build-script",
+        "test",
+        "auto-learned"
+      ],
+      "created_at": "1783147927Z",
+      "last_accessed": "1783147927Z",
+      "access_count": 0,
+      "token_estimate": 18,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 11,
+      "memory_type": "semantic",
+      "content": "❌ Overriding project idioms without explicit justification -> ✅ Idioms represent team decisions; flag deviations with reasoning",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783148175Z",
+      "last_accessed": "1783148175Z",
+      "access_count": 0,
+      "token_estimate": 32,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 12,
+      "memory_type": "semantic",
+      "content": "❌ Applying idioms from one project to a different project -> ✅ Idioms are project-specific; verify they apply to the current codebase",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783148175Z",
+      "last_accessed": "1783148175Z",
+      "access_count": 0,
+      "token_estimate": 34,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 13,
+      "memory_type": "semantic",
+      "content": "❌ **Forbidden:** Declaring a task complete because the output \"looks correct.\"",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783148175Z",
+      "last_accessed": "1783148175Z",
+      "access_count": 0,
+      "token_estimate": 20,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 14,
+      "memory_type": "semantic",
+      "content": "✅ **Required:** You are explicitly forbidden from finalizing any task without providing **concrete evidence** (terminal output, passing tests, compile success, or equivalent proof) that your output works as intended.",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783148175Z",
+      "last_accessed": "1783148175Z",
+      "access_count": 0,
+      "token_estimate": 54,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 15,
+      "memory_type": "semantic",
+      "content": "[ ] Have I reviewed the user's specific constraints and requests?",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783148175Z",
+      "last_accessed": "1783148175Z",
+      "access_count": 0,
+      "token_estimate": 17,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 16,
+      "memory_type": "semantic",
+      "content": "[ ] Have I checked the environment for relevant existing implementations?",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783148175Z",
+      "last_accessed": "1783148175Z",
+      "access_count": 0,
+      "token_estimate": 19,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 17,
+      "memory_type": "semantic",
+      "content": "❌ **Forbidden:** Declaring a task complete because the output \"looks correct.\"",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783148175Z",
+      "last_accessed": "1783148175Z",
+      "access_count": 0,
+      "token_estimate": 20,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 18,
+      "memory_type": "semantic",
+      "content": "✅ **Required:** You are explicitly forbidden from finalizing any task without providing **concrete evidence** (terminal output, passing tests, compile success, or equivalent proof) that your output works as intended.",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783148175Z",
+      "last_accessed": "1783148175Z",
+      "access_count": 0,
+      "token_estimate": 54,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 19,
+      "memory_type": "procedural",
+      "content": "Run `echo 'No build step required for this project'` to build the project",
+      "tags": [
+        "build-script",
+        "build",
+        "auto-learned"
+      ],
+      "created_at": "1783148175Z",
+      "last_accessed": "1783148175Z",
+      "access_count": 0,
+      "token_estimate": 19,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 20,
+      "memory_type": "procedural",
+      "content": "Run `npm run validate-payload && jest --coverage` to test the project",
+      "tags": [
+        "build-script",
+        "test",
+        "auto-learned"
+      ],
+      "created_at": "1783148175Z",
+      "last_accessed": "1783148175Z",
+      "access_count": 0,
+      "token_estimate": 18,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 21,
+      "memory_type": "semantic",
+      "content": "❌ Overriding project idioms without explicit justification -> ✅ Idioms represent team decisions; flag deviations with reasoning",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783148243Z",
+      "last_accessed": "1783148243Z",
+      "access_count": 0,
+      "token_estimate": 32,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 22,
+      "memory_type": "semantic",
+      "content": "❌ Applying idioms from one project to a different project -> ✅ Idioms are project-specific; verify they apply to the current codebase",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783148244Z",
+      "last_accessed": "1783148244Z",
+      "access_count": 0,
+      "token_estimate": 34,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 23,
+      "memory_type": "semantic",
+      "content": "❌ **Forbidden:** Declaring a task complete because the output \"looks correct.\"",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783148244Z",
+      "last_accessed": "1783148244Z",
+      "access_count": 0,
+      "token_estimate": 20,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 24,
+      "memory_type": "semantic",
+      "content": "✅ **Required:** You are explicitly forbidden from finalizing any task without providing **concrete evidence** (terminal output, passing tests, compile success, or equivalent proof) that your output works as intended.",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783148244Z",
+      "last_accessed": "1783148244Z",
+      "access_count": 0,
+      "token_estimate": 54,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 25,
+      "memory_type": "semantic",
+      "content": "[ ] Have I reviewed the user's specific constraints and requests?",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783148244Z",
+      "last_accessed": "1783148244Z",
+      "access_count": 0,
+      "token_estimate": 17,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 26,
+      "memory_type": "semantic",
+      "content": "[ ] Have I checked the environment for relevant existing implementations?",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783148244Z",
+      "last_accessed": "1783148244Z",
+      "access_count": 0,
+      "token_estimate": 19,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 27,
+      "memory_type": "semantic",
+      "content": "❌ **Forbidden:** Declaring a task complete because the output \"looks correct.\"",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783148244Z",
+      "last_accessed": "1783148244Z",
+      "access_count": 0,
+      "token_estimate": 20,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 28,
+      "memory_type": "semantic",
+      "content": "✅ **Required:** You are explicitly forbidden from finalizing any task without providing **concrete evidence** (terminal output, passing tests, compile success, or equivalent proof) that your output works as intended.",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783148244Z",
+      "last_accessed": "1783148244Z",
+      "access_count": 0,
+      "token_estimate": 54,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 29,
+      "memory_type": "procedural",
+      "content": "Run `echo 'No build step required for this project'` to build the project",
+      "tags": [
+        "build-script",
+        "build",
+        "auto-learned"
+      ],
+      "created_at": "1783148244Z",
+      "last_accessed": "1783148244Z",
+      "access_count": 0,
+      "token_estimate": 19,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 30,
+      "memory_type": "procedural",
+      "content": "Run `npm run validate-payload && jest --coverage` to test the project",
+      "tags": [
+        "build-script",
+        "test",
+        "auto-learned"
+      ],
+      "created_at": "1783148244Z",
+      "last_accessed": "1783148244Z",
+      "access_count": 0,
+      "token_estimate": 18,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 31,
+      "memory_type": "semantic",
+      "content": "❌ Overriding project idioms without explicit justification -> ✅ Idioms represent team decisions; flag deviations with reasoning",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783148917Z",
+      "last_accessed": "1783148917Z",
+      "access_count": 0,
+      "token_estimate": 32,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 32,
+      "memory_type": "semantic",
+      "content": "❌ Applying idioms from one project to a different project -> ✅ Idioms are project-specific; verify they apply to the current codebase",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783148917Z",
+      "last_accessed": "1783148917Z",
+      "access_count": 0,
+      "token_estimate": 34,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 33,
+      "memory_type": "semantic",
+      "content": "❌ **Forbidden:** Declaring a task complete because the output \"looks correct.\"",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783148917Z",
+      "last_accessed": "1783148917Z",
+      "access_count": 0,
+      "token_estimate": 20,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 34,
+      "memory_type": "semantic",
+      "content": "✅ **Required:** You are explicitly forbidden from finalizing any task without providing **concrete evidence** (terminal output, passing tests, compile success, or equivalent proof) that your output works as intended.",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783148917Z",
+      "last_accessed": "1783148917Z",
+      "access_count": 0,
+      "token_estimate": 54,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 35,
+      "memory_type": "semantic",
+      "content": "[ ] Have I reviewed the user's specific constraints and requests?",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783148917Z",
+      "last_accessed": "1783148917Z",
+      "access_count": 0,
+      "token_estimate": 17,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 36,
+      "memory_type": "semantic",
+      "content": "[ ] Have I checked the environment for relevant existing implementations?",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783148917Z",
+      "last_accessed": "1783148917Z",
+      "access_count": 0,
+      "token_estimate": 19,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 37,
+      "memory_type": "semantic",
+      "content": "❌ **Forbidden:** Declaring a task complete because the output \"looks correct.\"",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783148917Z",
+      "last_accessed": "1783148917Z",
+      "access_count": 0,
+      "token_estimate": 20,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 38,
+      "memory_type": "semantic",
+      "content": "✅ **Required:** You are explicitly forbidden from finalizing any task without providing **concrete evidence** (terminal output, passing tests, compile success, or equivalent proof) that your output works as intended.",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783148917Z",
+      "last_accessed": "1783148917Z",
+      "access_count": 0,
+      "token_estimate": 54,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 39,
+      "memory_type": "procedural",
+      "content": "Run `echo 'No build step required for this project'` to build the project",
+      "tags": [
+        "build-script",
+        "build",
+        "auto-learned"
+      ],
+      "created_at": "1783148917Z",
+      "last_accessed": "1783148917Z",
+      "access_count": 0,
+      "token_estimate": 19,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 40,
+      "memory_type": "procedural",
+      "content": "Run `npm run validate-payload && jest --coverage` to test the project",
+      "tags": [
+        "build-script",
+        "test",
+        "auto-learned"
+      ],
+      "created_at": "1783148917Z",
+      "last_accessed": "1783148917Z",
+      "access_count": 0,
+      "token_estimate": 18,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 41,
+      "memory_type": "semantic",
+      "content": "❌ Overriding project idioms without explicit justification -> ✅ Idioms represent team decisions; flag deviations with reasoning",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783152364Z",
+      "last_accessed": "1783152364Z",
+      "access_count": 0,
+      "token_estimate": 32,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 42,
+      "memory_type": "semantic",
+      "content": "❌ Applying idioms from one project to a different project -> ✅ Idioms are project-specific; verify they apply to the current codebase",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783152364Z",
+      "last_accessed": "1783152364Z",
+      "access_count": 0,
+      "token_estimate": 34,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 43,
+      "memory_type": "semantic",
+      "content": "❌ **Forbidden:** Declaring a task complete because the output \"looks correct.\"",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783152364Z",
+      "last_accessed": "1783152364Z",
+      "access_count": 0,
+      "token_estimate": 20,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 44,
+      "memory_type": "semantic",
+      "content": "✅ **Required:** You are explicitly forbidden from finalizing any task without providing **concrete evidence** (terminal output, passing tests, compile success, or equivalent proof) that your output works as intended.",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783152364Z",
+      "last_accessed": "1783152364Z",
+      "access_count": 0,
+      "token_estimate": 54,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 45,
+      "memory_type": "semantic",
+      "content": "[ ] Have I reviewed the user's specific constraints and requests?",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783152364Z",
+      "last_accessed": "1783152364Z",
+      "access_count": 0,
+      "token_estimate": 17,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 46,
+      "memory_type": "semantic",
+      "content": "[ ] Have I checked the environment for relevant existing implementations?",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783152364Z",
+      "last_accessed": "1783152364Z",
+      "access_count": 0,
+      "token_estimate": 19,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 47,
+      "memory_type": "semantic",
+      "content": "❌ **Forbidden:** Declaring a task complete because the output \"looks correct.\"",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783152364Z",
+      "last_accessed": "1783152364Z",
+      "access_count": 0,
+      "token_estimate": 20,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 48,
+      "memory_type": "semantic",
+      "content": "✅ **Required:** You are explicitly forbidden from finalizing any task without providing **concrete evidence** (terminal output, passing tests, compile success, or equivalent proof) that your output works as intended.",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783152364Z",
+      "last_accessed": "1783152364Z",
+      "access_count": 0,
+      "token_estimate": 54,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 49,
+      "memory_type": "procedural",
+      "content": "Run `echo 'No build step required for this project'` to build the project",
+      "tags": [
+        "build-script",
+        "build",
+        "auto-learned"
+      ],
+      "created_at": "1783152364Z",
+      "last_accessed": "1783152364Z",
+      "access_count": 0,
+      "token_estimate": 19,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 50,
+      "memory_type": "procedural",
+      "content": "Run `npm run validate-payload && jest --coverage` to test the project",
+      "tags": [
+        "build-script",
+        "test",
+        "auto-learned"
+      ],
+      "created_at": "1783152364Z",
+      "last_accessed": "1783152364Z",
+      "access_count": 0,
+      "token_estimate": 18,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 51,
+      "memory_type": "semantic",
+      "content": "❌ Overriding project idioms without explicit justification -> ✅ Idioms represent team decisions; flag deviations with reasoning",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783438387Z",
+      "last_accessed": "1783438387Z",
+      "access_count": 0,
+      "token_estimate": 32,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 52,
+      "memory_type": "semantic",
+      "content": "❌ Applying idioms from one project to a different project -> ✅ Idioms are project-specific; verify they apply to the current codebase",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783438387Z",
+      "last_accessed": "1783438387Z",
+      "access_count": 0,
+      "token_estimate": 34,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 53,
+      "memory_type": "semantic",
+      "content": "❌ **Forbidden:** Declaring a task complete because the output \"looks correct.\"",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783438387Z",
+      "last_accessed": "1783438387Z",
+      "access_count": 0,
+      "token_estimate": 20,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 54,
+      "memory_type": "semantic",
+      "content": "✅ **Required:** You are explicitly forbidden from finalizing any task without providing **concrete evidence** (terminal output, passing tests, compile success, or equivalent proof) that your output works as intended.",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783438387Z",
+      "last_accessed": "1783438387Z",
+      "access_count": 0,
+      "token_estimate": 54,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 55,
+      "memory_type": "semantic",
+      "content": "[ ] Have I reviewed the user's specific constraints and requests?",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783438387Z",
+      "last_accessed": "1783438387Z",
+      "access_count": 0,
+      "token_estimate": 17,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 56,
+      "memory_type": "semantic",
+      "content": "[ ] Have I checked the environment for relevant existing implementations?",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783438387Z",
+      "last_accessed": "1783438387Z",
+      "access_count": 0,
+      "token_estimate": 19,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 57,
+      "memory_type": "semantic",
+      "content": "❌ **Forbidden:** Declaring a task complete because the output \"looks correct.\"",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783438387Z",
+      "last_accessed": "1783438387Z",
+      "access_count": 0,
+      "token_estimate": 20,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 58,
+      "memory_type": "semantic",
+      "content": "✅ **Required:** You are explicitly forbidden from finalizing any task without providing **concrete evidence** (terminal output, passing tests, compile success, or equivalent proof) that your output works as intended.",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783438387Z",
+      "last_accessed": "1783438387Z",
+      "access_count": 0,
+      "token_estimate": 54,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 59,
+      "memory_type": "procedural",
+      "content": "Run `echo 'No build step required for this project'` to build the project",
+      "tags": [
+        "build-script",
+        "build",
+        "auto-learned"
+      ],
+      "created_at": "1783438387Z",
+      "last_accessed": "1783438387Z",
+      "access_count": 0,
+      "token_estimate": 19,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 60,
+      "memory_type": "procedural",
+      "content": "Run `npm run validate-payload && jest --coverage` to test the project",
+      "tags": [
+        "build-script",
+        "test",
+        "auto-learned"
+      ],
+      "created_at": "1783438387Z",
+      "last_accessed": "1783438387Z",
+      "access_count": 0,
+      "token_estimate": 18,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 61,
+      "memory_type": "semantic",
+      "content": "❌ Overriding project idioms without explicit justification -> ✅ Idioms represent team decisions; flag deviations with reasoning",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783438449Z",
+      "last_accessed": "1783438449Z",
+      "access_count": 0,
+      "token_estimate": 32,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 62,
+      "memory_type": "semantic",
+      "content": "❌ Applying idioms from one project to a different project -> ✅ Idioms are project-specific; verify they apply to the current codebase",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783438449Z",
+      "last_accessed": "1783438449Z",
+      "access_count": 0,
+      "token_estimate": 34,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 63,
+      "memory_type": "semantic",
+      "content": "❌ **Forbidden:** Declaring a task complete because the output \"looks correct.\"",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783438449Z",
+      "last_accessed": "1783438449Z",
+      "access_count": 0,
+      "token_estimate": 20,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 64,
+      "memory_type": "semantic",
+      "content": "✅ **Required:** You are explicitly forbidden from finalizing any task without providing **concrete evidence** (terminal output, passing tests, compile success, or equivalent proof) that your output works as intended.",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783438449Z",
+      "last_accessed": "1783438449Z",
+      "access_count": 0,
+      "token_estimate": 54,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 65,
+      "memory_type": "semantic",
+      "content": "[ ] Have I reviewed the user's specific constraints and requests?",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783438449Z",
+      "last_accessed": "1783438449Z",
+      "access_count": 0,
+      "token_estimate": 17,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 66,
+      "memory_type": "semantic",
+      "content": "[ ] Have I checked the environment for relevant existing implementations?",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783438449Z",
+      "last_accessed": "1783438449Z",
+      "access_count": 0,
+      "token_estimate": 19,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 67,
+      "memory_type": "semantic",
+      "content": "❌ **Forbidden:** Declaring a task complete because the output \"looks correct.\"",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783438449Z",
+      "last_accessed": "1783438449Z",
+      "access_count": 0,
+      "token_estimate": 20,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 68,
+      "memory_type": "semantic",
+      "content": "✅ **Required:** You are explicitly forbidden from finalizing any task without providing **concrete evidence** (terminal output, passing tests, compile success, or equivalent proof) that your output works as intended.",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783438449Z",
+      "last_accessed": "1783438449Z",
+      "access_count": 0,
+      "token_estimate": 54,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 69,
+      "memory_type": "procedural",
+      "content": "Run `echo 'No build step required for this project'` to build the project",
+      "tags": [
+        "build-script",
+        "build",
+        "auto-learned"
+      ],
+      "created_at": "1783438449Z",
+      "last_accessed": "1783438449Z",
+      "access_count": 0,
+      "token_estimate": 19,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 70,
+      "memory_type": "procedural",
+      "content": "Run `npm run validate-payload && jest --coverage` to test the project",
+      "tags": [
+        "build-script",
+        "test",
+        "auto-learned"
+      ],
+      "created_at": "1783438449Z",
+      "last_accessed": "1783438449Z",
+      "access_count": 0,
+      "token_estimate": 18,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 71,
+      "memory_type": "semantic",
+      "content": "❌ Overriding project idioms without explicit justification -> ✅ Idioms represent team decisions; flag deviations with reasoning",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783438727Z",
+      "last_accessed": "1783438727Z",
+      "access_count": 0,
+      "token_estimate": 32,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 72,
+      "memory_type": "semantic",
+      "content": "❌ Applying idioms from one project to a different project -> ✅ Idioms are project-specific; verify they apply to the current codebase",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783438727Z",
+      "last_accessed": "1783438727Z",
+      "access_count": 0,
+      "token_estimate": 34,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 73,
+      "memory_type": "semantic",
+      "content": "❌ **Forbidden:** Declaring a task complete because the output \"looks correct.\"",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783438727Z",
+      "last_accessed": "1783438727Z",
+      "access_count": 0,
+      "token_estimate": 20,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 74,
+      "memory_type": "semantic",
+      "content": "✅ **Required:** You are explicitly forbidden from finalizing any task without providing **concrete evidence** (terminal output, passing tests, compile success, or equivalent proof) that your output works as intended.",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783438727Z",
+      "last_accessed": "1783438727Z",
+      "access_count": 0,
+      "token_estimate": 54,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 75,
+      "memory_type": "semantic",
+      "content": "[ ] Have I reviewed the user's specific constraints and requests?",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783438727Z",
+      "last_accessed": "1783438727Z",
+      "access_count": 0,
+      "token_estimate": 17,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 76,
+      "memory_type": "semantic",
+      "content": "[ ] Have I checked the environment for relevant existing implementations?",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783438727Z",
+      "last_accessed": "1783438727Z",
+      "access_count": 0,
+      "token_estimate": 19,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 77,
+      "memory_type": "semantic",
+      "content": "❌ **Forbidden:** Declaring a task complete because the output \"looks correct.\"",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783438727Z",
+      "last_accessed": "1783438727Z",
+      "access_count": 0,
+      "token_estimate": 20,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 78,
+      "memory_type": "semantic",
+      "content": "✅ **Required:** You are explicitly forbidden from finalizing any task without providing **concrete evidence** (terminal output, passing tests, compile success, or equivalent proof) that your output works as intended.",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783438727Z",
+      "last_accessed": "1783438727Z",
+      "access_count": 0,
+      "token_estimate": 54,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 79,
+      "memory_type": "procedural",
+      "content": "Run `echo 'No build step required for this project'` to build the project",
+      "tags": [
+        "build-script",
+        "build",
+        "auto-learned"
+      ],
+      "created_at": "1783438727Z",
+      "last_accessed": "1783438727Z",
+      "access_count": 0,
+      "token_estimate": 19,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 80,
+      "memory_type": "procedural",
+      "content": "Run `npm run validate-payload && jest --coverage` to test the project",
+      "tags": [
+        "build-script",
+        "test",
+        "auto-learned"
+      ],
+      "created_at": "1783438727Z",
+      "last_accessed": "1783438727Z",
+      "access_count": 0,
+      "token_estimate": 18,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 81,
+      "memory_type": "semantic",
+      "content": "❌ Overriding project idioms without explicit justification -> ✅ Idioms represent team decisions; flag deviations with reasoning",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783782112Z",
+      "last_accessed": "1783782112Z",
+      "access_count": 0,
+      "token_estimate": 32,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 82,
+      "memory_type": "semantic",
+      "content": "❌ Applying idioms from one project to a different project -> ✅ Idioms are project-specific; verify they apply to the current codebase",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783782112Z",
+      "last_accessed": "1783782112Z",
+      "access_count": 0,
+      "token_estimate": 34,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 83,
+      "memory_type": "semantic",
+      "content": "❌ **Forbidden:** Declaring a task complete because the output \"looks correct.\"",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783782112Z",
+      "last_accessed": "1783782112Z",
+      "access_count": 0,
+      "token_estimate": 20,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 84,
+      "memory_type": "semantic",
+      "content": "✅ **Required:** You are explicitly forbidden from finalizing any task without providing **concrete evidence** (terminal output, passing tests, compile success, or equivalent proof) that your output works as intended.",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783782112Z",
+      "last_accessed": "1783782112Z",
+      "access_count": 0,
+      "token_estimate": 54,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 85,
+      "memory_type": "semantic",
+      "content": "[ ] Have I reviewed the user's specific constraints and requests?",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783782112Z",
+      "last_accessed": "1783782112Z",
+      "access_count": 0,
+      "token_estimate": 17,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 86,
+      "memory_type": "semantic",
+      "content": "[ ] Have I checked the environment for relevant existing implementations?",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783782112Z",
+      "last_accessed": "1783782112Z",
+      "access_count": 0,
+      "token_estimate": 19,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 87,
+      "memory_type": "semantic",
+      "content": "❌ **Forbidden:** Declaring a task complete because the output \"looks correct.\"",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783782112Z",
+      "last_accessed": "1783782112Z",
+      "access_count": 0,
+      "token_estimate": 20,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 88,
+      "memory_type": "semantic",
+      "content": "✅ **Required:** You are explicitly forbidden from finalizing any task without providing **concrete evidence** (terminal output, passing tests, compile success, or equivalent proof) that your output works as intended.",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783782112Z",
+      "last_accessed": "1783782112Z",
+      "access_count": 0,
+      "token_estimate": 54,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 89,
+      "memory_type": "procedural",
+      "content": "Run `echo 'No build step required for this project'` to build the project",
+      "tags": [
+        "build-script",
+        "build",
+        "auto-learned"
+      ],
+      "created_at": "1783782112Z",
+      "last_accessed": "1783782112Z",
+      "access_count": 0,
+      "token_estimate": 19,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 90,
+      "memory_type": "procedural",
+      "content": "Run `npm run validate-payload && jest --coverage` to test the project",
+      "tags": [
+        "build-script",
+        "test",
+        "auto-learned"
+      ],
+      "created_at": "1783782112Z",
+      "last_accessed": "1783782112Z",
+      "access_count": 0,
+      "token_estimate": 18,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 91,
+      "memory_type": "semantic",
+      "content": "❌ Overriding project idioms without explicit justification -> ✅ Idioms represent team decisions; flag deviations with reasoning",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783782132Z",
+      "last_accessed": "1783782132Z",
+      "access_count": 0,
+      "token_estimate": 32,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 92,
+      "memory_type": "semantic",
+      "content": "❌ Applying idioms from one project to a different project -> ✅ Idioms are project-specific; verify they apply to the current codebase",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783782132Z",
+      "last_accessed": "1783782132Z",
+      "access_count": 0,
+      "token_estimate": 34,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 93,
+      "memory_type": "semantic",
+      "content": "❌ **Forbidden:** Declaring a task complete because the output \"looks correct.\"",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783782132Z",
+      "last_accessed": "1783782132Z",
+      "access_count": 0,
+      "token_estimate": 20,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 94,
+      "memory_type": "semantic",
+      "content": "✅ **Required:** You are explicitly forbidden from finalizing any task without providing **concrete evidence** (terminal output, passing tests, compile success, or equivalent proof) that your output works as intended.",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783782132Z",
+      "last_accessed": "1783782132Z",
+      "access_count": 0,
+      "token_estimate": 54,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 95,
+      "memory_type": "semantic",
+      "content": "[ ] Have I reviewed the user's specific constraints and requests?",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783782132Z",
+      "last_accessed": "1783782132Z",
+      "access_count": 0,
+      "token_estimate": 17,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 96,
+      "memory_type": "semantic",
+      "content": "[ ] Have I checked the environment for relevant existing implementations?",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783782132Z",
+      "last_accessed": "1783782132Z",
+      "access_count": 0,
+      "token_estimate": 19,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 97,
+      "memory_type": "semantic",
+      "content": "❌ **Forbidden:** Declaring a task complete because the output \"looks correct.\"",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783782132Z",
+      "last_accessed": "1783782132Z",
+      "access_count": 0,
+      "token_estimate": 20,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 98,
+      "memory_type": "semantic",
+      "content": "✅ **Required:** You are explicitly forbidden from finalizing any task without providing **concrete evidence** (terminal output, passing tests, compile success, or equivalent proof) that your output works as intended.",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783782132Z",
+      "last_accessed": "1783782132Z",
+      "access_count": 0,
+      "token_estimate": 54,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 99,
+      "memory_type": "procedural",
+      "content": "Run `echo 'No build step required for this project'` to build the project",
+      "tags": [
+        "build-script",
+        "build",
+        "auto-learned"
+      ],
+      "created_at": "1783782132Z",
+      "last_accessed": "1783782132Z",
+      "access_count": 0,
+      "token_estimate": 19,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 100,
+      "memory_type": "procedural",
+      "content": "Run `npm run validate-payload && jest --coverage` to test the project",
+      "tags": [
+        "build-script",
+        "test",
+        "auto-learned"
+      ],
+      "created_at": "1783782132Z",
+      "last_accessed": "1783782132Z",
+      "access_count": 0,
+      "token_estimate": 18,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 101,
+      "memory_type": "semantic",
+      "content": "Database is PostgreSQL",
+      "tags": [
+        "db",
+        "postgres"
+      ],
+      "created_at": "1783783700Z",
+      "last_accessed": "1783783700Z",
+      "access_count": 0,
+      "token_estimate": 6,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 102,
+      "memory_type": "semantic",
+      "content": "❌ Overriding project idioms without explicit justification -> ✅ Idioms represent team decisions; flag deviations with reasoning",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783785670Z",
+      "last_accessed": "1783785670Z",
+      "access_count": 0,
+      "token_estimate": 32,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 103,
+      "memory_type": "semantic",
+      "content": "❌ Applying idioms from one project to a different project -> ✅ Idioms are project-specific; verify they apply to the current codebase",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783785670Z",
+      "last_accessed": "1783785670Z",
+      "access_count": 0,
+      "token_estimate": 34,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 104,
+      "memory_type": "semantic",
+      "content": "❌ **Forbidden:** Declaring a task complete because the output \"looks correct.\"",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783785670Z",
+      "last_accessed": "1783785670Z",
+      "access_count": 0,
+      "token_estimate": 20,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 105,
+      "memory_type": "semantic",
+      "content": "✅ **Required:** You are explicitly forbidden from finalizing any task without providing **concrete evidence** (terminal output, passing tests, compile success, or equivalent proof) that your output works as intended.",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783785670Z",
+      "last_accessed": "1783785670Z",
+      "access_count": 0,
+      "token_estimate": 54,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 106,
+      "memory_type": "semantic",
+      "content": "[ ] Have I reviewed the user's specific constraints and requests?",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783785670Z",
+      "last_accessed": "1783785670Z",
+      "access_count": 0,
+      "token_estimate": 17,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 107,
+      "memory_type": "semantic",
+      "content": "[ ] Have I checked the environment for relevant existing implementations?",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783785670Z",
+      "last_accessed": "1783785670Z",
+      "access_count": 0,
+      "token_estimate": 19,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 108,
+      "memory_type": "semantic",
+      "content": "❌ **Forbidden:** Declaring a task complete because the output \"looks correct.\"",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783785670Z",
+      "last_accessed": "1783785670Z",
+      "access_count": 0,
+      "token_estimate": 20,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 109,
+      "memory_type": "semantic",
+      "content": "✅ **Required:** You are explicitly forbidden from finalizing any task without providing **concrete evidence** (terminal output, passing tests, compile success, or equivalent proof) that your output works as intended.",
+      "tags": [
+        "project-idiom",
+        "auto-learned"
+      ],
+      "created_at": "1783785670Z",
+      "last_accessed": "1783785670Z",
+      "access_count": 0,
+      "token_estimate": 54,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 110,
+      "memory_type": "procedural",
+      "content": "Run `echo 'No build step required for this project'` to build the project",
+      "tags": [
+        "build-script",
+        "build",
+        "auto-learned"
+      ],
+      "created_at": "1783785670Z",
+      "last_accessed": "1783785670Z",
+      "access_count": 0,
+      "token_estimate": 19,
+      "source": "manual",
+      "session_id": null
+    },
+    {
+      "id": 111,
+      "memory_type": "procedural",
+      "content": "Run `npm run validate-payload && jest --coverage` to test the project",
+      "tags": [
+        "build-script",
+        "test",
+        "auto-learned"
+      ],
+      "created_at": "1783785670Z",
+      "last_accessed": "1783785670Z",
+      "access_count": 0,
+      "token_estimate": 18,
+      "source": "manual",
+      "session_id": null
+    }
+  ],
+  "next_id": 112
+}

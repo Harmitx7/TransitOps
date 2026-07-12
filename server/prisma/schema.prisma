@@ -1,0 +1,302 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  ADMIN
+  FLEET_MANAGER
+  DISPATCHER
+  SAFETY_OFFICER
+  FINANCE_MANAGER
+  DRIVER
+}
+
+enum VehicleStatus {
+  AVAILABLE
+  ON_TRIP
+  IN_SHOP
+  RETIRED
+}
+
+enum DriverStatus {
+  AVAILABLE
+  ON_TRIP
+  ON_LEAVE
+  SUSPENDED
+}
+
+enum TripStatus {
+  DRAFT
+  SCHEDULED
+  DISPATCHED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum MaintenanceStatus {
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum MaintenanceType {
+  PREVENTIVE
+  CORRECTIVE
+  EMERGENCY
+  INSPECTION
+}
+
+enum FuelType {
+  DIESEL
+  PETROL
+  CNG
+  ELECTRIC
+}
+
+enum ExpenseCategory {
+  FUEL
+  TOLL
+  MAINTENANCE
+  INSURANCE
+  REGISTRATION
+  SALARY
+  OTHER
+}
+
+enum InspectionStatus {
+  PENDING
+  PASSED
+  FAILED
+}
+
+// ─── Core Models ──────────────────────────────────────────────
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  firstName String
+  lastName  String
+  role      Role
+  isActive  Boolean  @default(true)
+  lastLogin DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  trips       Trip[]       @relation("DispatcherTrips")
+  fuelLogs    FuelLog[]
+  expenses    Expense[]
+  inspections Inspection[]
+  auditLogs   AuditLog[]
+
+  @@index([role])
+}
+
+model Vehicle {
+  id                 String        @id @default(cuid())
+  registrationNumber String        @unique
+  make               String
+  model              String
+  year               Int
+  type               String
+  fuelType           FuelType
+  maxLoadCapacity    Float
+  currentOdometer    Float         @default(0)
+  acquisitionCost    Float
+  status             VehicleStatus @default(AVAILABLE)
+  healthScore        Float         @default(100)
+  qrCode             String?
+  insuranceExpiry    DateTime?
+  registrationExpiry DateTime?
+  fitnessExpiry      DateTime?
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+
+  trips       Trip[]
+  maintenance Maintenance[]
+  fuelLogs    FuelLog[]
+  inspections Inspection[]
+  timeline    VehicleTimeline[]
+
+  @@index([status])
+  @@index([registrationNumber])
+}
+
+model Driver {
+  id              String       @id @default(cuid())
+  userId          String?      @unique
+  firstName       String
+  lastName        String
+  phone           String
+  email           String?
+  licenseNumber   String       @unique
+  licenseCategory String
+  licenseExpiry   DateTime
+  status          DriverStatus @default(AVAILABLE)
+  safetyScore     Float        @default(100)
+  faceEmbedding   String?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  trips Trip[]
+
+  @@index([status])
+  @@index([licenseNumber])
+}
+
+model Trip {
+  id              String     @id @default(cuid())
+  tripNumber      String     @unique
+  vehicleId       String
+  driverId        String
+  dispatcherId    String?
+  source          String
+  sourceLat       Float?
+  sourceLng       Float?
+  destination     String
+  destLat         Float?
+  destLng         Float?
+  distancePlanned Float?
+  distanceActual  Float?
+  cargoType       String?
+  cargoWeight     Float?
+  status          TripStatus @default(DRAFT)
+  scheduledStart  DateTime?
+  actualStart     DateTime?
+  actualEnd       DateTime?
+  revenue         Float?
+  trackingToken   String?    @unique
+  notes           String?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  vehicle    Vehicle  @relation(fields: [vehicleId], references: [id])
+  driver     Driver   @relation(fields: [driverId], references: [id])
+  dispatcher User?    @relation("DispatcherTrips", fields: [dispatcherId], references: [id])
+  fuelLogs   FuelLog[]
+  expenses   Expense[]
+
+  @@index([status])
+  @@index([vehicleId])
+  @@index([driverId])
+}
+
+model Maintenance {
+  id            String            @id @default(cuid())
+  vehicleId     String
+  type          MaintenanceType
+  description   String
+  status        MaintenanceStatus @default(SCHEDULED)
+  cost          Float?
+  scheduledDate DateTime?
+  startedAt     DateTime?
+  completedAt   DateTime?
+  notes         String?
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+
+  vehicle Vehicle @relation(fields: [vehicleId], references: [id])
+
+  @@index([vehicleId])
+  @@index([status])
+}
+
+model FuelLog {
+  id          String   @id @default(cuid())
+  vehicleId   String
+  tripId      String?
+  loggedById  String
+  quantity    Float
+  costPerUnit Float
+  totalCost   Float
+  odometer    Float
+  station     String?
+  isAnomaly   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  vehicle  Vehicle @relation(fields: [vehicleId], references: [id])
+  trip     Trip?   @relation(fields: [tripId], references: [id])
+  loggedBy User    @relation(fields: [loggedById], references: [id])
+
+  @@index([vehicleId])
+}
+
+model Expense {
+  id          String          @id @default(cuid())
+  tripId      String?
+  vehicleId   String?
+  loggedById  String
+  category    ExpenseCategory
+  amount      Float
+  description String?
+  receiptUrl  String?
+  createdAt   DateTime        @default(now())
+
+  trip     Trip? @relation(fields: [tripId], references: [id])
+  loggedBy User  @relation(fields: [loggedById], references: [id])
+
+  @@index([category])
+}
+
+model Inspection {
+  id          String           @id @default(cuid())
+  vehicleId   String
+  inspectorId String
+  status      InspectionStatus @default(PENDING)
+  items       Json
+  totalItems  Int
+  passedItems Int              @default(0)
+  completedAt DateTime?
+  createdAt   DateTime         @default(now())
+
+  vehicle   Vehicle @relation(fields: [vehicleId], references: [id])
+  inspector User    @relation(fields: [inspectorId], references: [id])
+}
+
+model VehicleTimeline {
+  id        String   @id @default(cuid())
+  vehicleId String
+  eventType String
+  title     String
+  details   String?
+  createdAt DateTime @default(now())
+
+  vehicle Vehicle @relation(fields: [vehicleId], references: [id])
+
+  @@index([vehicleId, createdAt])
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String?
+  type      String
+  title     String
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([userId, isRead])
+}
+
+model AuditLog {
+  id          String   @id @default(cuid())
+  userId      String?
+  action      String
+  category    String
+  description String
+  entityType  String?
+  entityId    String?
+  ipAddress   String?
+  createdAt   DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id])
+
+  @@index([userId, createdAt])
+  @@index([category, createdAt])
+}

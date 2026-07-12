@@ -1,0 +1,134 @@
+/* ── CV Dashboard ───────────────────────────────────────────── */
+.cv-page { padding: var(--sp-5); display: flex; flex-direction: column; gap: var(--sp-4); }
+
+.cv-layout { display: grid; grid-template-columns: 1fr 340px; gap: var(--sp-4); align-items: start; }
+.cv-section-title {
+  font-size: var(--text-xs); font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--text-muted);
+  display: flex; align-items: center; gap: 6px;
+  margin-bottom: var(--sp-3);
+}
+
+/* Camera grid */
+.cam-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--sp-3); }
+
+/* Camera feed card */
+.cam-feed {
+  display: flex; flex-direction: column; gap: var(--sp-2);
+  border: 2px solid transparent; transition: border-color var(--dur-normal), box-shadow var(--dur-normal);
+}
+.cam-feed.cam-alert {
+  border-color: var(--accent-danger);
+  box-shadow: 0 0 20px rgba(211, 59, 43, 0.3), var(--neu-raised);
+  animation: border-pulse 1s infinite;
+}
+.cam-feed.cam-drowsy { border-color: var(--accent-warning); }
+
+@keyframes border-pulse {
+  0%, 100% { box-shadow: 0 0 10px rgba(211,59,43,0.3), var(--neu-raised); }
+  50%       { box-shadow: 0 0 25px rgba(211,59,43,0.6), var(--neu-raised); }
+}
+
+.cam-header { display: flex; align-items: center; justify-content: space-between; }
+.cam-driver-info { display: flex; align-items: center; gap: 8px; }
+.cam-status-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; transition: all var(--dur-fast); }
+.cam-driver-name { font-size: var(--text-sm); font-weight: 700; color: var(--text-primary); }
+.cam-trip { font-size: var(--text-xs); color: var(--text-muted); }
+.cam-remove-btn { width: 24px; height: 24px; color: var(--text-muted); }
+
+/* Video area */
+.cam-video-area {
+  position: relative; background: var(--bg-sunken); border-radius: var(--r-inner);
+  aspect-ratio: 4/3; overflow: hidden; box-shadow: var(--neu-inset);
+}
+
+.cam-face-sim {
+  position: absolute; inset: 0; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 12px;
+}
+.cam-face-oval {
+  width: 80px; height: 100px; border-radius: 50%;
+  border: 2px solid var(--text-muted); opacity: 0.3;
+}
+.cam-eyes { display: flex; gap: 20px; }
+.cam-eye {
+  width: 20px; border-radius: var(--r-pill);
+  background: var(--accent-success);
+  transition: height 0.1s ease;
+}
+.cam-grid-overlay {
+  position: absolute; inset: 0;
+  background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* EAR overlay */
+.cam-ear-overlay {
+  position: absolute; top: 8px; left: 8px;
+  display: flex; flex-direction: column; gap: 0;
+  background: rgba(0,0,0,0.6); border-radius: 6px; padding: 4px 8px;
+}
+.cam-ear-label { font-size: 9px; font-weight: 700; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+.cam-ear-val { font-size: var(--text-sm); font-weight: 700; }
+
+/* Status banner */
+.cam-status-banner {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 6px 10px; color: #fff; font-size: var(--text-xs); font-weight: 700;
+  display: flex; align-items: center; gap: 6px; justify-content: center;
+  animation: slide-up 0.2s ease;
+}
+
+/* Bottom metrics */
+.cam-metrics { display: flex; align-items: center; gap: var(--sp-3); justify-content: space-between; }
+.cam-metric { display: flex; flex-direction: column; gap: 2px; }
+.cam-metric-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: 700; }
+.cam-metric-val { font-size: var(--text-sm); font-weight: 700; }
+
+/* LPR */
+.lpr-section { display: flex; flex-direction: column; gap: var(--sp-3); }
+.lpr-header { display: flex; align-items: center; gap: var(--sp-2); }
+.lpr-title { font-size: var(--text-h3); font-weight: 700; color: var(--text-primary); }
+
+.lpr-frame-area { display: flex; justify-content: center; }
+.lpr-frame {
+  position: relative; width: 100%; aspect-ratio: 2/1;
+  background: var(--bg-sunken); border-radius: var(--r-inner);
+  box-shadow: var(--neu-inset); display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.lpr-placeholder { display: flex; flex-direction: column; align-items: center; gap: 8px; color: var(--text-muted); font-size: var(--text-xs); }
+.lpr-corner {
+  position: absolute; width: 20px; height: 20px;
+  border-color: var(--accent-primary); border-style: solid; border-width: 0;
+}
+.lpr-corner.tl { top: 8px; left: 8px; border-top-width: 2px; border-left-width: 2px; border-radius: 4px 0 0 0; }
+.lpr-corner.tr { top: 8px; right: 8px; border-top-width: 2px; border-right-width: 2px; border-radius: 0 4px 0 0; }
+.lpr-corner.bl { bottom: 8px; left: 8px; border-bottom-width: 2px; border-left-width: 2px; border-radius: 0 0 0 4px; }
+.lpr-corner.br { bottom: 8px; right: 8px; border-bottom-width: 2px; border-right-width: 2px; border-radius: 0 0 4px 0; }
+
+.lpr-scan-line {
+  position: absolute; left: 0; right: 0; height: 2px;
+  background: var(--accent-primary); box-shadow: 0 0 8px var(--accent-primary);
+  animation: scan 2s ease-in-out infinite;
+}
+@keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
+
+.lpr-controls { display: flex; justify-content: center; }
+.lpr-result { display: flex; flex-direction: column; gap: var(--sp-2); }
+.lpr-result-plate {
+  font-size: 1.8rem; font-weight: 700; color: var(--text-primary);
+  text-align: center; letter-spacing: 0.1em;
+}
+.lpr-confidence { display: flex; align-items: center; gap: var(--sp-2); font-size: var(--text-xs); color: var(--text-secondary); }
+.lpr-matched { justify-content: center; }
+.lpr-actions { display: flex; gap: var(--sp-2); justify-content: center; }
+
+@media (max-width: 1100px) { .cv-layout { grid-template-columns: 1fr; } }
+@media (max-width: 700px)  { .cam-grid { grid-template-columns: 1fr; } }
+@media (max-width: 640px)  { .cv-page { padding: var(--sp-4); } }
+
+/* Shared */
+.page-header { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--sp-4); flex-wrap: wrap; }
+.empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--sp-3); min-height: 200px; color: var(--text-muted); text-align: center; }
