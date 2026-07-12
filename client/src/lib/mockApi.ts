@@ -18,13 +18,15 @@ const mockTrips = [
   { id: 't1', status: 'IN_PROGRESS', source: 'Mumbai', destination: 'Pune', cargoWeight: 15000, revenue: 45000, vehicle: mockVehicles[0], driver: mockDrivers[0] },
 ];
 const mockStats = {
-  totalVehicles: 15, availableVehicles: 8, vehiclesInShop: 2, vehiclesOnTrip: 5,
-  activeTrips: 5, pendingTrips: 3, completedTrips: 12,
-  activeDrivers: 10, availableDrivers: 4,
-  fleetUtilization: 75,
-  revenue: { currentMonth: 450000, previousMonth: 420000 },
-  fuelCost: { currentMonth: 120000, previousMonth: 115000 },
-  maintenanceCost: { currentMonth: 25000, previousMonth: 30000 },
+  totalVehicles: 15, activeVehicles: 5, inMaintenance: 3, availableVehicles: 7,
+  totalDrivers: 10, onDutyDrivers: 5, availableDrivers: 5,
+  activeTrips: 5, pendingTrips: 3, completedTripsToday: 4,
+  fleetUtilization: 75, 
+  totalRevenue: 450000, 
+  totalExpenses: 145000,
+  fuelEfficiency: 8.5, 
+  avgHealthScore: 88, 
+  avgSafetyScore: 92,
 };
 
 // AUTH
