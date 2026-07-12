@@ -28,7 +28,7 @@
 </p>
 
 <p align="center">
-  <em>Made by <a href="https://harmit.vercel.app">Harmit Kalal</a> | <a href="https://www.jwnil.me">Jenil Soni</a> | Aarth Patel</em>
+  <em>Made by <a href="https://harmit.vercel.app">Harmit Kalal</a> | <a href="https://www.jenil.me">Jenil Soni</a> | Aarth Patel</em>
 </p>
 
 ---
