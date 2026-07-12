@@ -39,3 +39,10 @@ client/node_modules/
 # Cache
 .parcel-cache/
 .vite/
+
+# Agent & AI & Docs
+.agent/
+.claude/
+.gemini/
+.github/
+docs/

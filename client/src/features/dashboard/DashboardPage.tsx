@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
-
 import { useNavigate } from 'react-router-dom';
 import {
   PieChart, Pie, Cell, AreaChart, Area, LineChart, Line,
   XAxis, YAxis, Tooltip, ResponsiveContainer, BarChart, Bar, CartesianGrid, Legend
 } from 'recharts';
-import { Truck, Users, Route, Plus, Fuel, FileBarChart, Wrench, TrendingUp, TrendingDown, AlertTriangle, CheckCircle2, Clock } from 'lucide-react';
+import { Truck, Users, Route, Plus, Fuel, FileBarChart, Wrench, TrendingUp, TrendingDown, AlertTriangle, CheckCircle2, Clock, Camera, MapPin, Play } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import api from '../../lib/api';
 import './DashboardPage.css';
@@ -53,26 +52,85 @@ function GaugeRing({ pct, size = 80, color = 'var(--accent-primary)' }: { pct: n
 }
 
 /* ── KpiCard ── */
-function KpiCard({ label, value, subtitle, pct, icon: Icon, color, trend }:
-  { label: string; value: number | string; subtitle?: string; pct?: number; icon: React.ElementType; color: string; trend?: 'up' | 'down' }) {
+function KpiCard({ label, value, subtitle, pct, icon: Icon, color, trend, onClick }:
+  { label: string; value: number | string; subtitle?: string; pct?: number; icon: React.ElementType; color: string; trend?: 'up' | 'down'; onClick: () => void }) {
   const numVal = typeof value === 'number' ? value : 0;
   const displayed = useCountUp(numVal);
   return (
-    <div className="kpi-card neu-card no-hover">
-      <div className="kpi-card-screw kpi-screw-tl" /><div className="kpi-card-screw kpi-screw-tr" />
+    <div className="kpi-card panel-plate glow-hover" onClick={onClick} style={{ cursor: 'pointer' }}>
       <div className="kpi-top">
-        <div className="kpi-icon-wrap" style={{ background: `${color}18` }}>
-          <Icon size={20} color={color} aria-hidden="true" />
+        <div className="kpi-icon-wrap" style={{ '--icon-color': color } as React.CSSProperties}>
+          <Icon size={22} aria-hidden="true" className="kpi-icon" />
         </div>
         {pct !== undefined && <GaugeRing pct={pct} size={64} color={color} />}
       </div>
-      <div className="kpi-value text-mono" style={{ color }}>
+      <div className="kpi-value odo-value" style={{ color }}>
         {typeof value === 'string' ? value : displayed}
         {trend === 'up' && <TrendingUp size={14} className="kpi-trend up" />}
         {trend === 'down' && <TrendingDown size={14} className="kpi-trend down" />}
       </div>
-      <div className="kpi-label">{label}</div>
-      {subtitle && <div className="kpi-subtitle">{subtitle}</div>}
+      <div className="kpi-label mech-label">{label}</div>
+      {subtitle && <div className="kpi-subtitle text-secondary">{subtitle}</div>}
+    </div>
+  );
+}
+
+/* ── Embedded Map Component ── */
+function DashboardMapPreview() {
+  const [vehicles, setVehicles] = useState([
+    { id: 1, x: 20, y: 30, type: 'truck', angle: 45 },
+    { id: 2, x: 70, y: 60, type: 'car', angle: 120 },
+    { id: 3, x: 40, y: 80, type: 'truck', angle: -20 },
+  ]);
+
+  useEffect(() => {
+    const int = setInterval(() => {
+      setVehicles(prev => prev.map(v => ({
+        ...v,
+        x: (v.x + (Math.cos(v.angle * Math.PI / 180) * 2) + 100) % 100,
+        y: (v.y + (Math.sin(v.angle * Math.PI / 180) * 2) + 100) % 100,
+      })));
+    }, 1000);
+    return () => clearInterval(int);
+  }, []);
+
+  return (
+    <div className="dash-map-container">
+      <svg width="100%" height="100%" preserveAspectRatio="none">
+        {/* Simple grid / roads */}
+        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="var(--neu-dark)" strokeWidth="1" opacity="0.3"/>
+        </pattern>
+        <rect width="100%" height="100%" fill="url(#grid)" />
+        
+        {vehicles.map(v => (
+          <g key={v.id} style={{ transition: 'all 1s linear', transform: `translate(${v.x}%, ${v.y}%) rotate(${v.angle}deg)` }}>
+            {v.type === 'truck' ? (
+              <rect x="-10" y="-5" width="20" height="10" fill="var(--accent-primary)" rx="2" />
+            ) : (
+              <circle cx="0" cy="0" r="5" fill="var(--accent-info)" />
+            )}
+            <circle cx="0" cy="0" r="1.5" fill="#fff" />
+          </g>
+        ))}
+      </svg>
+    </div>
+  );
+}
+
+/* ── Camera Feeds ── */
+function CameraFeedGrid() {
+  return (
+    <div className="cam-grid">
+      {[1, 2, 3, 4].map(i => (
+        <div key={i} className="cam-feed" style={{ backgroundImage: `url('/assets/cam${i}.png')`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+          <div className="cam-overlay" style={{ background: 'rgba(0,0,0,0.5)', padding: '2px 6px', borderRadius: '4px' }}>
+            <span className="live-dot" /> <span className="mech-label text-xs">CAM 0{i} - LIVE</span>
+          </div>
+          {/* Faux scan line animation applied in CSS */}
+          <div className="cam-scanline" />
+        </div>
+      ))}
     </div>
   );
 }
@@ -98,12 +156,12 @@ const HEALTH_DATA = [
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (!active || !payload?.length) return null;
   return (
-    <div className="chart-tooltip">
-      <div className="chart-tooltip-label">{label}</div>
+    <div className="chart-tooltip panel-plate" style={{ padding: '8px 12px', minWidth: '120px' }}>
+      <div className="chart-tooltip-label mech-label">{label}</div>
       {payload.map((p: any) => (
-        <div key={p.name} className="chart-tooltip-row">
+        <div key={p.name} className="chart-tooltip-row text-sm mt-1">
           <span style={{ color: p.color }}>{p.name}</span>
-          <span>{typeof p.value === 'number' && p.value > 1000 ? `₹${(p.value/1000).toFixed(0)}K` : p.value}</span>
+          <span className="text-mono">{typeof p.value === 'number' && p.value > 1000 ? `₹${(p.value/1000).toFixed(0)}K` : p.value}</span>
         </div>
       ))}
     </div>
@@ -120,6 +178,15 @@ export default function DashboardPage() {
     retry: 1,
   });
 
+  const { data: recentNotifs } = useQuery({
+    queryKey: ['dashboard-notifs'],
+    queryFn: async () => {
+      const { data } = await api.get('/notifications?limit=4');
+      return data.data || [];
+    },
+    refetchInterval: 30000,
+  });
+
   const s = stats ?? {
     totalVehicles: 15, activeVehicles: 5, inMaintenance: 3, availableVehicles: 6,
     totalDrivers: 10, onDutyDrivers: 5, availableDrivers: 4,
@@ -134,66 +201,71 @@ export default function DashboardPage() {
   return (
     <div className="dashboard-page page-enter">
       {/* Header */}
-      <div className="dashboard-header">
+      <div className="page-header">
         <div>
-          <h1 className="text-h1">Operations Dashboard</h1>
-          <p className="text-secondary" style={{ marginTop: 4, fontSize: 'var(--text-sm)' }}>
-            Real-time fleet intelligence
-          </p>
+          <h1 className="text-h1">System Overview</h1>
+          <p className="text-secondary">Real-time fleet intelligence and operations control</p>
         </div>
         <div className="dashboard-quick-actions">
-          <button className="btn btn-ghost btn-pill sm" onClick={() => navigate('/trips/new')}>
-            <Plus size={14} /> New Trip
+          <button className="btn btn-ghost sm" onClick={() => navigate('/trips/new')}>
+            <Plus size={14} /> NEW TRIP
           </button>
-          <button className="btn btn-ghost btn-pill sm" onClick={() => navigate('/vehicles')}>
-            <Truck size={14} /> Add Vehicle
+          <button className="btn btn-ghost sm" onClick={() => navigate('/fuel')}>
+            <Fuel size={14} /> LOG FUEL
           </button>
-          <button className="btn btn-ghost btn-pill sm" onClick={() => navigate('/fuel')}>
-            <Fuel size={14} /> Log Fuel
-          </button>
-          <button className="btn btn-pill sm" onClick={() => navigate('/reports')}>
-            <FileBarChart size={14} /> Reports
+          <button className="btn btn-ghost sm" onClick={() => navigate('/reports')}>
+            <FileBarChart size={14} /> REPORTS
           </button>
         </div>
       </div>
 
       {/* Status bar */}
-      {isLoading && <div className="dashboard-status-bar"><Clock size={14} /> Loading live data...</div>}
-      {error && <div className="dashboard-status-bar danger"><AlertTriangle size={14} /> Using cached data</div>}
+      {isLoading && <div className="dashboard-status-bar"><Clock size={14} className="spin" /> SYNCHRONIZING TELEMETRY...</div>}
+      {error && <div className="dashboard-status-bar danger"><AlertTriangle size={14} className="shake" /> TELEMETRY OFFLINE - CACHED DATA</div>}
 
-      {/* KPI Grid */}
-      <div className="kpi-grid">
-        <KpiCard label="Total Fleet" value={s.totalVehicles} subtitle={`${s.availableVehicles} available`}
-          pct={Math.round((s.availableVehicles / s.totalVehicles) * 100)} icon={Truck} color="var(--accent-primary)" trend="up" />
-        <KpiCard label="Active Trips" value={s.activeTrips} subtitle={`${s.pendingTrips} pending`}
-          pct={Math.round((s.activeTrips / Math.max(s.totalVehicles, 1)) * 100)} icon={Route} color="var(--accent-info)" />
-        <KpiCard label="Drivers On Duty" value={s.onDutyDrivers} subtitle={`${s.availableDrivers} available`}
-          pct={Math.round((s.onDutyDrivers / Math.max(s.totalDrivers, 1)) * 100)} icon={Users} color="var(--accent-success)" trend="up" />
-        <KpiCard label="Fleet Utilization" value={`${s.fleetUtilization}%`} subtitle="of total capacity"
-          pct={s.fleetUtilization} icon={TrendingUp} color="var(--accent-warning)" />
-        <KpiCard label="Vehicles in Shop" value={s.inMaintenance} subtitle="under maintenance"
-          icon={Wrench} color="var(--accent-danger)" />
-        <KpiCard label="Avg Health Score" value={s.avgHealthScore} subtitle={`${s.avgSafetyScore}% safety`}
-          pct={s.avgHealthScore} icon={CheckCircle2} color="var(--accent-success)" trend="up" />
-        <KpiCard label="Revenue (MTD)" value={`₹${Math.round(s.totalRevenue / 1000)}K`}
-          subtitle={`₹${Math.round(s.totalExpenses / 1000)}K expenses`} icon={TrendingUp}
-          color="var(--accent-primary)" trend="up" />
-        <KpiCard label="Net Profit" value={`₹${Math.round(profit / 1000)}K`}
-          subtitle={`${profitPct}% margin`} icon={profit >= 0 ? TrendingUp : TrendingDown}
-          color={profit >= 0 ? 'var(--accent-success)' : 'var(--accent-danger)'} trend={profit >= 0 ? 'up' : 'down'} />
-      </div>
+      {/* Bento Grid Command Center */}
+      <div className="bento-grid mt-4">
+        
+        {/* Row 1: Top KPIs */}
+        <KpiCard label="FLEET CAPACITY" value={s.totalVehicles} subtitle={`${s.availableVehicles} AVAIL`}
+          pct={Math.round((s.availableVehicles / s.totalVehicles) * 100)} icon={Truck} color="var(--accent-primary)" trend="up" onClick={() => navigate('/vehicles')} />
+        <KpiCard label="ACTIVE TRIPS" value={s.activeTrips} subtitle={`${s.pendingTrips} PEND`}
+          pct={Math.round((s.activeTrips / Math.max(s.totalVehicles, 1)) * 100)} icon={Route} color="var(--accent-info)" onClick={() => navigate('/trips')} />
+        <KpiCard label="DRIVER AVAILABILITY" value={s.onDutyDrivers} subtitle={`${s.availableDrivers} AVAIL`}
+          pct={Math.round((s.onDutyDrivers / Math.max(s.totalDrivers, 1)) * 100)} icon={Users} color="var(--accent-success)" trend="up" onClick={() => navigate('/drivers')} />
+        <KpiCard label="SYSTEM UTILIZATION" value={`${s.fleetUtilization}%`} subtitle="LOAD FACTOR"
+          pct={s.fleetUtilization} icon={TrendingUp} color="var(--accent-warning)" onClick={() => navigate('/reports')} />
 
-      {/* Charts Grid */}
-      <div className="charts-grid">
+        {/* Row 2/3: Live Modules (Map and Cameras) */}
+        <div className="bento-tile bento-map panel-plate glow-hover map-panel" onClick={() => navigate('/map')}>
+          <h3 className="chart-title mech-label flex items-center gap-2"><MapPin size={16} className="text-info" /> GPS TELEMETRY</h3>
+          <DashboardMapPreview />
+        </div>
 
-        {/* Fleet Status Donut */}
-        <div className="chart-card neu-card no-hover">
-          <div className="chart-card-screw chart-screw-tl" /><div className="chart-card-screw chart-screw-tr" />
-          <h3 className="chart-title">Fleet Status</h3>
-          <ResponsiveContainer width="100%" height={220}>
+        <div className="bento-tile bento-cams panel-plate glow-hover cam-panel" onClick={() => navigate('/cv')}>
+          <h3 className="chart-title mech-label flex items-center gap-2"><Camera size={16} className="text-accent" /> CABIN CAMS (LIVE)</h3>
+          <CameraFeedGrid />
+        </div>
+
+        {/* Row 4: Secondary KPIs */}
+        <KpiCard label="SHOP / MAINTENANCE" value={s.inMaintenance} subtitle="IN BAY"
+          icon={Wrench} color="var(--accent-danger)" onClick={() => navigate('/maintenance')} />
+        <KpiCard label="AVG HEALTH INDEX" value={s.avgHealthScore} subtitle={`${s.avgSafetyScore}% SFTY`}
+          pct={s.avgHealthScore} icon={CheckCircle2} color="var(--accent-success)" trend="up" onClick={() => navigate('/vehicles')} />
+        <KpiCard label="REVENUE YTD" value={`₹${Math.round(s.totalRevenue / 1000)}K`}
+          subtitle={`EXP: ₹${Math.round(s.totalExpenses / 1000)}K`} icon={TrendingUp}
+          color="var(--accent-primary)" trend="up" onClick={() => navigate('/reports')} />
+        <KpiCard label="NET PROFIT" value={`₹${Math.round(profit / 1000)}K`}
+          subtitle={`MRG: ${profitPct}%`} icon={profit >= 0 ? TrendingUp : TrendingDown}
+          color={profit >= 0 ? 'var(--accent-success)' : 'var(--accent-danger)'} trend={profit >= 0 ? 'up' : 'down'} onClick={() => navigate('/reports')} />
+
+        {/* Row 5: Charts & Alerts */}
+        <div className="bento-tile bento-donut chart-card panel-plate">
+          <h3 className="chart-title mech-label">FLEET STATUS</h3>
+          <ResponsiveContainer width="100%" height={180}>
             <PieChart>
-              <Pie data={FLEET_STATUS_DATA} cx="50%" cy="50%" innerRadius={55} outerRadius={85}
-                paddingAngle={3} dataKey="value">
+              <Pie data={FLEET_STATUS_DATA} cx="50%" cy="50%" innerRadius={45} outerRadius={70}
+                paddingAngle={3} dataKey="value" stroke="none">
                 {FLEET_STATUS_DATA.map((e, i) => <Cell key={i} fill={e.color} />)}
               </Pie>
               <Tooltip content={<CustomTooltip />} />
@@ -201,20 +273,18 @@ export default function DashboardPage() {
           </ResponsiveContainer>
           <div className="chart-legend">
             {FLEET_STATUS_DATA.map(d => (
-              <div key={d.name} className="legend-item">
+              <div key={d.name} className="legend-item text-xs mech-label">
                 <span className="legend-dot" style={{ background: d.color }} />
                 <span>{d.name}</span>
-                <span className="legend-val text-mono">{d.value}</span>
+                <span className="legend-val text-mono text-primary">{d.value}</span>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Fuel Trend Area */}
-        <div className="chart-card neu-card no-hover chart-wide">
-          <div className="chart-card-screw chart-screw-tl" /><div className="chart-card-screw chart-screw-tr" />
-          <h3 className="chart-title">Fuel Consumption Trend</h3>
-          <ResponsiveContainer width="100%" height={220}>
+        <div className="bento-tile bento-trend chart-card panel-plate glow-hover" onClick={() => navigate('/fuel')}>
+          <h3 className="chart-title mech-label">FUEL CONSUMPTION METRICS</h3>
+          <ResponsiveContainer width="100%" height={180}>
             <AreaChart data={FUEL_TREND_DATA} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
               <defs>
                 <linearGradient id="fuelGrad" x1="0" y1="0" x2="0" y2="1">
@@ -223,8 +293,8 @@ export default function DashboardPage() {
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" stroke="var(--neu-dark)" opacity={0.5} />
-              <XAxis dataKey="week" tick={{ fontSize: 11, fill: 'var(--text-muted)' }} />
-              <YAxis tick={{ fontSize: 11, fill: 'var(--text-muted)' }} />
+              <XAxis dataKey="week" tick={{ fontSize: 10, fill: 'var(--text-muted)' }} />
+              <YAxis tick={{ fontSize: 10, fill: 'var(--text-muted)' }} />
               <Tooltip content={<CustomTooltip />} />
               <Area type="monotone" dataKey="liters" name="Liters" stroke="var(--accent-primary)"
                 fill="url(#fuelGrad)" strokeWidth={2} dot={false} />
@@ -232,82 +302,33 @@ export default function DashboardPage() {
           </ResponsiveContainer>
         </div>
 
-        {/* Revenue vs Cost */}
-        <div className="chart-card neu-card no-hover chart-wide">
-          <div className="chart-card-screw chart-screw-tl" /><div className="chart-card-screw chart-screw-tr" />
-          <h3 className="chart-title">Revenue vs Expenses</h3>
-          <ResponsiveContainer width="100%" height={220}>
-            <LineChart data={REVENUE_DATA} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="var(--neu-dark)" opacity={0.5} />
-              <XAxis dataKey="month" tick={{ fontSize: 11, fill: 'var(--text-muted)' }} />
-              <YAxis tick={{ fontSize: 11, fill: 'var(--text-muted)' }} tickFormatter={v => `₹${v/1000}K`} />
-              <Tooltip content={<CustomTooltip />} />
-              <Legend wrapperStyle={{ fontSize: 12, color: 'var(--text-secondary)' }} />
-              <Line type="monotone" dataKey="revenue" name="Revenue" stroke="var(--accent-success)"
-                strokeWidth={2} dot={false} />
-              <Line type="monotone" dataKey="cost" name="Expenses" stroke="var(--accent-danger)"
-                strokeWidth={2} dot={false} />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
+        <div className="bento-tile bento-alerts dashboard-alerts panel-plate glow-hover" onClick={() => navigate('/events')}>
+          <h3 className="chart-title mech-label"><AlertTriangle size={16} color="var(--accent-warning)" className="shake" /> SYSTEM INCIDENTS</h3>
+          <div className="alerts-list mt-3">
+            {recentNotifs?.slice(0, 4).map((a: any, i: number) => {
+              let colorType = 'info';
+              if (a.type === 'CV_ALERT' || a.type === 'FUEL_ANOMALY') colorType = 'danger';
+              else if (a.type === 'MAINTENANCE_DUE' || a.type === 'LICENSE_EXPIRY') colorType = 'warning';
+              else if (a.type === 'TRIP_UPDATE' || a.type === 'SYSTEM') colorType = 'success';
+              
+              const diff = Date.now() - new Date(a.createdAt).getTime();
+              const hrs = Math.floor(diff / 3600000);
+              const timeStr = hrs < 1 ? 'JUST NOW' : hrs > 24 ? `${Math.floor(hrs/24)}D AGO` : `${hrs}H AGO`;
 
-        {/* Vehicle Health List */}
-        <div className="chart-card neu-card no-hover">
-          <div className="chart-card-screw chart-screw-tl" /><div className="chart-card-screw chart-screw-tr" />
-          <h3 className="chart-title">Vehicle Health Scores</h3>
-          <div className="health-list">
-            {HEALTH_DATA.map(v => {
-              const color = v.score >= 80 ? 'var(--accent-success)' : v.score >= 60 ? 'var(--accent-warning)' : 'var(--accent-danger)';
               return (
-                <div key={v.name} className="health-item">
-                  <span className="health-reg text-mono">{v.name}</span>
-                  <div className="progress-track" style={{ flex: 1 }}>
-                    <div className="progress-fill" style={{ width: `${v.score}%`, background: color }} />
-                  </div>
-                  <span className="health-score text-mono" style={{ color }}>{v.score}</span>
+                <div key={i} className={`alert-item alert-${colorType}`} style={{ padding: '8px', borderBottom: '1px solid var(--neu-dark)' }}>
+                  <span className={`live-dot ${colorType}`} />
+                  <span className="alert-text mech-label text-primary" style={{ flex: 1, marginLeft: 12 }}>{a.message.substring(0, 45)}{a.message.length > 45 ? '...' : ''}</span>
+                  <span className="alert-time text-mono text-muted text-xs">{timeStr}</span>
                 </div>
               );
             })}
+            {!recentNotifs?.length && (
+              <div className="empty-state text-sm" style={{ minHeight: '100px' }}>No active incidents</div>
+            )}
           </div>
         </div>
 
-        {/* Maintenance by Type */}
-        <div className="chart-card neu-card no-hover">
-          <div className="chart-card-screw chart-screw-tl" /><div className="chart-card-screw chart-screw-tr" />
-          <h3 className="chart-title">Maintenance Breakdown</h3>
-          <ResponsiveContainer width="100%" height={220}>
-            <BarChart layout="vertical" data={[
-              { type: 'Preventive', count: 3 }, { type: 'Corrective', count: 2 },
-              { type: 'Emergency', count: 1 }, { type: 'Inspection', count: 4 },
-            ]} margin={{ top: 5, right: 10, left: 10, bottom: 5 }}>
-              <XAxis type="number" tick={{ fontSize: 11, fill: 'var(--text-muted)' }} />
-              <YAxis type="category" dataKey="type" tick={{ fontSize: 11, fill: 'var(--text-muted)' }} width={80} />
-              <Tooltip content={<CustomTooltip />} />
-              <Bar dataKey="count" name="Jobs" fill="var(--accent-warning)" radius={[0, 6, 6, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-
-      </div>
-
-      {/* Recent Alerts */}
-      <div className="dashboard-alerts neu-card no-hover">
-        <div className="chart-card-screw chart-screw-tl" /><div className="chart-card-screw chart-screw-tr" />
-        <h3 className="chart-title"><AlertTriangle size={16} color="var(--accent-warning)" /> System Alerts</h3>
-        <div className="alerts-list">
-          {[
-            { type: 'warning', text: 'Vehicle GJ-01-AB-1234 insurance expires in 12 days', time: '2h ago' },
-            { type: 'danger', text: 'Driver Rajesh Yadav license expires in 5 days', time: '4h ago' },
-            { type: 'info', text: 'Fuel anomaly detected on Trip #TRP-0042', time: '6h ago' },
-            { type: 'success', text: 'Trip #TRP-0039 completed successfully', time: '8h ago' },
-          ].map((a, i) => (
-            <div key={i} className={`alert-item alert-${a.type}`}>
-              <span className="alert-dot" />
-              <span className="alert-text">{a.text}</span>
-              <span className="alert-time">{a.time}</span>
-            </div>
-          ))}
-        </div>
       </div>
     </div>
   );

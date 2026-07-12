@@ -117,8 +117,8 @@ export default function ReportsPage() {
     <div className="reports-page page-enter">
       <div className="page-header">
         <div>
-          <h1 className="text-h1">Reports Center</h1>
-          <p className="text-secondary" style={{ fontSize: 'var(--text-sm)', marginTop: 4 }}>
+          <h1 className="text-h1"><FileBarChart size={24} className="text-accent" /> REPORTS CENTER</h1>
+          <p className="text-secondary">
             Generate and export fleet intelligence reports
           </p>
         </div>

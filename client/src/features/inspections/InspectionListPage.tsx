@@ -50,10 +50,10 @@ export default function InspectionListPage() {
     <div className="insp-page page-enter">
       <div className="page-header">
         <div>
-          <h1 className="text-h1">Vehicle Inspections</h1>
-          <p className="text-secondary" style={{ fontSize: 'var(--text-sm)', marginTop: 4 }}>{data?.total ?? 0} total inspections</p>
+          <h1 className="text-h1"><ClipboardList size={24} className="text-accent" /> VEHICLE INSPECTIONS</h1>
+          <p className="text-secondary">{data?.total ?? 0} total inspections</p>
         </div>
-        <button className="btn btn-pill" onClick={() => navigate('/inspections/new')}><Plus size={14}/> New Inspection</button>
+        <button className="btn btn-pill" onClick={() => navigate('/inspections/new')}><Plus size={14}/> NEW INSPECTION</button>
       </div>
 
       {/* Status chips */}

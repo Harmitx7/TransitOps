@@ -33,12 +33,19 @@
 }
 .dashboard-status-bar.danger { color: var(--accent-danger); }
 
-/* ── KPI Grid ── */
-.kpi-grid {
+/* ── Bento Grid ── */
+.bento-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(12, 1fr);
+  grid-auto-rows: minmax(130px, auto);
   gap: var(--sp-4);
 }
+.kpi-card { grid-column: span 3; }
+.bento-map { grid-column: span 8; grid-row: span 2; }
+.bento-cams { grid-column: span 4; grid-row: span 2; }
+.bento-donut { grid-column: span 3; grid-row: span 2; }
+.bento-trend { grid-column: span 5; grid-row: span 2; }
+.bento-alerts { grid-column: span 4; grid-row: span 2; }
 
 .kpi-card {
   position: relative;
@@ -68,10 +75,35 @@
 }
 
 .kpi-icon-wrap {
-  width: 40px; height: 40px;
-  border-radius: var(--r-inner);
+  position: relative;
+  width: 44px; height: 44px;
+  border-radius: 50%; /* Clean circular design */
   display: grid; place-items: center;
   flex-shrink: 0;
+  
+  /* Super clean, minimal background */
+  background: color-mix(in srgb, var(--icon-color) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--icon-color) 15%, transparent);
+  color: var(--icon-color);
+}
+
+/* Minimal geometric outer ring SVG art */
+.kpi-icon-wrap::before {
+  content: '';
+  position: absolute;
+  inset: -6px; /* Expanding slightly outside the circle for an airy look */
+  background-image: url("data:image/svg+xml,%3Csvg width='56' height='56' viewBox='0 0 56 56' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='28' cy='28' r='27' fill='none' stroke='currentColor' stroke-opacity='0.25' stroke-width='0.5' stroke-dasharray='2 4'/%3E%3Ccircle cx='28' cy='28' r='23' fill='none' stroke='currentColor' stroke-opacity='0.1' stroke-width='1'/%3E%3Cpath d='M28 0v3M28 53v3M0 28h3M53 28h3' stroke='currentColor' stroke-opacity='0.3' stroke-width='1'/%3E%3C/svg%3E");
+  background-size: cover;
+  pointer-events: none;
+  z-index: 0;
+  color: inherit;
+}
+
+.kpi-icon-wrap > svg {
+  position: relative;
+  z-index: 1;
+  /* Soft colored glow */
+  filter: drop-shadow(0 2px 6px color-mix(in srgb, var(--icon-color) 40%, transparent));
 }
 
 .kpi-value {
@@ -101,20 +133,11 @@
   color: var(--text-secondary);
 }
 
-/* ── Charts Grid ── */
-.charts-grid {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  grid-template-rows: auto auto;
-  gap: var(--sp-4);
-}
-
 .chart-card {
   position: relative;
   padding: var(--sp-4);
   overflow: hidden;
 }
-.chart-wide { grid-column: 2; }
 
 .chart-card-screw {
   position: absolute;
@@ -206,16 +229,82 @@
 .alert-text { flex: 1; color: var(--text-primary); }
 .alert-time { font-size: var(--text-xs); color: var(--text-muted); white-space: nowrap; }
 
+/* ── Modules (Camera + Map) ── */
+.cam-panel, .map-panel {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.cam-panel h3, .map-panel h3 {
+  padding: var(--sp-3) var(--sp-4);
+  margin-bottom: 0;
+  border-bottom: 1px solid var(--neu-dark);
+}
+.dash-map-container {
+  flex: 1;
+  min-height: 250px;
+  background: var(--bg-sunken);
+  position: relative;
+  overflow: hidden;
+}
+.cam-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--neu-dark);
+  padding: 1px;
+  flex: 1;
+}
+.cam-feed {
+  position: relative;
+  background: var(--bg-sunken);
+  min-height: 120px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+.cam-overlay {
+  position: absolute;
+  top: 8px; left: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  z-index: 2;
+  color: #fff;
+}
+.cam-icon {
+  position: relative;
+  z-index: 1;
+}
+.cam-scanline {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 10px;
+  background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.05), transparent);
+  animation: scan 3s linear infinite;
+  z-index: 3;
+}
+@keyframes scan {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(120px); }
+}
+
 /* ── Responsive ── */
+@media (max-width: 1400px) {
+  .bento-trend { grid-column: span 6; }
+  .bento-alerts { grid-column: span 6; }
+  .bento-donut { grid-column: span 12; }
+}
 @media (max-width: 1200px) {
-  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
-  .charts-grid { grid-template-columns: 1fr; }
-  .chart-wide { grid-column: 1; }
+  .kpi-card { grid-column: span 6; }
+  .bento-map { grid-column: span 12; }
+  .bento-cams { grid-column: span 12; }
 }
 
 @media (max-width: 600px) {
   .dashboard-page { padding: var(--sp-4); gap: var(--sp-4); }
-  .kpi-grid { grid-template-columns: repeat(2, 1fr); gap: var(--sp-3); }
+  .kpi-card { grid-column: span 12; }
+  .bento-trend, .bento-alerts { grid-column: span 12; }
   .kpi-value { font-size: 1.5rem; }
   .dashboard-header { flex-direction: column; }
   .dashboard-quick-actions { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; }

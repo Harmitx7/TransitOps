@@ -207,22 +207,73 @@ async function seed() {
   }
   console.log(`  Created 15 expenses`);
 
-  // ── Notifications ──────────────────────────────────────────────────────
-  const notifData = [
-    { type: 'LICENSE_EXPIRY', title: 'License Expiry Warning', message: 'Driver Vinod Joshi license expires in 18 days (MH1420190067890)', isRead: false },
-    { type: 'LICENSE_EXPIRY', title: 'License Expiry Warning', message: 'Driver Ramesh Gupta license expires in 35 days (UP3220180090123)', isRead: false },
-    { type: 'MAINTENANCE_DUE', title: 'Preventive Maintenance Due', message: 'Vehicle GJ05CD5678 is approaching 75,000 km service interval', isRead: false },
-    { type: 'FUEL_ANOMALY', title: 'Fuel Anomaly Detected', message: 'Unusually high fuel cost logged for MH14KL6789 on July 10', isRead: false },
-    { type: 'INSPECTION_FAILED', title: 'Inspection Failed', message: 'Vehicle RJ14OP4567 failed fitness check - brake system', isRead: true },
-    { type: 'TRIP_UPDATE', title: 'Trip Completed', message: 'Trip TR260003 Mumbai to Pune completed successfully', isRead: true },
-    { type: 'SYSTEM', title: 'System Health', message: 'Fleet utilization is at 72% - above target threshold', isRead: true },
-    { type: 'MAINTENANCE_DUE', title: 'Insurance Renewal Due', message: 'Vehicle MH04EF3456 insurance expires on Sep 30, 2025', isRead: false },
+  // ── Notifications (Dynamic Mock Incidents) ─────────────────────────────
+  const notifTypes = [
+    'CV_ALERT', 'CV_ALERT', 'CV_ALERT', 'FUEL_ANOMALY', 'MAINTENANCE_DUE', 
+    'LICENSE_EXPIRY', 'INSPECTION_FAILED', 'TRIP_UPDATE', 'SYSTEM'
   ];
+  const cvAlerts = [
+    'Drowsiness detected (EAR below threshold)',
+    'Driver using mobile phone',
+    'Hard braking event logged',
+    'Tailgating (unsafe following distance)',
+    'Driver not wearing seatbelt'
+  ];
+  
+  const notifData = [];
+  
+  for (let i = 0; i < 25; i++) {
+    const type = notifTypes[i % notifTypes.length];
+    const vehicle = vehicles[Math.floor(Math.random() * vehicles.length)];
+    const driver = drivers[Math.floor(Math.random() * drivers.length)];
+    const isRead = Math.random() > 0.6; // 40% unread
+    
+    let title = '';
+    let message = '';
+    
+    switch (type) {
+      case 'CV_ALERT':
+        title = 'Critical Safety Event';
+        message = `${cvAlerts[Math.floor(Math.random() * cvAlerts.length)]} - ${vehicle.registrationNumber} (Driver: ${driver.firstName} ${driver.lastName})`;
+        break;
+      case 'FUEL_ANOMALY':
+        title = 'Fuel Anomaly Detected';
+        message = `Sudden drop in fuel level detected for ${vehicle.registrationNumber} (Possible theft or leak)`;
+        break;
+      case 'MAINTENANCE_DUE':
+        title = 'Preventive Maintenance Due';
+        message = `Vehicle ${vehicle.registrationNumber} is approaching scheduled service interval`;
+        break;
+      case 'LICENSE_EXPIRY':
+        title = 'License Expiry Warning';
+        message = `Driver ${driver.firstName} ${driver.lastName} license (${driver.licenseNumber}) expires soon`;
+        break;
+      case 'INSPECTION_FAILED':
+        title = 'Inspection Failed';
+        message = `Vehicle ${vehicle.registrationNumber} failed pre-trip inspection - action required`;
+        break;
+      case 'TRIP_UPDATE':
+        title = 'Trip Status Update';
+        message = `Trip assigned to ${vehicle.registrationNumber} has been updated or delayed`;
+        break;
+      case 'SYSTEM':
+        title = 'System Health';
+        message = `Fleet utilization is at ${Math.floor(60 + Math.random() * 30)}% - above target threshold`;
+        break;
+    }
+    
+    notifData.push({ type, title, message, isRead });
+  }
 
   for (const n of notifData) {
-    await prisma.notification.create({ data: n });
+    await prisma.notification.create({
+      data: {
+        ...n,
+        createdAt: new Date(Date.now() - Math.random() * 7 * 24 * 3600000) // Random time in last 7 days
+      }
+    });
   }
-  console.log(`  Created ${notifData.length} notifications`);
+  console.log(`  Created ${notifData.length} dynamic incident notifications`);
 
   // ── Vehicle Timelines ──────────────────────────────────────────────────
   for (let i = 0; i < vehicles.length; i++) {

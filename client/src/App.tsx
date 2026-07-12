@@ -26,7 +26,7 @@ const CvDashboardPage    = lazy(() => import('./features/cv/CvDashboardPage'));
 const DrowsinessPage     = lazy(() => import('./features/cv/DrowsinessPage'));
 const LprPage            = lazy(() => import('./features/cv/LprPage'));
 const AiDispatchPage     = lazy(() => import('./features/ai/AiDispatchPage'));
-const NotificationsPage  = lazy(() => import('./features/notifications/NotificationsPage'));
+const EventsPage  = lazy(() => import('./features/events/EventsPage'));
 const SettingsPage       = lazy(() => import('./features/settings/SettingsPage'));
 
 const queryClient = new QueryClient({
@@ -80,7 +80,7 @@ export default function App() {
               <Route path="cv/drowsiness" element={<DrowsinessPage />} />
               <Route path="cv/lpr" element={<LprPage />} />
               <Route path="ai" element={<AiDispatchPage />} />
-              <Route path="notifications" element={<NotificationsPage />} />
+              <Route path="events" element={<EventsPage />} />
               <Route path="settings" element={<SettingsPage />} />
             </Route>
 
