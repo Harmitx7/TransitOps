@@ -3,7 +3,8 @@ import { createRoot } from 'react-dom/client';
 import App from './App';
 
 async function bootstrap() {
-  if (import.meta.env.VITE_DEMO_MODE === 'true') {
+  const isVercel = window.location.hostname.includes('vercel.app');
+  if (import.meta.env.VITE_DEMO_MODE === 'true' || isVercel) {
     await import('./lib/mockApi');
   }
 
