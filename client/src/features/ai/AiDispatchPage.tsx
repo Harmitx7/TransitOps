@@ -262,7 +262,7 @@ export default function AiDispatchPage() {
             </div>
           </div>
 
-          <div className="ai-panel" style={{ display: 'flex', flexDirection: 'column' }}>
+          <div className="ai-panel ai-panel-full" style={{ display: 'flex', flexDirection: 'column' }}>
             <div className="ai-panel-header">
               <h2 className="ai-panel-title">Vehicle Assignment</h2>
             </div>
