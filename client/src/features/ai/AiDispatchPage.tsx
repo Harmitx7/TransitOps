@@ -220,13 +220,22 @@ export default function AiDispatchPage() {
             <div className="ai-panel-header">
               <h2 className="ai-panel-title">Plan Route</h2>
             </div>
-            <div className="form-group">
-              <label className="form-label text-muted"><MapPin size={12} className="inline" /> Origin</label>
-              <input className="input-field" value={originStr} onChange={e => setOriginStr(e.target.value)} onKeyDown={e => e.key === 'Enter' && fetchRoute()} />
-            </div>
-            <div className="form-group" style={{ marginTop: '4px' }}>
-              <label className="form-label text-muted"><MapPin size={12} className="inline text-primary" /> Destination</label>
-              <input className="input-field" value={destStr} onChange={e => setDestStr(e.target.value)} onKeyDown={e => e.key === 'Enter' && fetchRoute()} />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'var(--neu-light)', padding: '2px', borderRadius: 'calc(var(--r-inner) + 2px)' }}>
+              {/* Origin */}
+              <div style={{ position: 'relative' }}>
+                <div style={{ position: 'absolute', left: 16, top: 0, bottom: 0, display: 'flex', alignItems: 'center', zIndex: 2 }}>
+                  <div style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--text-primary)' }} />
+                </div>
+                <input className="input-field" style={{ paddingLeft: 40, border: 'none', background: 'var(--bg-surface)', borderRadius: 'var(--r-inner) var(--r-inner) 4px 4px', boxShadow: 'none' }} placeholder="Pickup location" value={originStr} onChange={e => setOriginStr(e.target.value)} onKeyDown={e => e.key === 'Enter' && fetchRoute()} />
+              </div>
+              {/* Destination */}
+              <div style={{ position: 'relative' }}>
+                <div style={{ position: 'absolute', left: 16, top: 0, bottom: 0, display: 'flex', alignItems: 'center', zIndex: 2 }}>
+                  <div style={{ width: 8, height: 8, background: 'var(--accent-primary)' }} />
+                </div>
+                <div style={{ position: 'absolute', left: 19, top: -14, height: 14, width: 2, background: 'var(--text-muted)', opacity: 0.4, zIndex: 2 }} />
+                <input className="input-field" style={{ paddingLeft: 40, border: 'none', background: 'var(--bg-surface)', borderRadius: '4px 4px var(--r-inner) var(--r-inner)', boxShadow: 'none' }} placeholder="Dropoff location" value={destStr} onChange={e => setDestStr(e.target.value)} onKeyDown={e => e.key === 'Enter' && fetchRoute()} />
+              </div>
             </div>
             <button className="btn btn-primary" style={{ width: '100%', marginTop: 'var(--sp-2)' }} onClick={fetchRoute} disabled={routeLoading}>
               {routeLoading ? 'Calculating...' : <><Search size={16} /> Find Routes</>}
