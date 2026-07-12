@@ -1,6 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { MapPin, Truck, Navigation, X, ChevronLeft, ChevronRight, Zap } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import api from '../../lib/api';
 import './LiveMapPage.css';
 
@@ -53,39 +56,28 @@ function useSimulatedFleet(vehicles: Vehicle[]): ActiveVehicle[] {
 }
 
 const STATUS_DOT: Record<string, string> = {
-  AVAILABLE:  'var(--accent-info)',
-  ON_TRIP:    'var(--accent-success)',
-  IN_SHOP:    'var(--accent-warning)',
-  RETIRED:    'var(--text-muted)',
+  AVAILABLE:  '#0EA5E9',
+  ON_TRIP:    '#22C55E',
+  IN_SHOP:    '#F59E0B',
+  RETIRED:    '#737373',
 };
 
-/* ── Custom Map SVG Marker ── */
-function VehicleMarker({ vehicle, selected, onClick }: {
-  vehicle: ActiveVehicle; selected: boolean; onClick: () => void
-}) {
-  const color = STATUS_DOT[vehicle.status] ?? 'var(--text-muted)';
-  // Convert lat/lng to approximate SVG coords in a 800x500 viewport
-  // Simple linear mapping from India bounding box
-  const svgX = ((vehicle.lng - 68) / (80 - 68)) * 780 + 10;
-  const svgY = ((28 - vehicle.lat) / (28 - 18)) * 480 + 10;
+const TRUCK_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>`;
 
-  return (
-    <g transform={`translate(${svgX},${svgY})`} onClick={onClick} style={{ cursor: 'pointer' }}>
-      {selected && <circle r={18} fill={color} opacity={0.25} style={{ animation: 'pulse-ring 1.5s infinite' }}/>}
-      <circle r={10} fill={color} stroke="white" strokeWidth={2} style={{ filter: `drop-shadow(0 2px 4px ${color}80)` }}/>
-      <foreignObject x={-6} y={-6} width={12} height={12} style={{ overflow: 'visible', pointerEvents: 'none' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 12, height: 12 }}>
-          <Truck size={8} color="white"/>
-        </div>
-      </foreignObject>
-      {vehicle.status === 'ON_TRIP' && (
-        <text y={-14} textAnchor="middle" fill="white" fontSize={9} fontFamily="monospace"
-          style={{ filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.5))' }}>
-          {vehicle.registrationNumber}
-        </text>
-      )}
-    </g>
-  );
+function getMarkerIcon(status: string) {
+  const color = STATUS_DOT[status] || '#737373';
+  return L.divIcon({
+    html: `<div style="background-color: ${color}; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.4);">${TRUCK_SVG}</div>`,
+    className: '',
+    iconSize: [26, 26],
+    iconAnchor: [13, 13]
+  });
+}
+
+function getGoogleMapsLayerUrl(type: 'roadmap' | 'satellite' | 'hybrid') {
+  if (type === 'satellite') return 'https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}';
+  if (type === 'hybrid') return 'https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}';
+  return 'https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}';
 }
 
 export default function LiveMapPage() {
@@ -146,37 +138,29 @@ export default function LiveMapPage() {
           )}
         </div>
 
-        {/* Map area — SVG mock map (no external dependency) */}
+        {/* Google Maps via react-leaflet */}
         <div className="map-canvas-wrap">
-          <svg className="map-svg" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet">
-            {/* Background */}
-            <rect width="800" height="500" fill="var(--bg-sunken)"/>
-            {/* Grid lines */}
-            {Array.from({length:9}).map((_,i)=>(
-              <g key={i}>
-                <line x1={i*100} y1={0} x2={i*100} y2={500} stroke="var(--neu-dark)" strokeWidth={0.5} opacity={0.5}/>
-                <line x1={0} y1={i*60} x2={800} y2={i*60} stroke="var(--neu-dark)" strokeWidth={0.5} opacity={0.5}/>
-              </g>
-            ))}
-            {/* Route paths between cities */}
-            <path d="M 100,200 Q 300,150 500,200" stroke="var(--accent-primary)" strokeWidth={1.5} fill="none" opacity={0.3} strokeDasharray="6 4"/>
-            <path d="M 200,350 Q 400,300 650,280" stroke="var(--accent-success)" strokeWidth={1.5} fill="none" opacity={0.3} strokeDasharray="6 4"/>
-            <path d="M 100,200 Q 200,280 200,350" stroke="var(--accent-info)" strokeWidth={1.5} fill="none" opacity={0.3} strokeDasharray="6 4"/>
-            {/* City labels */}
-            {[
-              {x:100,y:200,name:'Ahmedabad'},{x:500,y:200,name:'Surat'},
-              {x:200,y:350,name:'Rajkot'},{x:650,y:280,name:'Nashik'},
-            ].map(c=>(
-              <g key={c.name}>
-                <circle cx={c.x} cy={c.y} r={5} fill="var(--bg-surface)" stroke="var(--text-muted)" strokeWidth={1.5}/>
-                <text x={c.x+8} y={c.y+4} fill="var(--text-secondary)" fontSize={11} fontFamily="sans-serif">{c.name}</text>
-              </g>
-            ))}
-            {/* Vehicle markers */}
+          <MapContainer center={[22.3, 71.8]} zoom={7} style={{ width: '100%', height: '100%' }} zoomControl={false}>
+            <TileLayer
+              attribution='&copy; Google Maps'
+              url={getGoogleMapsLayerUrl('roadmap')}
+            />
             {fleet.map(v => (
-              <VehicleMarker key={v.id} vehicle={v} selected={selected===v.id} onClick={() => setSelected(id => id===v.id ? null : v.id)}/>
+              <Marker 
+                key={v.id} 
+                position={[v.lat, v.lng]} 
+                icon={getMarkerIcon(v.status)}
+                eventHandlers={{ click: () => setSelected(id => id === v.id ? null : v.id) }}
+              >
+                {selected === v.id && (
+                  <Popup>
+                    <div style={{ fontSize: '13px', fontWeight: 'bold' }}>{v.registrationNumber}</div>
+                    <div style={{ fontSize: '11px', color: '#555' }}>{v.make} {v.model} - {v.speed} km/h</div>
+                  </Popup>
+                )}
+              </Marker>
             ))}
-          </svg>
+          </MapContainer>
 
           {/* Map legend */}
           <div className="map-legend">

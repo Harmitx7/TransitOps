@@ -6,6 +6,9 @@ import {
 } from 'recharts';
 import { Truck, Users, Route, Plus, Fuel, FileBarChart, Wrench, TrendingUp, TrendingDown, AlertTriangle, CheckCircle2, Clock, Camera, MapPin, Play } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
+import { MapContainer, TileLayer, Marker } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import api from '../../lib/api';
 import './DashboardPage.css';
 
@@ -76,44 +79,47 @@ function KpiCard({ label, value, subtitle, pct, icon: Icon, color, trend, onClic
 }
 
 /* ── Embedded Map Component ── */
+/* ── Custom Marker Icon ── */
+const TRUCK_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>`;
+
+function getMarkerIcon(color: string) {
+  return L.divIcon({
+    html: `<div style="background-color: ${color}; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.4);">${TRUCK_SVG}</div>`,
+    className: '',
+    iconSize: [22, 22],
+    iconAnchor: [11, 11]
+  });
+}
+
 function DashboardMapPreview() {
   const [vehicles, setVehicles] = useState([
-    { id: 1, x: 20, y: 30, type: 'truck', angle: 45 },
-    { id: 2, x: 70, y: 60, type: 'car', angle: 120 },
-    { id: 3, x: 40, y: 80, type: 'truck', angle: -20 },
+    { id: 1, lat: 23.0225, lng: 72.5714, color: '#0EA5E9', speed: 45 },
+    { id: 2, lat: 21.1702, lng: 72.8311, color: '#22C55E', speed: 60 },
+    { id: 3, lat: 22.3039, lng: 70.8022, color: '#F59E0B', speed: 0 },
   ]);
 
   useEffect(() => {
     const int = setInterval(() => {
       setVehicles(prev => prev.map(v => ({
         ...v,
-        x: (v.x + (Math.cos(v.angle * Math.PI / 180) * 2) + 100) % 100,
-        y: (v.y + (Math.sin(v.angle * Math.PI / 180) * 2) + 100) % 100,
+        lat: v.speed > 0 ? v.lat + (Math.random() - 0.5) * 0.005 : v.lat,
+        lng: v.speed > 0 ? v.lng + (Math.random() - 0.5) * 0.005 : v.lng,
       })));
-    }, 1000);
+    }, 3000);
     return () => clearInterval(int);
   }, []);
 
   return (
-    <div className="dash-map-container">
-      <svg width="100%" height="100%" preserveAspectRatio="none">
-        {/* Simple grid / roads */}
-        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="var(--neu-dark)" strokeWidth="1" opacity="0.3"/>
-        </pattern>
-        <rect width="100%" height="100%" fill="url(#grid)" />
-        
+    <div className="dash-map-container" style={{ position: 'relative', zIndex: 1 }}>
+      <MapContainer center={[22.3, 71.8]} zoom={6} style={{ width: '100%', height: '100%' }} zoomControl={false} dragging={false} scrollWheelZoom={false} doubleClickZoom={false}>
+        <TileLayer
+          attribution='&copy; Google'
+          url="https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}"
+        />
         {vehicles.map(v => (
-          <g key={v.id} style={{ transition: 'all 1s linear', transform: `translate(${v.x}%, ${v.y}%) rotate(${v.angle}deg)` }}>
-            {v.type === 'truck' ? (
-              <rect x="-10" y="-5" width="20" height="10" fill="var(--accent-primary)" rx="2" />
-            ) : (
-              <circle cx="0" cy="0" r="5" fill="var(--accent-info)" />
-            )}
-            <circle cx="0" cy="0" r="1.5" fill="#fff" />
-          </g>
+          <Marker key={v.id} position={[v.lat, v.lng]} icon={getMarkerIcon(v.color)} />
         ))}
-      </svg>
+      </MapContainer>
     </div>
   );
 }
