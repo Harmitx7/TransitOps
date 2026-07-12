@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Brain, Zap, Route, Fuel, Navigation, TrendingUp, CheckCircle2, Truck } from 'lucide-react';
+import { Brain, Zap, Route, Fuel, Navigation, TrendingUp, CheckCircle2, Truck, Leaf, Coins } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import api from '../../lib/api';
 import './AiDispatchPage.css';
@@ -47,7 +47,7 @@ function RecommendationCard({ rank, v, driver, score, selected, onSelect }:
   const color = score >= 80 ? 'var(--accent-success)' : score >= 60 ? 'var(--accent-warning)' : 'var(--accent-danger)';
   const r = 26; const circ = 2 * Math.PI * r;
   return (
-    <div className={`rec-card neu-card no-hover ${selected ? 'rec-selected' : ''}`} onClick={onSelect}>
+    <div className={`rec-card ${selected ? 'rec-selected' : ''}`} onClick={onSelect}>
       <div className="rec-rank">#{rank}</div>
       <div className="rec-header">
         <div>
@@ -81,12 +81,14 @@ function RecommendationCard({ rank, v, driver, score, selected, onSelect }:
 }
 
 /* ── Route Card ── */
-function RouteCard({ label, color, distance, duration, fuel, toll, selected, onSelect }:
-  { label: string; color: string; distance: number; duration: number; fuel: number; toll: number; selected: boolean; onSelect: () => void }) {
+function RouteCard({ label, icon: Icon, color, distance, duration, fuel, toll, selected, onSelect }:
+  { label: string; icon: React.ElementType; color: string; distance: number; duration: number; fuel: number; toll: number; selected: boolean; onSelect: () => void }) {
   return (
-    <div className={`route-card neu-card no-hover ${selected ? 'route-selected' : ''}`} onClick={onSelect}
-      style={selected ? { borderLeft: `3px solid ${color}` } : {}}>
-      <div className="route-label" style={{ color }}>{label}</div>
+    <div className={`route-card ${selected ? 'route-selected' : ''}`} onClick={onSelect}
+      style={selected ? { borderColor: color, boxShadow: `0 0 0 1px ${color}` } : {}}>
+      <div className="route-label flex items-center gap-2" style={{ color }}>
+        <Icon size={16} /> {label}
+      </div>
       <div className="route-stats">
         <div className="route-stat"><Navigation size={12} style={{ color }} /><span>{distance} km</span></div>
         <div className="route-stat"><Route size={12} style={{ color: 'var(--text-muted)' }} /><span>{duration} min</span></div>
@@ -119,23 +121,20 @@ export default function AiDispatchPage() {
     .sort((a, b) => b.score - a.score)
     .slice(0, 3);
 
-  // Mock routes
+  // Mock routes without emojis, with their corresponding Lucide icons mapped below
   const mockRoutes = [
-    { label: '⚡ Fastest',       color: 'var(--accent-info)',    distance: 214, duration: 195, fuel: 42.8, toll: 180 },
-    { label: '🌿 Fuel Efficient', color: 'var(--accent-success)', distance: 228, duration: 225, fuel: 37.2, toll: 120 },
-    { label: '💰 Lowest Toll',   color: 'var(--accent-warning)',  distance: 241, duration: 240, fuel: 44.1, toll: 60 },
+    { label: 'Fastest',       icon: Zap, color: 'var(--accent-info)',    distance: 214, duration: 195, fuel: 42.8, toll: 180 },
+    { label: 'Eco-Friendly',  icon: Leaf, color: 'var(--accent-success)', distance: 228, duration: 225, fuel: 37.2, toll: 120 },
+    { label: 'Lowest Toll',   icon: Coins, color: 'var(--accent-warning)',  distance: 241, duration: 240, fuel: 44.1, toll: 60 },
   ];
 
   return (
     <div className="ai-page page-enter">
       <div className="page-header">
         <div>
-          <h1 className="text-h1">
-            <Brain size={24} className="text-accent" /> AI OPERATIONS CENTER
+          <h1 className="text-h1 flex items-center gap-3">
+            <Brain size={24} className="text-accent" /> Smart Routing
           </h1>
-          <p className="text-secondary">
-            Intelligent dispatch recommendations and route optimization
-          </p>
         </div>
       </div>
 
@@ -143,8 +142,7 @@ export default function AiDispatchPage() {
         {/* Left: Dispatch Recommendations */}
         <div className="ai-panel">
           <div className="ai-panel-header">
-            <Zap size={16} color="var(--accent-primary)" />
-            <h2 className="ai-panel-title">Dispatch Recommendations</h2>
+            <h2 className="ai-panel-title">Vehicle Assignment</h2>
           </div>
 
           <div className="form-group">
@@ -181,8 +179,7 @@ export default function AiDispatchPage() {
         <div className="ai-right">
           <div className="ai-panel">
             <div className="ai-panel-header">
-              <Route size={16} color="var(--accent-info)" />
-              <h2 className="ai-panel-title">Route Optimization</h2>
+              <h2 className="ai-panel-title">Route Selection</h2>
             </div>
             <div className="form-row" style={{ marginBottom: 'var(--sp-3)' }}>
               <div className="form-group">
@@ -208,8 +205,7 @@ export default function AiDispatchPage() {
           {/* Fuel Predictor */}
           <div className="ai-panel">
             <div className="ai-panel-header">
-              <Fuel size={16} color="var(--accent-warning)" />
-              <h2 className="ai-panel-title">Fuel Consumption Predictor</h2>
+              <h2 className="ai-panel-title">Fuel Estimate</h2>
             </div>
             <div className="form-row">
               <div className="form-group">
