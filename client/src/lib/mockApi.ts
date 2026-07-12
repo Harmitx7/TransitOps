@@ -61,30 +61,36 @@ mock.onGet('/auth/me').reply((config) => {
 mock.onGet('/dashboard/stats').reply(200, mockStats);
 
 // VEHICLES
-mock.onGet(/\/vehicles.*/).reply(200, mockVehicles);
+mock.onGet(/\/vehicles(\?.*)?$/).reply(200, { data: mockVehicles, total: mockVehicles.length });
+mock.onGet(/\/vehicles\/.+/).reply(200, mockVehicles[0]);
 mock.onPost('/vehicles').reply(201, mockVehicles[0]);
 mock.onPut(/\/vehicles\/.+/).reply(200, mockVehicles[0]);
 
 // DRIVERS
-mock.onGet(/\/drivers.*/).reply(200, mockDrivers);
+mock.onGet(/\/drivers(\?.*)?$/).reply(200, { data: mockDrivers, total: mockDrivers.length });
+mock.onGet(/\/drivers\/.+/).reply(200, mockDrivers[0]);
 mock.onPost('/drivers').reply(201, mockDrivers[0]);
 mock.onPut(/\/drivers\/.+/).reply(200, mockDrivers[0]);
 
 // TRIPS
-mock.onGet(/\/trips.*/).reply(200, mockTrips);
+mock.onGet(/\/trips(\?.*)?$/).reply(200, { data: mockTrips, total: mockTrips.length });
+mock.onGet(/\/trips\/.+/).reply(200, mockTrips[0]);
 mock.onPost('/trips').reply(201, mockTrips[0]);
 
 // MAINTENANCE
-mock.onGet(/\/maintenance.*/).reply(200, []);
+mock.onGet(/\/maintenance(\?.*)?$/).reply(200, { data: [], total: 0 });
 
 // FUEL & EXPENSES
-mock.onGet(/\/fuel.*/).reply(200, []);
-mock.onGet(/\/expenses.*/).reply(200, []);
+mock.onGet(/\/fuel(\?.*)?$/).reply(200, { data: [], total: 0 });
+mock.onGet(/\/expenses(\?.*)?$/).reply(200, { data: [], total: 0 });
 
 // NOTIFICATIONS
-mock.onGet(/\/notifications.*/).reply(200, [
-  { id: 'n1', type: 'WARNING', title: 'License Expiring', message: 'Driver Rajesh Yadav license expires in 7 days.', read: false, createdAt: new Date().toISOString() }
-]);
+mock.onGet(/\/notifications(\?.*)?$/).reply(200, { 
+  data: [
+    { id: 'n1', type: 'WARNING', title: 'License Expiring', message: 'Driver Rajesh Yadav license expires in 7 days.', read: false, createdAt: new Date().toISOString() }
+  ],
+  total: 1
+});
 
 // SEARCH
 mock.onGet(/\/search.*/).reply(200, { vehicles: mockVehicles, drivers: mockDrivers, trips: mockTrips });
