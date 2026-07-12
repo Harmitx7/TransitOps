@@ -168,8 +168,8 @@ export default function FuelPage() {
     <div className="fuel-page page-enter">
       <div className="page-header">
         <div>
-          <h1 className="text-h1">Fuel &amp; Expenses</h1>
-          <p className="text-secondary" style={{ fontSize: 'var(--text-sm)', marginTop: 4 }}>
+          <h1 className="text-h1"><Fuel size={24} className="text-accent" /> FUEL &amp; EXPENSES</h1>
+          <p className="text-secondary">
             Financial tracking center
           </p>
         </div>

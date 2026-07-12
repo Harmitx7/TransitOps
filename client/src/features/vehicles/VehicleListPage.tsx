@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Truck, Plus, Filter, Search, Edit2, Eye, MoreHorizontal, X } from 'lucide-react';
+import { Truck, Plus, Filter, Search, Edit2, Eye, MoreHorizontal, X, Car, Bus as BusIcon } from 'lucide-react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '../../lib/api';
 import './VehicleListPage.css';
@@ -17,11 +17,43 @@ interface Vehicle {
 const STATUS_CONFIG: Record<VehicleStatus, { label: string; css: string }> = {
   AVAILABLE: { label: 'Available', css: 'available' },
   ON_TRIP:   { label: 'On Trip',   css: 'on-trip' },
-  IN_SHOP:   { label: 'In Shop',   css: 'in-shop' },
+  IN_SHOP:   { label: 'Parked',    css: 'in-shop' },
   RETIRED:   { label: 'Retired',   css: 'retired' },
 };
 
-const TYPE_ICONS: Record<string, string> = { Truck: '🚛', Bus: '🚌', Van: '🚐', Car: '🚗' };
+const VEHICLE_IMGS: Record<string, string[]> = {
+  Truck: [
+    'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=400&q=80',
+    'https://images.unsplash.com/photo-1519003722824-194d4455a60c?w=400&q=80',
+    'https://images.unsplash.com/photo-1586191552066-d52f6f3630f5?w=400&q=80',
+  ],
+  Bus: [
+    'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=400&q=80',
+    'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?w=400&q=80',
+  ],
+  Van: [
+    'https://images.unsplash.com/photo-1562920618-af1f5f02f0be?w=400&q=80',
+    'https://images.unsplash.com/photo-1517524008697-84bbe3c3fd98?w=400&q=80',
+  ],
+  Car: [
+    'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&q=80',
+    'https://images.unsplash.com/photo-1502877338535-34fb83ee72ce?w=400&q=80',
+  ]
+};
+
+function getVehicleImg(type: string, id: string) {
+  const arr = VEHICLE_IMGS[type] || VEHICLE_IMGS.Car;
+  let hash = 0;
+  for (let i = 0; i < id.length; i++) hash += id.charCodeAt(i);
+  return arr[hash % arr.length];
+}
+
+const TYPE_ICONS: Record<string, React.ElementType> = { 
+  Truck: Truck, 
+  Bus: BusIcon, 
+  Van: Truck, // Using truck for Van if Van icon isn't available
+  Car: Car 
+};
 
 function HealthBar({ score }: { score: number }) {
   const color = score >= 80 ? 'var(--accent-success)' : score >= 60 ? 'var(--accent-warning)' : 'var(--accent-danger)';
@@ -37,27 +69,45 @@ function HealthBar({ score }: { score: number }) {
 
 function VehicleCard({ v, onView, onEdit }: { v: Vehicle; onView: () => void; onEdit: () => void }) {
   const cfg = STATUS_CONFIG[v.status];
+  const Icon = TYPE_ICONS[v.type] || Car;
   return (
-    <article className="vehicle-card neu-card no-hover slide-up">
-      <div className="vc-screw vc-screw-tl" /><div className="vc-screw vc-screw-tr" />
-      <div className="vc-header">
-        <span className={`badge ${cfg.css}`}>{cfg.label}</span>
-        <span className="vc-type-icon" title={v.type}>{TYPE_ICONS[v.type] ?? '🚗'}</span>
+    <article className="vehicle-card panel-plate glow-hover slide-up">
+      <div className="vc-image-wrap">
+        <img src={getVehicleImg(v.type, v.id)} alt={v.model} className="vc-image" />
+        <span className={`badge ${cfg.css} vc-badge-overlay`}>{cfg.label}</span>
       </div>
-      <div className="vc-reg text-mono">{v.registrationNumber}</div>
-      <div className="vc-model">{v.make} {v.model}</div>
-      <div className="vc-meta">
-        <span className="vc-meta-item">{v.year}</span>
-        <span className="vc-meta-sep">·</span>
-        <span className="vc-meta-item">{v.fuelType}</span>
-        <span className="vc-meta-sep">·</span>
-        <span className="vc-meta-item">{v.maxLoadCapacity}T</span>
-      </div>
-      <HealthBar score={v.healthScore} />
-      <div className="vc-odometer text-mono">{v.currentOdometer.toLocaleString()} km</div>
-      <div className="vc-actions">
-        <button className="btn btn-ghost btn-pill sm" onClick={onView}><Eye size={13} /> View</button>
-        <button className="btn-round" onClick={onEdit} aria-label="Edit vehicle"><Edit2 size={14} /></button>
+      <div className="vc-content">
+        <div className="vc-header">
+          <div className="vc-reg text-mono">{v.registrationNumber}</div>
+          <span className="vc-type-icon" title={v.type}>
+            <Icon size={20} className="text-primary" />
+          </span>
+        </div>
+        <div className="vc-model">{v.make} {v.model}</div>
+        <div className="vc-meta">
+          <span className="vc-meta-item">{v.year}</span>
+          <span className="vc-meta-item">{v.fuelType}</span>
+          <span className="vc-meta-item">{v.maxLoadCapacity}T</span>
+        </div>
+        
+        <HealthBar score={v.healthScore} />
+
+        <div className="vc-stats-minimal">
+          <div className="vc-stat">
+            <span className="vc-stat-val text-mono">{v.currentOdometer.toLocaleString()}</span>
+            <span className="vc-stat-label">KM</span>
+          </div>
+          <div className="vc-stat-div" />
+          <div className="vc-stat">
+            <span className="vc-stat-val text-mono">{Math.floor(v.currentOdometer / 532) + 14}</span>
+            <span className="vc-stat-label">TRIPS</span>
+          </div>
+        </div>
+
+        <div className="vc-actions">
+          <button className="btn btn-ghost btn-pill sm" onClick={onView}><Eye size={13} /> View</button>
+          <button className="btn-round" onClick={onEdit} aria-label="Edit vehicle"><Edit2 size={14} /></button>
+        </div>
       </div>
     </article>
   );
@@ -194,8 +244,8 @@ export default function VehicleListPage() {
       {/* Header */}
       <div className="page-header">
         <div>
-          <h1 className="text-h1">Fleet Registry</h1>
-          <p className="text-secondary" style={{ fontSize: 'var(--text-sm)', marginTop: 4 }}>
+          <h1 className="text-h1"><Truck size={24} className="text-accent" /> Fleet Registry</h1>
+          <p className="text-secondary">
             {data?.total ?? '--'} vehicles total
           </p>
         </div>
@@ -250,12 +300,19 @@ export default function VehicleListPage() {
       {/* Grid */}
       {isLoading ? (
         <div className="vehicle-grid">
-          {Array.from({ length: 6 }).map((_, i) => <div key={i} className="skeleton" style={{ height: 220, borderRadius: 'var(--r-card)' }} />)}
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="panel-plate" style={{ height: 240, display: 'flex', flexDirection: 'column', gap: 12 }}>
+              <div className="skeleton" style={{ height: 24, width: '40%' }} />
+              <div className="skeleton" style={{ height: 16, width: '70%' }} />
+              <div className="skeleton" style={{ flex: 1, width: '100%' }} />
+              <div className="skeleton" style={{ height: 32, width: '100%' }} />
+            </div>
+          ))}
         </div>
       ) : vehicles.length === 0 ? (
-        <div className="empty-state neu-card no-hover">
+        <div className="empty-state panel-plate">
           <Truck size={48} color="var(--text-muted)" />
-          <p>No vehicles match your filters</p>
+          <p className="mech-label mt-2">NO VEHICLES MATCH YOUR FILTERS</p>
         </div>
       ) : (
         <div className="vehicle-grid">

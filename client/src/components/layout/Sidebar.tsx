@@ -2,26 +2,54 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import {
   Gauge, Truck, Users, Route, Wrench, Fuel,
   FileBarChart, MapPin, ClipboardCheck, Camera,
-  Brain, Bell, Settings, LogOut, ChevronRight
+  Cpu, CalendarCheck, Settings, LogOut, ChevronRight
 } from 'lucide-react';
 import { useAuthStore } from '../../store/useAuthStore';
 import './Sidebar.css';
 
-const navItems = [
-  { icon: Gauge,          label: 'Dashboard',    to: '/' },
-  { icon: Truck,          label: 'Fleet',        to: '/vehicles' },
-  { icon: Users,          label: 'Drivers',      to: '/drivers' },
-  { icon: Route,          label: 'Trips',        to: '/trips' },
-  { icon: Wrench,         label: 'Maintenance',  to: '/maintenance' },
-  { icon: Fuel,           label: 'Fuel & Costs', to: '/fuel' },
-  { icon: FileBarChart,   label: 'Reports',      to: '/reports' },
-  { icon: MapPin,         label: 'Live Map',     to: '/map' },
-  { icon: ClipboardCheck, label: 'Inspections',  to: '/inspections' },
-  { icon: Camera,         label: 'CV Monitor',   to: '/cv' },
-  { icon: Brain,          label: 'AI Dispatch',  to: '/ai' },
-  { icon: Bell,           label: 'Alerts',       to: '/notifications' },
-  { icon: Settings,       label: 'Settings',     to: '/settings' },
+type NavGroup = { section: string; items: { icon: React.ElementType; label: string; to: string }[] };
+
+const navGroups: NavGroup[] = [
+  {
+    section: 'Overview',
+    items: [
+      { icon: Gauge,         label: 'Dashboard',        to: '/' },
+      { icon: MapPin,        label: 'Live Map',         to: '/map' },
+    ],
+  },
+  {
+    section: 'Fleet & Drivers',
+    items: [
+      { icon: Truck,         label: 'Vehicles',         to: '/vehicles' },
+      { icon: Users,         label: 'Drivers',          to: '/drivers' },
+      { icon: Route,         label: 'Trips',            to: '/trips' },
+    ],
+  },
+  {
+    section: 'Operations',
+    items: [
+      { icon: Wrench,        label: 'Workshop',         to: '/maintenance' },
+      { icon: Fuel,          label: 'Fuel & Costs',     to: '/fuel' },
+      { icon: ClipboardCheck,label: 'Inspections',      to: '/inspections' },
+    ],
+  },
+  {
+    section: 'Intelligence',
+    items: [
+      { icon: Camera,        label: 'Cabin Cams',       to: '/cv' },
+      { icon: Cpu,           label: 'Smart Routing',    to: '/ai' },
+      { icon: CalendarCheck, label: 'Incidents',        to: '/events' },
+    ],
+  },
+  {
+    section: 'System',
+    items: [
+      { icon: FileBarChart,  label: 'Reports',          to: '/reports' },
+      { icon: Settings,      label: 'Settings',         to: '/settings' },
+    ],
+  },
 ];
+
 
 export default function Sidebar() {
   const { user, logout } = useAuthStore();
@@ -60,17 +88,24 @@ export default function Sidebar() {
 
       {/* Nav */}
       <nav className="sidebar-nav" aria-label="Main navigation">
-        {navItems.map(({ icon: Icon, label, to }) => (
-          <NavLink
-            key={to}
-            to={to}
-            end={to === '/'}
-            className={({ isActive }) => `sidebar-item${isActive ? ' active' : ''}`}
-          >
-            <Icon size={18} aria-hidden="true" />
-            <span>{label}</span>
-            <ChevronRight size={14} className="sidebar-chevron" aria-hidden="true" />
-          </NavLink>
+        {navGroups.map((group) => (
+          <div key={group.section} className="sidebar-group">
+            <h3 className="sidebar-group-title mech-label">{group.section}</h3>
+            {group.items.map(({ icon: Icon, label, to }) => (
+              <NavLink
+                key={to}
+                to={to}
+                end={to === '/'}
+                className={({ isActive }) => `sidebar-item${isActive ? ' active' : ''}`}
+              >
+                <Icon size={18} className="sidebar-icon" />
+                <div className="sidebar-item-text">
+                  <span className="sidebar-item-label">{label}</span>
+                </div>
+                <ChevronRight size={14} className="sidebar-chevron" />
+              </NavLink>
+            ))}
+          </div>
         ))}
       </nav>
 

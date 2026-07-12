@@ -41,8 +41,8 @@ function useMockEAR(): { ear: number; status: 'NORMAL' | 'DROWSY' | 'ALERT'; ale
 }
 
 /* ── Camera Feed (Demo Mode) ── */
-function CameraFeed({ driverName, tripNumber, onRemove }: {
-  driverName: string; tripNumber: string; onRemove: () => void;
+function CameraFeed({ driverName, tripNumber, imgIndex, onRemove }: {
+  driverName: string; tripNumber: string; imgIndex: number; onRemove: () => void;
 }) {
   const { ear, status, alertCount } = useMockEAR();
   const r = 22; const circ = 2 * Math.PI * r;
@@ -65,7 +65,8 @@ function CameraFeed({ driverName, tripNumber, onRemove }: {
       </div>
 
       {/* Simulated video frame */}
-      <div className="cam-video-area">
+      <div className="cam-video-area" style={{ position: 'relative' }}>
+        <img src={`/assets/cam${(imgIndex % 4) + 1}.png`} alt="Live Feed" style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0, opacity: 0.8 }} />
         <div className="cam-face-sim">
           <div className="cam-face-oval" />
           {/* Eye indicators */}
@@ -180,8 +181,10 @@ function LprSection() {
 
 /* ── Mock drivers for feeds ── */
 const MOCK_FEEDS = [
-  { driverName: 'Rajesh Yadav', tripNumber: 'TRP-0041' },
-  { driverName: 'Suresh Patel', tripNumber: 'TRP-0042' },
+  { driverName: 'Rajesh Yadav', tripNumber: 'TRP-0041', imgIndex: 0 },
+  { driverName: 'Suresh Patel', tripNumber: 'TRP-0042', imgIndex: 1 },
+  { driverName: 'Amit Singh', tripNumber: 'TRP-0043', imgIndex: 2 },
+  { driverName: 'Manoj Kumar', tripNumber: 'TRP-0044', imgIndex: 3 },
 ];
 
 /* ── Main Page ── */
@@ -190,22 +193,22 @@ export default function CvDashboardPage() {
 
   const addFeed = () => {
     if (feeds.length >= 6) return;
-    setFeeds(f => [...f, { driverName: `Driver ${f.length + 1}`, tripNumber: `TRP-00${43 + f.length}` }]);
+    setFeeds(f => [...f, { driverName: `Driver ${f.length + 1}`, tripNumber: `TRP-00${43 + f.length}`, imgIndex: f.length }]);
   };
 
   return (
     <div className="cv-page page-enter">
       <div className="page-header">
         <div>
-          <h1 className="text-h1" style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-2)' }}>
-            <Eye size={22} color="var(--accent-primary)" /> Safety Monitor
+          <h1 className="text-h1">
+            <Eye size={22} className="text-accent" /> SAFETY MONITOR
           </h1>
-          <p className="text-secondary" style={{ fontSize: 'var(--text-sm)', marginTop: 4 }}>
+          <p className="text-secondary">
             Real-time drowsiness detection · {feeds.length} active feed{feeds.length !== 1 ? 's' : ''}
           </p>
         </div>
         <button className="btn btn-pill" onClick={addFeed} disabled={feeds.length >= 6}>
-          <Plus size={14} /> Add Feed
+          <Plus size={14} /> ADD FEED
         </button>
       </div>
 

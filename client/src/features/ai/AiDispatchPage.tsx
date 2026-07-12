@@ -130,10 +130,10 @@ export default function AiDispatchPage() {
     <div className="ai-page page-enter">
       <div className="page-header">
         <div>
-          <h1 className="text-h1" style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-2)' }}>
-            <Brain size={24} color="var(--accent-primary)" /> AI Operations Center
+          <h1 className="text-h1">
+            <Brain size={24} className="text-accent" /> AI OPERATIONS CENTER
           </h1>
-          <p className="text-secondary" style={{ fontSize: 'var(--text-sm)', marginTop: 4 }}>
+          <p className="text-secondary">
             Intelligent dispatch recommendations and route optimization
           </p>
         </div>

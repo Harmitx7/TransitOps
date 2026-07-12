@@ -46,12 +46,23 @@ function SafetyGauge({ score }: { score: number }) {
   );
 }
 
+// High-quality avatars selected from randomuser.me that look like Indian/South-Asian men
+const INDIAN_AVATAR_IDS = [3, 8, 11, 18, 22, 27, 33, 38, 41, 43, 46, 51, 55, 59, 61, 66, 71, 75, 83, 86, 90, 93, 96];
+
 function DriverAvatar({ driver }: { driver: Driver }) {
   const score = driver.safetyScore;
-  const bg = score >= 80 ? 'var(--accent-success)' : score >= 60 ? 'var(--accent-warning)' : 'var(--accent-danger)';
+  const ringColor = score >= 80 ? 'var(--accent-success)' : score >= 60 ? 'var(--accent-warning)' : 'var(--accent-danger)';
+  
+  // Consistent pseudo-random hash based on name
+  const hash = (driver.firstName.charCodeAt(0) + (driver.lastName.charCodeAt(0) || 0)) || 0;
+  const avatarId = INDIAN_AVATAR_IDS[hash % INDIAN_AVATAR_IDS.length];
+  
   return (
-    <div className="driver-avatar" style={{ background: bg }}>
-      {driver.firstName[0]}{driver.lastName[0]}
+    <div className="driver-avatar" style={{ border: `2px solid ${ringColor}`, padding: '2px', background: 'var(--bg-sunken)' }}>
+      <img 
+        src={`https://randomuser.me/api/portraits/men/${avatarId}.jpg`} 
+        alt={`${driver.firstName} ${driver.lastName}`} 
+      />
     </div>
   );
 }
@@ -59,22 +70,53 @@ function DriverAvatar({ driver }: { driver: Driver }) {
 function DriverCard({ d, onView, onEdit }: { d: Driver; onView: () => void; onEdit: () => void }) {
   const cfg = STATUS_CONFIG[d.status];
   return (
-    <article className="driver-card neu-card no-hover slide-up">
-      <div className="dc-screw dc-screw-tl" /><div className="dc-screw dc-screw-tr" />
-      <div className="dc-header">
-        <DriverAvatar driver={d} />
-        <SafetyGauge score={d.safetyScore} />
+    <article className="driver-card slide-up">
+      <div className="id-lanyard-hole"></div>
+      <div className="id-header">
+        <div className="id-brand">TransitOps</div>
+        <div className="id-type">CREW ID</div>
       </div>
-      <div className="dc-name">{d.firstName} {d.lastName}</div>
-      <div className="dc-license text-mono">{d.licenseNumber} · {d.licenseCategory}</div>
-      <div className="dc-row">
-        <span className={`badge ${cfg.css}`}>{cfg.label}</span>
-        <LicenseExpiryBadge expiry={d.licenseExpiry} />
+      <div className="id-body">
+        <div className="id-photo-section">
+          <DriverAvatar driver={d} />
+          <div className="id-safety">
+            <SafetyGauge score={d.safetyScore} />
+          </div>
+        </div>
+        <div className="id-details">
+          <div className="id-name">{d.firstName} {d.lastName}</div>
+          <div className="id-field">
+            <span className="id-label">LICENSE NO.</span>
+            <span className="id-value text-mono">{d.licenseNumber}</span>
+          </div>
+          <div className="id-field-group">
+            <div className="id-field">
+              <span className="id-label">CAT</span>
+              <span className="id-value">{d.licenseCategory}</span>
+            </div>
+            <div className="id-field">
+              <span className="id-label">EXPIRY</span>
+              <LicenseExpiryBadge expiry={d.licenseExpiry} />
+            </div>
+            <div className="id-field">
+              <span className="id-label">STATUS</span>
+              <span className={`badge ${cfg.css}`}>{cfg.label}</span>
+            </div>
+          </div>
+          <div className="id-field">
+            <span className="id-label">PHONE</span>
+            <span className="id-value">{d.phone}</span>
+          </div>
+        </div>
       </div>
-      <div className="dc-phone">{d.phone}</div>
-      <div className="dc-actions">
-        <button className="btn btn-ghost btn-pill sm" onClick={onView}><Eye size={13} /> View</button>
-        <button className="btn-round" onClick={onEdit} aria-label="Edit driver"><Edit2 size={14} /></button>
+      <div className="id-footer">
+        <div className="id-barcode-wrap">
+          <div className="id-barcode"></div>
+        </div>
+        <div className="dc-actions">
+          <button className="btn btn-ghost btn-pill sm" onClick={onView}><Eye size={13} /> View</button>
+          <button className="btn-round" onClick={onEdit} aria-label="Edit driver"><Edit2 size={14} /></button>
+        </div>
       </div>
     </article>
   );
@@ -201,8 +243,8 @@ export default function DriverListPage() {
     <div className="dl-page page-enter">
       <div className="page-header">
         <div>
-          <h1 className="text-h1">Driver Management</h1>
-          <p className="text-secondary" style={{ fontSize: 'var(--text-sm)', marginTop: 4 }}>
+          <h1 className="text-h1"><Users size={24} className="text-accent" /> Driver Registry</h1>
+          <p className="text-secondary">
             {data?.total ?? '--'} drivers registered
           </p>
         </div>
@@ -254,12 +296,23 @@ export default function DriverListPage() {
 
       {isLoading ? (
         <div className="driver-grid">
-          {Array.from({ length: 6 }).map((_, i) => <div key={i} className="skeleton" style={{ height: 240, borderRadius: 'var(--r-card)' }} />)}
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="panel-plate" style={{ height: 260, display: 'flex', flexDirection: 'column', gap: 12 }}>
+              <div style={{ display: 'flex', gap: 16 }}>
+                <div className="skeleton" style={{ width: 48, height: 48, borderRadius: 8 }} />
+                <div className="skeleton" style={{ width: 48, height: 48, borderRadius: '50%' }} />
+              </div>
+              <div className="skeleton" style={{ height: 24, width: '60%' }} />
+              <div className="skeleton" style={{ height: 16, width: '80%' }} />
+              <div className="skeleton" style={{ flex: 1, width: '100%' }} />
+              <div className="skeleton" style={{ height: 32, width: '100%' }} />
+            </div>
+          ))}
         </div>
       ) : drivers.length === 0 ? (
-        <div className="empty-state neu-card no-hover">
+        <div className="empty-state panel-plate">
           <Users size={48} color="var(--text-muted)" />
-          <p>No drivers match your filters</p>
+          <p className="mech-label mt-2">NO DRIVERS MATCH YOUR FILTERS</p>
         </div>
       ) : (
         <div className="driver-grid">

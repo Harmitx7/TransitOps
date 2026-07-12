@@ -205,13 +205,13 @@ export default function MaintenancePage() {
     <div className="maint-page page-enter">
       <div className="page-header">
         <div>
-          <h1 className="text-h1">Maintenance Center</h1>
-          <p className="text-secondary" style={{ fontSize: 'var(--text-sm)', marginTop: 4 }}>
+          <h1 className="text-h1"><Wrench size={24} className="text-accent" /> MAINTENANCE CENTER</h1>
+          <p className="text-secondary">
             {data?.total ?? '--'} total records
           </p>
         </div>
         <button className="btn btn-pill" onClick={() => setShowModal(true)}>
-          <Plus size={14} /> Schedule Maintenance
+          <Plus size={14} /> SCHEDULE WORK
         </button>
       </div>
 

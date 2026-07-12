@@ -43,60 +43,81 @@ function LifecycleBar({ status }: { status: TripStatus }) {
   );
 }
 
-function TripRow({ t, onClick }: { t: Trip; onClick: () => void }) {
+function TicketCard({ t, onClick }: { t: Trip; onClick: () => void }) {
   const cfg = STATUS_CONFIG[t.status];
   const isActive = t.status === 'IN_PROGRESS';
-  return (
-    <tr className={`trip-row ${isActive ? 'trip-active' : ''}`} onClick={onClick}>
-      <td>
-        <span className="trip-number text-mono">{t.tripNumber}</span>
-        {isActive && <span className="trip-live-dot" title="Live" />}
-      </td>
-      <td>
-        <div className="trip-route">
-          <span className="trip-src">{t.source}</span>
-          <Route size={12} className="trip-arrow" aria-hidden="true" />
-          <span className="trip-dest">{t.destination}</span>
-        </div>
-      </td>
-      <td className="text-mono text-sm">{t.vehicle.registrationNumber}</td>
-      <td>{t.driver.firstName} {t.driver.lastName}</td>
-      <td><span className={`badge ${cfg.css}`}>{cfg.label}</span></td>
-      <td className="text-mono text-sm">{t.distancePlanned ? `${t.distancePlanned} km` : '--'}</td>
-      <td className="text-mono text-sm">{t.revenue ? `₹${(t.revenue / 1000).toFixed(0)}K` : '--'}</td>
-      <td>
-        <button className="btn btn-ghost btn-pill sm" onClick={e => { e.stopPropagation(); onClick(); }}>
-          <Eye size={13} /> View
-        </button>
-      </td>
-    </tr>
-  );
-}
+  
+  // Fake airport-like codes from city names
+  const srcCode = t.source.substring(0, 3).toUpperCase();
+  const destCode = t.destination.substring(0, 3).toUpperCase();
 
-/* Mobile Trip Card */
-function TripCard({ t, onClick }: { t: Trip; onClick: () => void }) {
-  const cfg = STATUS_CONFIG[t.status];
-  const isActive = t.status === 'IN_PROGRESS';
   return (
-    <div className={`trip-card neu-card no-hover ${isActive ? 'trip-card-active' : ''}`} onClick={onClick}>
-      <div className="tc-header">
-        <span className="trip-number text-mono">{t.tripNumber}</span>
-        <span className={`badge ${cfg.css}`}>{cfg.label}</span>
+    <div className={`ticket-card ${isActive ? 'ticket-active' : ''}`} onClick={onClick}>
+      
+      {/* Left side: Main Ticket Body */}
+      <div className="ticket-body">
+        <div className="ticket-route-grid">
+          <div className="ticket-city text-left">
+            <div className="city-code text-mono">{srcCode}</div>
+            <div className="city-name">{t.source}</div>
+          </div>
+          
+          <div className="ticket-flight-path">
+            <span className="flight-dot left" />
+            <div className="flight-line" />
+            <Route size={16} className="flight-icon" />
+            <div className="flight-line" />
+            <span className="flight-dot right" />
+            <div className="flight-distance text-mono">{t.distancePlanned ? `${t.distancePlanned} km` : 'TBD'}</div>
+          </div>
+          
+          <div className="ticket-city text-right">
+            <div className="city-code text-mono">{destCode}</div>
+            <div className="city-name">{t.destination}</div>
+          </div>
+        </div>
+        
+        <div className="ticket-meta">
+          <div className="meta-group">
+            <span className="meta-label">VEHICLE</span>
+            <span className="meta-val text-mono">{t.vehicle.registrationNumber}</span>
+          </div>
+          <div className="meta-group">
+            <span className="meta-label">DRIVER</span>
+            <span className="meta-val">{t.driver.firstName} {t.driver.lastName}</span>
+          </div>
+          {t.scheduledStart && (
+            <div className="meta-group">
+              <span className="meta-label">SCHEDULED</span>
+              <span className="meta-val">{new Date(t.scheduledStart).toLocaleDateString()}</span>
+            </div>
+          )}
+        </div>
+        {isActive && <LifecycleBar status={t.status} />}
       </div>
-      <div className="tc-route">
-        <MapPin size={12} style={{ color: 'var(--accent-success)', flexShrink: 0 }} />
-        <span>{t.source}</span>
-        <Route size={12} style={{ color: 'var(--text-muted)' }} />
-        <span>{t.destination}</span>
-        <MapPin size={12} style={{ color: 'var(--accent-danger)', flexShrink: 0 }} />
+      
+      {/* Dashed divider with cutouts */}
+      <div className="ticket-divider" />
+      
+      {/* Right side: Ticket Stub */}
+      <div className="ticket-stub">
+        <div className="stub-header">
+          <span className="meta-label">TRIP ID</span>
+          <span className="stub-val text-mono">{t.tripNumber}</span>
+        </div>
+        
+        <div className="stub-status">
+          <span className={`badge ${cfg.css}`}>{cfg.label}</span>
+          {isActive && <span className="trip-live-dot" title="Live" />}
+        </div>
+        
+        <div className="stub-action">
+          <button className="btn btn-ghost btn-pill sm" onClick={e => { e.stopPropagation(); onClick(); }}>
+            <Eye size={13} /> View
+          </button>
+        </div>
       </div>
-      <div className="tc-meta">
-        <span>{t.vehicle.registrationNumber}</span>
-        <span>·</span>
-        <span>{t.driver.firstName} {t.driver.lastName}</span>
-        {t.distancePlanned && <><span>·</span><span>{t.distancePlanned} km</span></>}
-      </div>
-      {isActive && <LifecycleBar status={t.status} />}
+      
     </div>
   );
 }
@@ -128,14 +149,14 @@ export default function TripListPage() {
     <div className="tl-page page-enter">
       <div className="page-header">
         <div>
-          <h1 className="text-h1">Trip Operations</h1>
-          <p className="text-secondary" style={{ fontSize: 'var(--text-sm)', marginTop: 4 }}>
+          <h1 className="text-h1"><Route size={24} className="text-accent" /> TRIP OPERATIONS</h1>
+          <p className="text-secondary">
             {activeCount > 0 && <><span className="live-badge"><Activity size={10} /> {activeCount} Live</span> · </>}
             {data?.total ?? '--'} total trips
           </p>
         </div>
         <button className="btn btn-pill" onClick={() => navigate('/trips/new')}>
-          <Plus size={14} /> New Trip
+          <Plus size={14} /> NEW TRIP
         </button>
       </div>
 
@@ -151,10 +172,10 @@ export default function TripListPage() {
         ))}
       </div>
 
-      {/* Desktop Table */}
+      {/* Ticket List */}
       {isLoading ? (
         <div className="trip-skeleton">
-          {Array.from({ length: 5 }).map((_, i) => <div key={i} className="skeleton" style={{ height: 52 }} />)}
+          {Array.from({ length: 5 }).map((_, i) => <div key={i} className="skeleton" style={{ height: 140, borderRadius: 12 }} />)}
         </div>
       ) : trips.length === 0 ? (
         <div className="empty-state neu-card no-hover">
@@ -163,25 +184,9 @@ export default function TripListPage() {
           <button className="btn btn-pill sm" onClick={() => navigate('/trips/new')}><Plus size={14} /> Create Trip</button>
         </div>
       ) : (
-        <>
-          <div className="trip-table-wrap">
-            <table className="trip-table">
-              <thead>
-                <tr>
-                  <th>Trip #</th><th>Route</th><th>Vehicle</th><th>Driver</th>
-                  <th>Status</th><th>Distance</th><th>Revenue</th><th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {trips.map(t => <TripRow key={t.id} t={t} onClick={() => navigate(`/trips/${t.id}`)} />)}
-              </tbody>
-            </table>
-          </div>
-          {/* Mobile Cards */}
-          <div className="trip-cards-mobile">
-            {trips.map(t => <TripCard key={t.id} t={t} onClick={() => navigate(`/trips/${t.id}`)} />)}
-          </div>
-        </>
+        <div className="ticket-list-wrap">
+          {trips.map(t => <TicketCard key={t.id} t={t} onClick={() => navigate(`/trips/${t.id}`)} />)}
+        </div>
       )}
     </div>
   );
