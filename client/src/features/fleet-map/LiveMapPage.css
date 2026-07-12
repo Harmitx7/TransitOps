@@ -86,7 +86,11 @@
 /* Pulse ring for selected marker */
 @keyframes pulse-ring { 0%,100% { opacity:0.25; transform: scale(1); } 50% { opacity:0.5; transform: scale(1.3); } }
 
-@media (max-width: 700px) {
-  .map-panel.open { width: 200px; }
-  .map-detail-card { width: 180px; }
+@media (max-width: 768px) {
+  .live-map-page { flex-direction: column; }
+  .map-panel { width: 100%; border-right: none; border-bottom: 1px solid var(--neu-dark); height: 200px; min-height: 200px; }
+  .map-panel.open { width: 100%; height: 200px; }
+  .map-canvas-wrap { flex: 1; min-height: 300px; }
+  .map-detail-card { width: auto; left: 12px; right: 12px; bottom: 12px; top: auto; padding: 12px; }
+  .map-legend { display: none; /* Hide legend on mobile to save space */ }
 }

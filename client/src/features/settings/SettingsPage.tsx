@@ -12,6 +12,10 @@ export default function SettingsPage() {
     document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light');
   const [saved, setSaved] = useState(false);
 
+  const isDemoAdmin = user?.role === 'ADMIN';
+  const displayFirstName = isDemoAdmin ? 'Jenil' : user?.firstName;
+  const displayLastName = isDemoAdmin ? 'Soni' : user?.lastName;
+
   const toggleTheme = () => {
     const next = theme === 'dark' ? 'light' : 'dark';
     setTheme(next);
@@ -61,21 +65,21 @@ export default function SettingsPage() {
               <div className="settings-card neu-card no-hover">
                 <div className="profile-avatar-row">
                   <div className="profile-avatar">
-                    {user?.firstName?.[0]}{user?.lastName?.[0]}
+                    {isDemoAdmin ? 'JS' : `${displayFirstName?.[0] || ''}${displayLastName?.[0] || ''}`}
                   </div>
                   <div>
-                    <div className="profile-name">{user?.firstName} {user?.lastName}</div>
+                    <div className="profile-name">{displayFirstName} {displayLastName}</div>
                     <div className="profile-role badge available">{user?.role}</div>
                   </div>
                 </div>
                 <div className="form-row">
                   <div className="form-group">
                     <label className="form-label">First Name</label>
-                    <input className="input-field" defaultValue={user?.firstName} />
+                    <input className="input-field" defaultValue={displayFirstName} />
                   </div>
                   <div className="form-group">
                     <label className="form-label">Last Name</label>
-                    <input className="input-field" defaultValue={user?.lastName} />
+                    <input className="input-field" defaultValue={displayLastName} />
                   </div>
                 </div>
                 <div className="form-group">

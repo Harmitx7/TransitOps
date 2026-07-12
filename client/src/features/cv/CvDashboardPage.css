@@ -194,8 +194,14 @@
 .lpr-matched { justify-content: center; }
 .lpr-actions { display: flex; gap: var(--sp-2); justify-content: center; }
 
-@media (max-width: 700px)  { .cam-grid { grid-template-columns: 1fr; } }
-@media (max-width: 640px)  { .cv-page { padding: var(--sp-4); } }
+@media (max-width: 768px) {
+  .cv-page { padding: 12px; gap: 12px; }
+  .cv-layout { gap: 16px; }
+  .cam-grid { grid-template-columns: 1fr; gap: 12px; }
+  .cv-metrics { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .cv-metric-card { padding: 12px; border-radius: 8px; }
+  .lpr-scan-zone { min-height: 200px; }
+}
 
 /* Shared */
 .page-header { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--sp-4); flex-wrap: wrap; }

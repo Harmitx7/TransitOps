@@ -420,10 +420,22 @@
 }
 
 @media (max-width: 600px) {
-  .dashboard-page { padding: var(--sp-4); gap: var(--sp-4); }
-  .kpi-card { grid-column: span 12; }
+  .dashboard-page { padding: 12px; gap: 12px; }
+  .dashboard-bento { gap: 8px; }
+  .bento-card { padding: 12px; border-radius: 12px; }
+  .kpi-card { grid-column: span 12; padding: 12px; }
   .bento-trend, .bento-alerts { grid-column: span 12; }
-  .kpi-value { font-size: 1.5rem; }
-  .dashboard-header { flex-direction: column; }
-  .dashboard-quick-actions { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; }
+  
+  /* Map and Cams bento should not take up huge vertical space on mobile */
+  .bento-map { grid-column: span 12; min-height: 220px; }
+  .dash-map-container { min-height: 220px; border-radius: 8px; }
+  .bento-cams { grid-column: span 12; min-height: auto; }
+  .cam-grid { grid-template-columns: 1fr; gap: 8px; }
+  .cam-feed { border-radius: 8px; }
+  
+  .kpi-value { font-size: 1.25rem; }
+  .kpi-icon-wrap { width: 36px; height: 36px; }
+  .dashboard-header { flex-direction: column; gap: 8px; }
+  .dashboard-quick-actions { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; gap: 6px; }
+  .dashboard-quick-actions button { font-size: 10px; padding: 6px 10px; }
 }

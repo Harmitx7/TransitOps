@@ -626,4 +626,27 @@
 .live-dot.warning { background: var(--accent-warning); box-shadow: 0 0 6px var(--accent-warning); }
 .live-dot.info    { background: var(--accent-info);    box-shadow: 0 0 6px var(--accent-info); }
 
+/* ── Mobile Compression Layer ─────────────────────────────── */
+@media (max-width: 768px) {
+  :root {
+    --sp-1: 2px;
+    --sp-2: 6px;
+    --sp-3: 10px;
+    --sp-4: 12px;
+    --sp-5: 16px;
+    --sp-6: 24px;
+    --sp-7: 32px;
 
+    --text-h1: 1.25rem;
+    --text-h2: 1.1rem;
+    --text-h3: 1rem;
+    --text-body: 0.85rem;
+    --text-sm: 0.75rem;
+    --text-xs: 0.65rem;
+
+    --r-card: 10px;
+    --r-inner: 6px;
+    
+    --topbar-h: 56px;
+  }
+}
