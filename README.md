@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/image3.png" alt="TransitOps Logo" width="80" />
+  <img src="assets/app-logo.svg" alt="TransitOps Logo" width="80" />
 </p>
 
 <h1 align="center">TransitOps</h1>
@@ -20,6 +20,15 @@
 
 <p align="center">
   Digitizes the complete fleet lifecycle: vehicle registration, driver management, AI dispatch, maintenance, fuel tracking, computer vision safety, financial analytics, and predictive intelligence.
+</p>
+
+<p align="center">
+  <strong><a href="https://odoo-transitops-jenil.vercel.app">Live Demo</a></strong> •
+  <strong><a href="https://drive.google.com/drive/folders/1xlMjWQNHyjsnxTH__hGHoR4EwBsdKkhY?usp=sharing">Google Drive (Video & Assets)</a></strong>
+</p>
+
+<p align="center">
+  <em>Made by <a href="https://harmit.vercel.app">Harmit Kalal</a> | <a href="https://www.jwnil.me">Jenil Soni</a> | Aarth Patel</em>
 </p>
 
 ---
@@ -93,23 +102,29 @@ TransitOps uses a custom **"GaugeOS"** design system inspired by mechanical dash
 
 ### KPI Metrics at a Glance
 
-| Metric | Description |
-|--------|-------------|
-| Total Vehicles | Fleet size with availability gauge |
-| Active Trips | Live trips with capacity utilization |
-| Fleet Utilization | Percentage of fleet currently deployed |
-| Active Drivers | On-duty driver count with safety index |
+<table>
+  <tr>
+    <td align="center"><img src="https://img.shields.io/badge/Total_Vehicles-Fleet_Size_&_Availability-blue" alt="Total Vehicles" /></td>
+    <td align="center"><img src="https://img.shields.io/badge/Active_Trips-Live_Tracking_&_Capacity-green" alt="Active Trips" /></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="https://img.shields.io/badge/Fleet_Utilization-%25_of_Assets_Deployed-orange" alt="Utilization" /></td>
+    <td align="center"><img src="https://img.shields.io/badge/Active_Drivers-On--Duty_&_Safety_Index-purple" alt="Drivers" /></td>
+  </tr>
+</table>
 
 ### Dashboard Modules
 
-- **Bento Grid Layout** with 12-column CSS Grid
-- **Animated Gauge Rings** with conic-gradient fills
-- **Live Camera Feeds** with 16:9 aspect ratio cards
-- **Interactive Map Panel** with Google Maps / Leaflet tiles
-- **Revenue vs Cost Trend Charts** (Recharts)
-- **Fleet Status Donut Chart** with color-coded segments
-- **Quick Action Buttons**: New Trip, Log Fuel, License Plate Scan
-- **Real-time Notification Badge** in the topbar
+<ul>
+  <li><img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/layout-grid.svg" width="16" align="center"/> <b>Bento Grid Layout</b> with 12-column CSS Grid</li>
+  <li><img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/circle-dashed.svg" width="16" align="center"/> <b>Animated Gauge Rings</b> with conic-gradient fills</li>
+  <li><img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/cctv.svg" width="16" align="center"/> <b>Live Camera Feeds</b> with 16:9 aspect ratio cards</li>
+  <li><img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/map.svg" width="16" align="center"/> <b>Interactive Map Panel</b> with Google Maps / Leaflet tiles</li>
+  <li><img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/bar-chart-3.svg" width="16" align="center"/> <b>Revenue vs Cost Trend Charts</b> (Recharts)</li>
+  <li><img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/pie-chart.svg" width="16" align="center"/> <b>Fleet Status Donut Chart</b> with color-coded segments</li>
+  <li><img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/zap.svg" width="16" align="center"/> <b>Quick Action Buttons</b>: New Trip, Log Fuel, License Plate Scan</li>
+  <li><img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/bell.svg" width="16" align="center"/> <b>Real-time Notification Badge</b> in the topbar</li>
+</ul>
 
 ---
 
