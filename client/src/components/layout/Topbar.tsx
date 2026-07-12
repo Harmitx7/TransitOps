@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Bell, Sun, Moon, Search, X, Truck, Users, Route, Camera, Plus, Fuel } from 'lucide-react';
+import { Bell, Sun, Moon, Search, X, Truck, Users, Route, Camera, Plus, Fuel, AlertTriangle, CheckCircle2, Wrench } from 'lucide-react';
 import { useThemeStore } from '../../store/useThemeStore';
 import { useAuthStore } from '../../store/useAuthStore';
 import { useLprStore } from '../../store/useLprStore';
@@ -23,7 +23,20 @@ export default function Topbar() {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<SearchResult | null>(null);
   const [searching, setSearching] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
   const searchRef = useRef<HTMLInputElement>(null);
+  const notifRef = useRef<HTMLDivElement>(null);
+
+  // Close notif on outside click
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      if (notifOpen && notifRef.current && !notifRef.current.contains(e.target as Node)) {
+        setNotifOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [notifOpen]);
 
   // Cmd+K shortcut
   useEffect(() => {
@@ -105,10 +118,50 @@ export default function Topbar() {
             {theme === 'light' ? <Moon size={16} aria-hidden="true" /> : <Sun size={16} aria-hidden="true" />}
           </button>
 
-          <button className="btn-round topbar-bell" onClick={() => navigate('/notifications')} aria-label="Notifications">
-            <Bell size={16} aria-hidden="true" />
-            <span className="topbar-badge" aria-label="4 unread notifications">4</span>
-          </button>
+          <div style={{ position: 'relative' }} ref={notifRef}>
+            <button className="btn-round topbar-bell" onClick={() => setNotifOpen(!notifOpen)} aria-label="Notifications">
+              <Bell size={16} aria-hidden="true" />
+              <span className="topbar-badge" aria-label="4 unread notifications">4</span>
+            </button>
+            
+            {notifOpen && (
+              <div className="notif-dropdown slide-up">
+                <div className="notif-header">
+                  <h3 style={{ margin: 0, fontSize: 'var(--text-sm)', fontWeight: 700 }}>Notifications</h3>
+                  <button className="btn-ghost" style={{ fontSize: 'var(--text-xs)', padding: '4px 8px' }}>Mark all read</button>
+                </div>
+                <div className="notif-list">
+                  <div className="notif-item unread">
+                    <div className="notif-icon-wrap danger"><AlertTriangle size={14} /></div>
+                    <div className="notif-content">
+                      <div className="notif-title">Drowsiness Alert</div>
+                      <div className="notif-desc">Driver Rajesh (MH12AB) showed signs of fatigue.</div>
+                      <div className="notif-time">2m ago</div>
+                    </div>
+                  </div>
+                  <div className="notif-item unread">
+                    <div className="notif-icon-wrap success"><CheckCircle2 size={14} /></div>
+                    <div className="notif-content">
+                      <div className="notif-title">Trip Completed</div>
+                      <div className="notif-desc">TR260012 arrived safely at destination.</div>
+                      <div className="notif-time">15m ago</div>
+                    </div>
+                  </div>
+                  <div className="notif-item">
+                    <div className="notif-icon-wrap warning"><Wrench size={14} /></div>
+                    <div className="notif-content">
+                      <div className="notif-title">Maintenance Due</div>
+                      <div className="notif-desc">Van GJ05CD is due for oil change today.</div>
+                      <div className="notif-time">1h ago</div>
+                    </div>
+                  </div>
+                </div>
+                <div className="notif-footer" style={{ textAlign: 'center' }}>
+                  <button className="btn-ghost" onClick={() => { setNotifOpen(false); navigate('/notifications'); }} style={{ width: '100%', fontSize: 'var(--text-xs)' }}>View All Activity</button>
+                </div>
+              </div>
+            )}
+          </div>
 
           <div className="topbar-user-chip">
             <div className="topbar-avatar" aria-hidden="true">
