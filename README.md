@@ -42,11 +42,28 @@ chmod +x start.sh
 ./start.sh
 ```
 
-| Service | URL |
-|---------|-----|
-| Client  | `http://localhost:5173` |
-| API     | `http://localhost:3001/api` |
-| Health  | `http://localhost:3001/health` |
+<table width="100%">
+  <thead>
+    <tr>
+      <th>Service</th>
+      <th>URL</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Client</td>
+      <td>`http://localhost:5173`</td>
+    </tr>
+    <tr>
+      <td>API</td>
+      <td>`http://localhost:3001/api`</td>
+    </tr>
+    <tr>
+      <td>Health</td>
+      <td>`http://localhost:3001/health`</td>
+    </tr>
+  </tbody>
+</table>
 
 **Demo Login:** `admin@transitops.io` / `Admin@123`
 
@@ -178,11 +195,28 @@ TransitOps uses a custom modern design system optimized for data-dense dashboard
 
 **2x2 Grid Layout:**
 
-| Cell | Module |
-|------|--------|
-| Top-Left | **Plan Route** with Uber-style booking inputs and quick-select location chips |
-| Top-Right | **Route Selection** with 3 optimized route cards (Fastest, Fuel Efficient, Lowest Toll) |
-| Bottom (Full Width) | **Vehicle Assignment** as horizontal scrollable carousel of vehicle cards |
+<table width="100%">
+  <thead>
+    <tr>
+      <th>Cell</th>
+      <th>Module</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Top-Left</td>
+      <td>**Plan Route** with Uber-style booking inputs and quick-select location chips</td>
+    </tr>
+    <tr>
+      <td>Top-Right</td>
+      <td>**Route Selection** with 3 optimized route cards (Fastest, Fuel Efficient, Lowest Toll)</td>
+    </tr>
+    <tr>
+      <td>Bottom (Full Width)</td>
+      <td>**Vehicle Assignment** as horizontal scrollable carousel of vehicle cards</td>
+    </tr>
+  </tbody>
+</table>
 
 **AI Dispatch Scoring Algorithm:**
 ```
@@ -195,12 +229,32 @@ score = (proximity x 0.25) + (health x 0.20) + (fuelEfficiency x 0.20)
 fuel = baseRate x distance x (1 + loadFactor) x vehicleAgeFactor
 ```
 
-| Vehicle Type | Base Rate (L/km) |
-|-------------|-------------------|
-| Truck | 0.25 |
-| Bus | 0.20 |
-| Van | 0.12 |
-| Car | 0.08 |
+<table width="100%">
+  <thead>
+    <tr>
+      <th>Vehicle Type</th>
+      <th>Base Rate (L/km)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Truck</td>
+      <td>0.25</td>
+    </tr>
+    <tr>
+      <td>Bus</td>
+      <td>0.20</td>
+    </tr>
+    <tr>
+      <td>Van</td>
+      <td>0.12</td>
+    </tr>
+    <tr>
+      <td>Car</td>
+      <td>0.08</td>
+    </tr>
+  </tbody>
+</table>
 
 ---
 
@@ -241,11 +295,28 @@ Alert: 60 frames below threshold at 30fps = ~2 seconds
 - Entry/Exit logging for gate management
 - Demo mode with pre-loaded sample plate images
 
-| Metric | Score |
-|--------|-------|
-| Detection Accuracy | 94%+ |
-| OCR Confidence | 91%+ |
-| Processing Time | < 500ms |
+<table width="100%">
+  <thead>
+    <tr>
+      <th>Metric</th>
+      <th>Score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Detection Accuracy</td>
+      <td>94%+</td>
+    </tr>
+    <tr>
+      <td>OCR Confidence</td>
+      <td>91%+</td>
+    </tr>
+    <tr>
+      <td>Processing Time</td>
+      <td>< 500ms</td>
+    </tr>
+  </tbody>
+</table>
 
 ---
 
@@ -255,22 +326,72 @@ Alert: 60 frames below threshold at 30fps = ~2 seconds
 
 **14-Point Digital Checklist:**
 
-| # | Inspection Item |
-|---|----------------|
-| 1 | Engine Oil Level |
-| 2 | Brake System |
-| 3 | Tire Condition (all wheels) |
-| 4 | Headlights and Taillights |
-| 5 | Turn Signals |
-| 6 | Windshield and Wipers |
-| 7 | Horn |
-| 8 | Mirrors |
-| 9 | Seatbelts |
-| 10 | Fire Extinguisher |
-| 11 | First Aid Kit |
-| 12 | Reflective Triangles |
-| 13 | Fluid Leaks |
-| 14 | Body Damage |
+<table width="100%">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Inspection Item</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Engine Oil Level</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Brake System</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Tire Condition (all wheels)</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Headlights and Taillights</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Turn Signals</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>Windshield and Wipers</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>Horn</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>Mirrors</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>Seatbelts</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>Fire Extinguisher</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>First Aid Kit</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>Reflective Triangles</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>Fluid Leaks</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>Body Damage</td>
+    </tr>
+  </tbody>
+</table>
 
 - Toggle Pass/Fail per item with optional failure notes
 - Progress bar showing completion percentage
@@ -353,16 +474,48 @@ DRAFT --> SCHEDULED --> DISPATCHED --> IN_PROGRESS --> COMPLETED
 
 **8 Report Types:**
 
-| Report | Description |
-|--------|-------------|
-| Fleet Summary | All vehicle stats aggregated |
-| Vehicle Report | Deep dive on a single vehicle |
-| Driver Performance | Safety and trip statistics |
-| Trip Report | Route map, QR code, financials |
-| Fuel Consumption | Trends and anomaly analysis |
-| Expense Report | Category and period breakdown |
-| Maintenance History | Fleet-wide or per-vehicle |
-| ROI Analysis | Revenue vs cost per vehicle |
+<table width="100%">
+  <thead>
+    <tr>
+      <th>Report</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Fleet Summary</td>
+      <td>All vehicle stats aggregated</td>
+    </tr>
+    <tr>
+      <td>Vehicle Report</td>
+      <td>Deep dive on a single vehicle</td>
+    </tr>
+    <tr>
+      <td>Driver Performance</td>
+      <td>Safety and trip statistics</td>
+    </tr>
+    <tr>
+      <td>Trip Report</td>
+      <td>Route map, QR code, financials</td>
+    </tr>
+    <tr>
+      <td>Fuel Consumption</td>
+      <td>Trends and anomaly analysis</td>
+    </tr>
+    <tr>
+      <td>Expense Report</td>
+      <td>Category and period breakdown</td>
+    </tr>
+    <tr>
+      <td>Maintenance History</td>
+      <td>Fleet-wide or per-vehicle</td>
+    </tr>
+    <tr>
+      <td>ROI Analysis</td>
+      <td>Revenue vs cost per vehicle</td>
+    </tr>
+  </tbody>
+</table>
 
 - **PDF Export**: html2canvas + jsPDF for client-side generation
 - **CSV Export**: Client-side array-to-CSV with UTF-8 BOM
@@ -431,23 +584,76 @@ TransitOps maintains a secure document management system for all fleet paperwork
 
 ### Tech Stack
 
-| Layer | Technologies |
-|-------|-------------|
-| **Frontend** | React 18, TypeScript, Vite 6, Vanilla CSS (Custom Design System) |
-| **State** | Zustand (auth, theme, sidebar, notifications) |
-| **Data Fetching** | TanStack React Query with Axios |
-| **Charts** | Recharts (SVG-based, composable) |
-| **Maps** | react-leaflet + Leaflet with Google/OSM tiles |
-| **Icons** | lucide-react (tree-shakeable SVGs, zero emojis) |
-| **Forms** | react-hook-form + Zod validation |
-| **PDF/CSV** | html2canvas + jsPDF (client), PDFKit (server) |
-| **QR Codes** | qrcode.react |
-| **Backend** | Node.js 20+, Express.js, TypeScript |
-| **ORM** | Prisma 7 with PostgreSQL adapter |
-| **Database** | PostgreSQL 16 (ACID, JSONB, full-text search) |
-| **Auth** | JWT (jsonwebtoken) + bcryptjs |
-| **CV/AI** | MediaPipe Face Landmarker, YOLO v8, EasyOCR |
-| **Email** | Nodemailer for automated notifications |
+<table width="100%">
+  <thead>
+    <tr>
+      <th>Layer</th>
+      <th>Technologies</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>**Frontend**</td>
+      <td>React 18, TypeScript, Vite 6, Vanilla CSS (Custom Design System)</td>
+    </tr>
+    <tr>
+      <td>**State**</td>
+      <td>Zustand (auth, theme, sidebar, notifications)</td>
+    </tr>
+    <tr>
+      <td>**Data Fetching**</td>
+      <td>TanStack React Query with Axios</td>
+    </tr>
+    <tr>
+      <td>**Charts**</td>
+      <td>Recharts (SVG-based, composable)</td>
+    </tr>
+    <tr>
+      <td>**Maps**</td>
+      <td>react-leaflet + Leaflet with Google/OSM tiles</td>
+    </tr>
+    <tr>
+      <td>**Icons**</td>
+      <td>lucide-react (tree-shakeable SVGs, zero emojis)</td>
+    </tr>
+    <tr>
+      <td>**Forms**</td>
+      <td>react-hook-form + Zod validation</td>
+    </tr>
+    <tr>
+      <td>**PDF/CSV**</td>
+      <td>html2canvas + jsPDF (client), PDFKit (server)</td>
+    </tr>
+    <tr>
+      <td>**QR Codes**</td>
+      <td>qrcode.react</td>
+    </tr>
+    <tr>
+      <td>**Backend**</td>
+      <td>Node.js 20+, Express.js, TypeScript</td>
+    </tr>
+    <tr>
+      <td>**ORM**</td>
+      <td>Prisma 7 with PostgreSQL adapter</td>
+    </tr>
+    <tr>
+      <td>**Database**</td>
+      <td>PostgreSQL 16 (ACID, JSONB, full-text search)</td>
+    </tr>
+    <tr>
+      <td>**Auth**</td>
+      <td>JWT (jsonwebtoken) + bcryptjs</td>
+    </tr>
+    <tr>
+      <td>**CV/AI**</td>
+      <td>MediaPipe Face Landmarker, YOLO v8, EasyOCR</td>
+    </tr>
+    <tr>
+      <td>**Email**</td>
+      <td>Nodemailer for automated notifications</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Database Schema
 
@@ -455,19 +661,60 @@ TransitOps maintains a secure document management system for all fleet paperwork
 12 models | 6 enums | 15+ indexed fields
 ```
 
-| Model | Key Fields |
-|-------|-----------|
-| User | email, role (6 RBAC roles), lastLogin |
-| Vehicle | registrationNumber, healthScore, status, document expiries |
-| Driver | licenseNumber, safetyScore, faceEmbedding, status |
-| Trip | 7-state lifecycle, source/dest coords, cargo, revenue |
-| Maintenance | 4 types, cost, parts, auto status transitions |
-| FuelLog | quantity, costPerUnit, anomaly flag, odometer |
-| Expense | 7 categories, receipt storage, trip linkage |
-| Inspection | 14-item JSON checklist, pass/fail with notes |
-| Notification | 12 types, read/unread, user targeting |
-| VehicleTimeline | 11 event types, chronological history |
-| AuditLog | full activity tracking, IP logging |
+<table width="100%">
+  <thead>
+    <tr>
+      <th>Model</th>
+      <th>Key Fields</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>User</td>
+      <td>email, role (6 RBAC roles), lastLogin</td>
+    </tr>
+    <tr>
+      <td>Vehicle</td>
+      <td>registrationNumber, healthScore, status, document expiries</td>
+    </tr>
+    <tr>
+      <td>Driver</td>
+      <td>licenseNumber, safetyScore, faceEmbedding, status</td>
+    </tr>
+    <tr>
+      <td>Trip</td>
+      <td>7-state lifecycle, source/dest coords, cargo, revenue</td>
+    </tr>
+    <tr>
+      <td>Maintenance</td>
+      <td>4 types, cost, parts, auto status transitions</td>
+    </tr>
+    <tr>
+      <td>FuelLog</td>
+      <td>quantity, costPerUnit, anomaly flag, odometer</td>
+    </tr>
+    <tr>
+      <td>Expense</td>
+      <td>7 categories, receipt storage, trip linkage</td>
+    </tr>
+    <tr>
+      <td>Inspection</td>
+      <td>14-item JSON checklist, pass/fail with notes</td>
+    </tr>
+    <tr>
+      <td>Notification</td>
+      <td>12 types, read/unread, user targeting</td>
+    </tr>
+    <tr>
+      <td>VehicleTimeline</td>
+      <td>11 event types, chronological history</td>
+    </tr>
+    <tr>
+      <td>AuditLog</td>
+      <td>full activity tracking, IP logging</td>
+    </tr>
+  </tbody>
+</table>
 
 ---
 
@@ -496,32 +743,99 @@ GET    /api/search?q=           # Global search (vehicles, drivers, trips)
 
 19 validated business rules enforced across the platform:
 
-| Rule | Description |
-|------|-------------|
-| VR-001 | Unique vehicle registration number |
-| TR-001 | Cargo weight cannot exceed vehicle max load |
-| TR-002 | Vehicle must be AVAILABLE for trip assignment |
-| TR-003 | Driver must be AVAILABLE for trip assignment |
-| MR-001 | Scheduling maintenance auto-sets vehicle to IN_SHOP |
-| MR-002 | Completing maintenance auto-restores AVAILABLE status |
-| IR-001 | Failed inspection blocks vehicle dispatch |
-| LR-001 | Expired license flags driver as non-compliant |
-| FR-001 | Fuel anomaly detection via 2-sigma statistical threshold |
+<table width="100%">
+  <thead>
+    <tr>
+      <th>Rule</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>VR-001</td>
+      <td>Unique vehicle registration number</td>
+    </tr>
+    <tr>
+      <td>TR-001</td>
+      <td>Cargo weight cannot exceed vehicle max load</td>
+    </tr>
+    <tr>
+      <td>TR-002</td>
+      <td>Vehicle must be AVAILABLE for trip assignment</td>
+    </tr>
+    <tr>
+      <td>TR-003</td>
+      <td>Driver must be AVAILABLE for trip assignment</td>
+    </tr>
+    <tr>
+      <td>MR-001</td>
+      <td>Scheduling maintenance auto-sets vehicle to IN_SHOP</td>
+    </tr>
+    <tr>
+      <td>MR-002</td>
+      <td>Completing maintenance auto-restores AVAILABLE status</td>
+    </tr>
+    <tr>
+      <td>IR-001</td>
+      <td>Failed inspection blocks vehicle dispatch</td>
+    </tr>
+    <tr>
+      <td>LR-001</td>
+      <td>Expired license flags driver as non-compliant</td>
+    </tr>
+    <tr>
+      <td>FR-001</td>
+      <td>Fuel anomaly detection via 2-sigma statistical threshold</td>
+    </tr>
+  </tbody>
+</table>
 
 ---
 
 ## Performance Targets
 
-| Metric | Target |
-|--------|--------|
-| API Response Time | < 200ms |
-| AI Endpoint Response | < 500ms |
-| Fleet Utilization Rate | > 75% |
-| Dispatch Time | < 2 minutes |
-| Maintenance Compliance | 100% |
-| Document Expiry Coverage | 100% |
-| Report Generation | < 5 seconds |
-| Concurrent Users | 50+ |
+<table width="100%">
+  <thead>
+    <tr>
+      <th>Metric</th>
+      <th>Target</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>API Response Time</td>
+      <td>< 200ms</td>
+    </tr>
+    <tr>
+      <td>AI Endpoint Response</td>
+      <td>< 500ms</td>
+    </tr>
+    <tr>
+      <td>Fleet Utilization Rate</td>
+      <td>> 75%</td>
+    </tr>
+    <tr>
+      <td>Dispatch Time</td>
+      <td>< 2 minutes</td>
+    </tr>
+    <tr>
+      <td>Maintenance Compliance</td>
+      <td>100%</td>
+    </tr>
+    <tr>
+      <td>Document Expiry Coverage</td>
+      <td>100%</td>
+    </tr>
+    <tr>
+      <td>Report Generation</td>
+      <td>< 5 seconds</td>
+    </tr>
+    <tr>
+      <td>Concurrent Users</td>
+      <td>50+</td>
+    </tr>
+  </tbody>
+</table>
 
 ---
 
@@ -552,14 +866,40 @@ TransitOps offers a dedicated, fully responsive mobile view designed for **bette
 
 ## Security
 
-| Feature | Implementation |
-|---------|---------------|
-| Authentication | JWT with HS256 signing |
-| Password Hashing | bcrypt with 12 salt rounds |
-| RBAC | 6 roles with permission matrix |
-| Protected Routes | Middleware chain (verifyToken + requireRole) |
-| Input Validation | Zod schemas on every endpoint |
-| Session Management | Token expiry (24h), auto-redirect on 401 |
+<table width="100%">
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>Implementation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Authentication</td>
+      <td>JWT with HS256 signing</td>
+    </tr>
+    <tr>
+      <td>Password Hashing</td>
+      <td>bcrypt with 12 salt rounds</td>
+    </tr>
+    <tr>
+      <td>RBAC</td>
+      <td>6 roles with permission matrix</td>
+    </tr>
+    <tr>
+      <td>Protected Routes</td>
+      <td>Middleware chain (verifyToken + requireRole)</td>
+    </tr>
+    <tr>
+      <td>Input Validation</td>
+      <td>Zod schemas on every endpoint</td>
+    </tr>
+    <tr>
+      <td>Session Management</td>
+      <td>Token expiry (24h), auto-redirect on 401</td>
+    </tr>
+  </tbody>
+</table>
 
 ---
 
@@ -574,31 +914,102 @@ TransitOps maintains a complete, enterprise-grade history of every important sys
 
 ## Demo Accounts
 
-| Role | Email | Password |
-|------|-------|----------|
-| Admin | `admin@transitops.io` | `Admin@123` |
-| Fleet Manager | `fleet@transitops.io` | `Fleet@123` |
-| Dispatcher | `dispatch@transitops.io` | `Dispatch@123` |
-| Safety Officer | `safety@transitops.io` | `Safety@123` |
-| Finance Manager | `finance@transitops.io` | `Finance@123` |
-| Driver | `driver@transitops.io` | `Driver@123` |
+<table width="100%">
+  <thead>
+    <tr>
+      <th>Role</th>
+      <th>Email</th>
+      <th>Password</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Admin</td>
+      <td>`admin@transitops.io`</td>
+      <td>`Admin@123`</td>
+    </tr>
+    <tr>
+      <td>Fleet Manager</td>
+      <td>`fleet@transitops.io`</td>
+      <td>`Fleet@123`</td>
+    </tr>
+    <tr>
+      <td>Dispatcher</td>
+      <td>`dispatch@transitops.io`</td>
+      <td>`Dispatch@123`</td>
+    </tr>
+    <tr>
+      <td>Safety Officer</td>
+      <td>`safety@transitops.io`</td>
+      <td>`Safety@123`</td>
+    </tr>
+    <tr>
+      <td>Finance Manager</td>
+      <td>`finance@transitops.io`</td>
+      <td>`Finance@123`</td>
+    </tr>
+    <tr>
+      <td>Driver</td>
+      <td>`driver@transitops.io`</td>
+      <td>`Driver@123`</td>
+    </tr>
+  </tbody>
+</table>
 
 ---
 
 ## Seeded Data
 
-| Entity | Count |
-|--------|-------|
-| Users | 6 |
-| Vehicles | 15 |
-| Drivers | 10 |
-| Trips | 25 |
-| Maintenance Records | 8 |
-| Fuel Logs | 30 |
-| Expenses | 20 |
-| Inspections | 5 |
-| Notifications | 50 |
-| Timeline Events | 40 |
+<table width="100%">
+  <thead>
+    <tr>
+      <th>Entity</th>
+      <th>Count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Users</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <td>Vehicles</td>
+      <td>15</td>
+    </tr>
+    <tr>
+      <td>Drivers</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <td>Trips</td>
+      <td>25</td>
+    </tr>
+    <tr>
+      <td>Maintenance Records</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <td>Fuel Logs</td>
+      <td>30</td>
+    </tr>
+    <tr>
+      <td>Expenses</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <td>Inspections</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>Notifications</td>
+      <td>50</td>
+    </tr>
+    <tr>
+      <td>Timeline Events</td>
+      <td>40</td>
+    </tr>
+  </tbody>
+</table>
 
 ---
 
@@ -643,16 +1054,48 @@ TransitOps/
 
 ## Why TransitOps
 
-| Problem | TransitOps Solution |
-|---------|-------------------|
-| Manual vehicle allocation | AI dispatch with 5-factor scoring algorithm |
-| Driver safety blind spots | Real-time drowsiness detection with MediaPipe |
-| Expired documents and licenses | Automated cron alerts at 60/30/15/7/1 day intervals |
-| No fleet visibility | Live GPS map with color-coded vehicle markers |
-| Paper-based inspections | Digital 14-point checklist that blocks unsafe dispatch |
-| Fuel theft and waste | Statistical anomaly detection (2-sigma) |
-| Slow report generation | One-click PDF/CSV with in-page preview |
-| Fragmented spreadsheets | Unified platform covering the entire fleet lifecycle |
+<table width="100%">
+  <thead>
+    <tr>
+      <th>Problem</th>
+      <th>TransitOps Solution</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Manual vehicle allocation</td>
+      <td>AI dispatch with 5-factor scoring algorithm</td>
+    </tr>
+    <tr>
+      <td>Driver safety blind spots</td>
+      <td>Real-time drowsiness detection with MediaPipe</td>
+    </tr>
+    <tr>
+      <td>Expired documents and licenses</td>
+      <td>Automated cron alerts at 60/30/15/7/1 day intervals</td>
+    </tr>
+    <tr>
+      <td>No fleet visibility</td>
+      <td>Live GPS map with color-coded vehicle markers</td>
+    </tr>
+    <tr>
+      <td>Paper-based inspections</td>
+      <td>Digital 14-point checklist that blocks unsafe dispatch</td>
+    </tr>
+    <tr>
+      <td>Fuel theft and waste</td>
+      <td>Statistical anomaly detection (2-sigma)</td>
+    </tr>
+    <tr>
+      <td>Slow report generation</td>
+      <td>One-click PDF/CSV with in-page preview</td>
+    </tr>
+    <tr>
+      <td>Fragmented spreadsheets</td>
+      <td>Unified platform covering the entire fleet lifecycle</td>
+    </tr>
+  </tbody>
+</table>
 
 ---
 
