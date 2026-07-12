@@ -200,6 +200,8 @@ fuel = baseRate x distance x (1 + loadFactor) x vehicleAgeFactor
 - Alert triggers after 60 consecutive frames below 0.21 threshold (~2 seconds)
 - Color-coded camera borders: Green (Normal), Amber (Drowsy), Red (Alert with pulse animation)
 - Per-driver drowsiness score gauge
+- **Seatbelt Detection**: AI monitors proper seatbelt usage during transit.
+- **Face Verification**: Pre-dispatch identity authentication to prevent unauthorized drivers.
 - CRT scanline and noise overlay effects for authentic CCTV aesthetic
 - HUD-style PTZ controls and timestamp overlays
 
@@ -532,6 +534,7 @@ TransitOps offers a dedicated, fully responsive mobile view designed for **bette
 - **Single-column card layouts** ensuring data is perfectly readable on small screens.
 - **Touch-optimized buttons** with larger tap targets.
 - **Collapsible elements** ensuring the dashboard fits entirely inside the mobile viewport.
+- **Multi-language Support**: Layouts architected to support English, Hindi, and Gujarati localization.
 
 ---
 
@@ -545,7 +548,15 @@ TransitOps offers a dedicated, fully responsive mobile view designed for **bette
 | Protected Routes | Middleware chain (verifyToken + requireRole) |
 | Input Validation | Zod schemas on every endpoint |
 | Session Management | Token expiry (24h), auto-redirect on 401 |
-| Audit Logging | Full activity tracking with IP address |
+
+---
+
+## Audit Logs / Activity History
+
+TransitOps maintains a complete, enterprise-grade history of every important system action. 
+- **Traceability**: Logs user logins, vehicle creation, trip dispatch, maintenance updates, and fuel entries.
+- **Accountability**: Every action is tied to a user ID and IP address.
+- **Debugging**: Easily trace state changes (e.g., who changed the vehicle status to "In Shop").
 
 ---
 
